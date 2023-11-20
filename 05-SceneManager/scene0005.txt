@@ -8,6 +8,7 @@ brickquestion.txt
 mushroom.txt
 goomba.txt
 map.txt
+platform.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -30,7 +31,7 @@ map.txt
 2	390	10
 2	410	10
 #MAP
-99	1408	313
+#99	1408	313
 #BrickQuestion
 8	280	80
 8	300	80
@@ -40,8 +41,12 @@ map.txt
 #MushRoom
 17	280	50
 #Platform
-5 	100	180	16	15	32	51000	52000	53000
+#5 	100	180	16	15	32	51000	52000	53000
 5	140	140	16	15	26	51000	52000	53000
+
+#Platform
+67	155	147	13	15	30	61000	62000	63000
+
 #Portal 
 50	200	160	216	180	1
 
