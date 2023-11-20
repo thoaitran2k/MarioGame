@@ -119,6 +119,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_MAP: obj = new CMap(x, y); break;
 	case OBJECT_TYPE_MARIO:
 		if (player!=NULL) 
 		{
@@ -134,7 +135,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BRICK_Q: obj = new CBrickQuestion(x, y); break;
-	case OBJECT_TYPE_MAP: obj = new CMap(x, y); break;
+	
 
 
 
