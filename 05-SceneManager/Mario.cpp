@@ -193,7 +193,8 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 	{
 		if (level == MARIO_LEVEL_SMALL)
 		{
-			level = MARIO_LEVEL_BIG;
+			SetLevel (MARIO_LEVEL_BIG);
+			y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
 		}
 	}
 	mr->Delete();
