@@ -121,6 +121,8 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 		isUnBox = questionBrick->GetIsUnbox();
 		isEmpty = questionBrick->GetIsEmpty();
 
+		questionBrick->SetState(BRICK_Q_STATE_UP);
+
 		
 		if (e->ny > 0 && (!isUnBox && !isEmpty)) {
 			

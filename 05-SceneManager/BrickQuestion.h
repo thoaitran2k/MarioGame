@@ -16,6 +16,7 @@
 #define BRICK_Q_SPEED_DOWN 0.04f
 #define BRICK_Q_STATE_UP 100
 #define BRICK_Q_SPEED_UP 0.04f
+#define BRICK_Q_DEFLECT_SPEED 0.1f
 
 #define BRICK_Q_STATE_EMPTY 7000
 
@@ -29,6 +30,8 @@ class CBrickQuestion : public CGameObject {
 protected:
 	float ay;
 
+	float positionDefaultX, positionDefaultY;
+
 	float minY;
 	float startY;
 	float startX;
@@ -39,7 +42,7 @@ protected:
 	
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	//virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
 	virtual int IsCollidable() { return 1; }//!isUnbox || !isEmpty; }
@@ -48,7 +51,10 @@ protected:
 	
 
 public:
-	CBrickQuestion(float x, float y) : CGameObject(x, y) {}
+	CBrickQuestion(float positionDefaultX, float positionDefaultY) : CGameObject(x, y) {
+		this->positionDefaultX = positionDefaultX;
+		this->positionDefaultY = positionDefaultY;
+	}
 
 	CBrickQuestion(float x, float y, int model);
 
@@ -61,6 +67,7 @@ public:
 	void SetIsEmpty(BOOLEAN b) { isEmpty = b; }
 	void SetModel(int model) { this->model = model; }
 	int GetModel() { return model; }
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	
 	float GetMinY() { return minY; }
