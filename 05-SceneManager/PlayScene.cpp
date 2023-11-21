@@ -13,6 +13,8 @@
 #include "MushRoom.h"
 #include "Map.h"
 #include "Background.h"
+#include "Bin1.h"
+#include "Bin2.h"
 
 
 
@@ -161,6 +163,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BRICK_Q: obj = new CBrickQuestion(x, y); break;
+	case OBJECT_TYPE_BIN1: obj = new CBin1(x, y); 
+	break; case OBJECT_TYPE_BIN2: obj = new CBin2(x, y); break;
 	
 
 
@@ -325,8 +329,9 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
+	if (cy > 410) cy = 400;
 
-	CGame::GetInstance()->SetCamPos(cx, cy);
+	CGame::GetInstance()->SetCamPos(cx, cy-20);
 
 	PurgeDeletedObjects();
 }

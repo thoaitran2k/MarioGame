@@ -9,10 +9,10 @@ mushroom.txt
 goomba.txt
 map.txt
 platform.txt
-
+bin.txt
 [MAP]
 #MAP
-99	1408	313
+99	1408	216
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 8 = BrickQuestion, 17 = MushRoom
@@ -44,6 +44,14 @@ platform.txt
 9	280	415
 #MushRoom
 17	280	50
+
+
+#BIN
+#Bin1
+77	264	373
+#Bin2
+78	296	340
+
 #Platform
 #5 	100	180	16	15	32	51000	52000	53000
 5	630	409	16	7	29	52000	52000	52000
