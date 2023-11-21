@@ -12,6 +12,11 @@
 
 class CBin1 : public CGameObject {
 public:
+
+	virtual void OnNoCollision(DWORD dt);
+
+
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	CBin1(float x, float y) : CGameObject(x, y) {}
 	void Render();
 	void Update(DWORD dt) {}

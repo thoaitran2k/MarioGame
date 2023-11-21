@@ -4,8 +4,6 @@
 
 
 
-CMario* coin;
-
 void CBrickQuestion::Render()
 {
 	

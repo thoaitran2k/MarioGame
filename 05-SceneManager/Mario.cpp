@@ -14,6 +14,8 @@
 #include "PlayScene.h"
 #include "MushRoom.h"
 #include "BrickEmpty.h"
+#include "Bin1.h"
+#include "Bin2.h"
 
 
 
@@ -63,6 +65,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CBrickQuestion*>(e->obj))
 		OnCollisionWithBrickQuestion(e);
+	else if (dynamic_cast<CBin1*>(e->obj))
+		OnCollisionWithBin1(e);
+	else if (dynamic_cast<CBin2*>(e->obj))
+		OnCollisionWithBin2(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -136,6 +142,28 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
 
+
+void CMario::OnCollisionWithBin1(LPCOLLISIONEVENT e)
+{
+	CBin1* bin1 = dynamic_cast<CBin1*>(e->obj);
+	float xTemp, yTemp;
+	xTemp = bin1->GetX();
+	yTemp = bin1->GetY();
+	if (e->ny < 0)
+	{
+		IsCollidable();
+	}
+	else
+	{
+		untouchable = 0;
+		
+		
+	}
+}
+void CMario::OnCollisionWithBin2(LPCOLLISIONEVENT e)
+{
+
+}
 //
 // Get animation ID for small Mario
 //
