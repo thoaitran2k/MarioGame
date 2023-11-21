@@ -5,6 +5,8 @@
 #include "Animations.h"
 
 #define ID_ANI_BRICK_Q 113000
+#define ID_ANI_BRICK_EMPTY 13000
+
 
 #define BRICK_Q_WIDTH 16
 #define BRICK_Q_BBOX_WIDTH 16
@@ -15,8 +17,10 @@
 #define BRICK_Q_STATE_UP 100
 #define BRICK_Q_SPEED_UP 0.04f
 
+#define BRICK_Q_STATE_EMPTY 7000
+
 #define QUESTION_BRICK_COIN 1
-#define QUESTION_BRICK_ITEM 2
+#define QUESTION_BRICK_MUSHROOM 2
 
 #define ADJUST_UP_DOWN 13
 
@@ -34,31 +38,31 @@ protected:
 
 	
 
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	//virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual int IsCollidable() { return 1; }
+
+	virtual int IsCollidable() { return 1; }//!isUnbox || !isEmpty; }
 	virtual int IsBlocking() { return 1; }
 	virtual void OnNoCollision(DWORD dt);
 	
 
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 public:
 	CBrickQuestion(float x, float y) : CGameObject(x, y) {}
 
 	CBrickQuestion(float x, float y, int model);
 
-	
+	virtual void SetState(int state);
 
 	BOOLEAN GetIsUnbox() { return isUnbox; }
 	BOOLEAN GetIsEmpty() { return isEmpty; }
-	virtual void SetState(int state);
+	
 	void SetIsUnbox(BOOLEAN b) { isUnbox = b; }
 	void SetIsEmpty(BOOLEAN b) { isEmpty = b; }
 	void SetModel(int model) { this->model = model; }
 	int GetModel() { return model; }
 
 	
-	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	float GetMinY() { return minY; }
 	CGameObject* item = NULL;
 };

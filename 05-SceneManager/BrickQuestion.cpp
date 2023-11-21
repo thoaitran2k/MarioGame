@@ -4,19 +4,16 @@
 
 
 
-void CBrickQuestion::Render()
+CBrickQuestion::CBrickQuestion(float x, float y, int model) :CGameObject(x, y)
 {
-	
-
-	CAnimations* animations = CAnimations::GetInstance();
-
-	int aniID;
-	aniID = ID_ANI_BRICK_Q;
-		
-	animations->Get(aniID)->Render(x, y);
-
-	//RenderBoundingBox();
+	this->model = model;
+	this->ay = 0;
+	this->minY = y - BRICK_Q_BBOX_HEIGHT + ADJUST_UP_DOWN;
+	this->startY = y;
+	this->startX = x;
 }
+
+
 
 void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -35,8 +32,41 @@ void CBrickQuestion::OnNoCollision(DWORD dt)
 
 };
 
+
+/*
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (x != startX) {
+		x = startX;
+	}
+	if (!isEmpty) {
+		if (y != startY) y = startY;
+		if (x != startX) x = startX;
+	}
+	if (isUnbox) {
+		vy = 0;
+		ay = 0;
+		vx = 0;
+		y = startY;
+		x = startX;
+	}
+	else {
+		vy += ay * dt;
+		if (y <= minY)
+		{
+			vy = BRICK_Q_SPEED_DOWN;
+		}
+		if (y > startY + BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN)
+		{
+			y = startY;
+			vy = 0;
+			isEmpty = true;
+			isUnbox = true;
+		}
+	}
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+	/*
 	if (x != startX) { x = startX; }
 	else {
 		vy += ay * dt;
@@ -52,11 +82,12 @@ void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 		CGameObject::Update(dt, coObjects);
 		CCollision::GetInstance()->Process(this, dt, coObjects);
+		*/
+	
 
-	}
-}
 
-void CBrickQuestion::OnCollisionWith(LPCOLLISIONEVENT e)
+
+/*void CBrickQuestion::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CBrickQuestion*>(e->obj)) return;
@@ -70,14 +101,33 @@ void CBrickQuestion::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = 0;
 	}
 }
+*/
+
+void CBrickQuestion::Render()
+{
+
+	int aniId;
+	if (model == QUESTION_BRICK_COIN || QUESTION_BRICK_MUSHROOM) {
+		aniId = ID_ANI_BRICK_Q;
+	}
+	if (state == BRICK_Q_STATE_EMPTY)
+	{
+		aniId = ID_ANI_BRICK_EMPTY;
+	}
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	RenderBoundingBox();
+
+	//RenderBoundingBox();
+}
+
 void CBrickQuestion::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case BRICK_Q_STATE_UP:
-		vy = -BRICK_Q_SPEED_UP;
+	case BRICK_Q_STATE_EMPTY:
+		vy = 0;
 		break;
-
 	}
 }

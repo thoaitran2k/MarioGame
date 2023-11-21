@@ -13,7 +13,6 @@
 #include "GameObject.h"
 #include "PlayScene.h"
 #include "MushRoom.h"
-#include "BrickEmpty.h"
 #include "Bin1.h"
 #include "Bin2.h"
 
@@ -122,20 +121,37 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			xTemp = questionBrick->GetX();
 			yTemp = questionBrick->GetY();
 			minY = questionBrick->GetMinY();
-
-			questionBrick->SetState(BRICK_Q_STATE_UP);
-			if (level == MARIO_LEVEL_BIG) {
+			/*if (level == MARIO_LEVEL_SMALL)
+			{
 				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
 				scene->AddObject(mushroom);
 			}
-			else
-			{
+			else {
 				SetCoin(GetCoin() + 1);
 				CCoin* coin = new CCoin(xTemp, yTemp);
 				coin->SetState(COIN_SUMMON_STATE);
 				scene->AddObject(coin);
 				coin++;
-			}
+			}*/
+
+			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+				if (level == MARIO_LEVEL_SMALL && questionBrick->GetState()== BRICK_Q_STATE_EMPTY) {
+					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
+					scene->AddObject(mushroom);
+					
+				}
+				else
+				{
+					if (questionBrick->GetState() == BRICK_Q_STATE_EMPTY) {
+						SetCoin(GetCoin() + 1);
+						CCoin* coin = new CCoin(xTemp, yTemp);
+						coin->SetState(COIN_SUMMON_STATE);
+						scene->AddObject(coin);
+						coin++;
+					}
+				}
+				
+
 		}
 }
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
