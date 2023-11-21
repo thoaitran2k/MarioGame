@@ -128,6 +128,8 @@ void CBrickQuestion::SetState(int state)
 	{
 	case BRICK_Q_STATE_EMPTY:
 		vy = 0;
+		isEmpty = true;
+		isUnbox = true;
 		break;
 	}
 }

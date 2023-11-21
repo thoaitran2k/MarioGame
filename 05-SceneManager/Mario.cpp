@@ -114,41 +114,42 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
 		
 		CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
+		CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		BOOLEAN isUnBox, isEmpty;
+		isUnBox = questionBrick->GetIsUnbox();
+		isEmpty = questionBrick->GetIsEmpty();
+
 		
-		if (e->ny > 0) {
-			CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		if (e->ny > 0 && (!isUnBox && !isEmpty)) {
+			
 			float xTemp, yTemp, minY;
 			xTemp = questionBrick->GetX();
 			yTemp = questionBrick->GetY();
 			minY = questionBrick->GetMinY();
-			/*if (level == MARIO_LEVEL_SMALL)
-			{
-				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
-				scene->AddObject(mushroom);
-			}
-			else {
-				SetCoin(GetCoin() + 1);
-				CCoin* coin = new CCoin(xTemp, yTemp);
-				coin->SetState(COIN_SUMMON_STATE);
-				scene->AddObject(coin);
-				coin++;
-			}*/
+			
 
-			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
-				if (level == MARIO_LEVEL_SMALL && questionBrick->GetState()== BRICK_Q_STATE_EMPTY) {
+			if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
+			{
+				if (level == MARIO_LEVEL_SMALL) {
 					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
 					scene->AddObject(mushroom);
-					
+					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+					questionBrick->SetIsEmpty(true);
+
 				}
+			}
 				else
+				if(questionBrick->GetModel() == QUESTION_BRICK_COIN)
 				{
-					if (questionBrick->GetState() == BRICK_Q_STATE_EMPTY) {
+					
 						SetCoin(GetCoin() + 1);
 						CCoin* coin = new CCoin(xTemp, yTemp);
 						coin->SetState(COIN_SUMMON_STATE);
 						scene->AddObject(coin);
+						questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+						questionBrick->SetIsEmpty(true);
 						coin++;
-					}
+					
 				}
 				
 
