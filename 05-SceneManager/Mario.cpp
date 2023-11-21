@@ -121,7 +121,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 		isUnBox = questionBrick->GetIsUnbox();
 		isEmpty = questionBrick->GetIsEmpty();
 
-		questionBrick->SetState(BRICK_Q_STATE_UP);
+		
 
 		
 		if (e->ny > 0 && (!isUnBox && !isEmpty)) {
@@ -135,9 +135,10 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
 			{
 				if (level == MARIO_LEVEL_SMALL) {
-					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
+					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
 					scene->AddObject(mushroom);
 					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+					questionBrick->SetState(BRICK_Q_STATE_UP);
 					questionBrick->SetIsEmpty(true);
 
 				}
@@ -151,6 +152,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 						coin->SetState(COIN_SUMMON_STATE);
 						scene->AddObject(coin);
 						questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+						questionBrick->SetState(BRICK_Q_STATE_UP);
 						questionBrick->SetIsEmpty(true);
 						coin++;
 					

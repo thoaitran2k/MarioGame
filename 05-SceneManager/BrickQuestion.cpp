@@ -8,7 +8,7 @@ CBrickQuestion::CBrickQuestion(float x, float y, int model) :CGameObject(x, y)
 {
 	this->model = model;
 	this->ay = 0;
-	this->minY = y - BRICK_Q_BBOX_HEIGHT + ADJUST_UP_DOWN;
+	this->minY = y - BRICK_Q_BBOX_HEIGHT/2;
 	this->startY = y;
 	this->startX = x;
 }
@@ -36,7 +36,21 @@ void CBrickQuestion::OnNoCollision(DWORD dt)
 
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
+	
+		vy += ay * dt;
+		if (y <= minY)
+		{
+			vy = BRICK_Q_SPEED_DOWN;
+		}
+		if (y > startY + BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN)
+		{
+			y = startY;
+			vy = 0;
+			isEmpty = true;
+			isUnbox = true;
+		
+	}
+
 
 
 	
@@ -70,7 +84,11 @@ void CBrickQuestion::Render()
 	if (model == QUESTION_BRICK_COIN || QUESTION_BRICK_MUSHROOM) {
 		aniId = ID_ANI_BRICK_Q;
 	}
-	if (state == BRICK_Q_STATE_EMPTY)
+	if (isEmpty || isUnbox)
+	{
+		aniId = ID_ANI_BRICK_EMPTY;
+	}
+	 if (state == BRICK_Q_STATE_EMPTY)
 	{
 		aniId = ID_ANI_BRICK_EMPTY;
 	}
