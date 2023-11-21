@@ -11,9 +11,9 @@
 #define BRICK_Q_BBOX_HEIGHT 16
 #define BRICK_Q_SPEED_UP 0.04f
 #define BRICK_Q_STATE_UP 100
-#define BRICK_Q_SPEED_DOWN 0.01f
-#define QUESTION_BRICK_STATE_UP 100
-#define QUESTION_BRICK_SPEED_UP 0.04f
+#define BRICK_Q_SPEED_DOWN 0.04f
+#define BRICK_Q_STATE_UP 100
+#define BRICK_Q_SPEED_UP 0.04f
 
 #define QUESTION_BRICK_COIN 1
 #define QUESTION_BRICK_ITEM 2
@@ -35,6 +35,7 @@ protected:
 	
 
 	virtual void Render();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual int IsCollidable() { return 1; }
 	virtual int IsBlocking() { return 1; }
 	virtual void OnNoCollision(DWORD dt);

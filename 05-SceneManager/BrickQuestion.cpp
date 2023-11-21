@@ -30,10 +30,31 @@ void CBrickQuestion::OnNoCollision(DWORD dt)
 {
 	//x += vx * dt;
 	//y += vy * dt;
-	x = 0;
-	y = 0;
+	//x = 0; Chi xet brick question di chuyen theo phuong y
+	y += vy * dt;
 
 };
+
+void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	if (x != startX) { x = startX; }
+	else {
+		vy += ay * dt;
+		if (y <= minY)
+		{
+			vy = BRICK_Q_SPEED_DOWN;
+
+		}
+		if (y > startY + BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN)
+		{
+			y = startY;
+			vy = 0;
+		}
+		CGameObject::Update(dt, coObjects);
+		CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	}
+}
 
 void CBrickQuestion::OnCollisionWith(LPCOLLISIONEVENT e)
 {
@@ -54,8 +75,8 @@ void CBrickQuestion::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case QUESTION_BRICK_STATE_UP:
-		vy = -QUESTION_BRICK_SPEED_UP;
+	case BRICK_Q_STATE_UP:
+		vy = -BRICK_Q_SPEED_UP;
 		break;
 
 	}
