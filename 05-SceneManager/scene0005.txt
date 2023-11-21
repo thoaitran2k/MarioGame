@@ -19,7 +19,7 @@ bin.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	50	200
+0	50	400
 #COIN
 4	130	410
 4	150	410
@@ -27,7 +27,7 @@ bin.txt
 4	190	410
 4	210	410
 #BRICK
-1	230	410
+#1	230	410
 
 #GOOMBA
 2	370	10
