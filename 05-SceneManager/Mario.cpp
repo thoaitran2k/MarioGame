@@ -1,4 +1,4 @@
-#include <algorithm>
+﻿#include <algorithm>
 #include "debug.h"
 
 #include "Mario.h"
@@ -180,10 +180,23 @@ void CMario::OnCollisionWithBin1(LPCOLLISIONEVENT e)
 		
 		
 	}
-}
+}//Chưa hoàn thành
 void CMario::OnCollisionWithBin2(LPCOLLISIONEVENT e)
 {
-
+	
+}
+//Chưa hoàn thành
+void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
+{
+	CMushRoom* mr = dynamic_cast<CMushRoom*>(e->obj);
+	if (!mr->IsDeleted())
+	{
+		if (level == MARIO_LEVEL_SMALL)
+		{
+			level = MARIO_LEVEL_BIG;
+		}
+	}
+	mr->Delete();
 }
 //
 // Get animation ID for small Mario
