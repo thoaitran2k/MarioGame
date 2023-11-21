@@ -30,8 +30,11 @@ void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CBrickQuestion::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+	//x += vx * dt;
+	//y += vy * dt;
+	x = 0;
+	y = 0;
+
 };
 
 void CBrickQuestion::OnCollisionWith(LPCOLLISIONEVENT e)

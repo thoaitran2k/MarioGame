@@ -116,7 +116,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			xTemp = questionBrick->GetX();
 			yTemp = questionBrick->GetY();
 			minY = questionBrick->GetMinY();
-			if (level == MARIO_LEVEL_SMALL) {
+			if (level == MARIO_LEVEL_BIG) {
 				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp);
 				scene->AddObject(mushroom);
 			}
