@@ -9,6 +9,8 @@
 #define ID_TEX_MISC 20
 #define ID_TEX_MAP 30
 #define ID_TEX_PLATFORM 40
+#define ID_TEX_ENEMIES_3 50
+#define ID_TEX_ENEMIES_4 60
 
 
 
