@@ -17,6 +17,14 @@ CGameObject::CGameObject()
 	isDeleted = false;
 }
 
+
+void CGameObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects )
+{
+	this->dt = dt;
+	dx = vx * dt;
+	dy = vy * dt;
+}
+
 void CGameObject::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);

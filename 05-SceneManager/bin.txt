@@ -1,7 +1,7 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
 #BIN1
-70001	133	98	181	107	40
+70001	240	368	287	416	30
 #70001	133	98	181	101	40
 
 #BIN2

@@ -17,7 +17,6 @@
 #include "Bin2.h"
 
 
-
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
@@ -171,23 +170,35 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithBin1(LPCOLLISIONEVENT e)
 {
 	CBin1* bin1 = dynamic_cast<CBin1*>(e->obj);
-	float xTemp, yTemp;
-	xTemp = bin1->GetX();
-	yTemp = bin1->GetY();
-	if (e->ny < 0)
+	if (e->ny > 0)
 	{
-		IsCollidable();
+		y += dy;
+	}
+	else if (e->nx != 0)
+	{
+		x += dx;
 	}
 	else
-	{
-		untouchable = 0;
-		
-		
-	}
+		if ( y != 0) vy = 0;
+
 }//Chưa hoàn thành
 void CMario::OnCollisionWithBin2(LPCOLLISIONEVENT e)
 {
-	
+	if (IsPlatform())
+	{
+		if (e->ny < 0)
+		{
+			y += dy;
+		}
+		if (e->nx != 0)
+		{
+			x += dx;
+		}
+		else
+		{
+			//if (e->ny != 0) vy = 0;
+		}
+	}
 }
 //Chưa hoàn thành
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
