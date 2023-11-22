@@ -15,6 +15,8 @@
 #include "MushRoom.h"
 #include "Bin1.h"
 #include "Bin2.h"
+#include "bullet_plant.h"
+
 
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -135,7 +137,9 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			{
 				if (level == MARIO_LEVEL_SMALL) {
 					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+					CBrick* newbullet = new CBrick(367, 320);
 					scene->AddObject(mushroom);
+					scene->AddObject(newbullet);
 					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
 					questionBrick->SetState(BRICK_Q_STATE_UP);
 					questionBrick->SetIsEmpty(true);
@@ -169,36 +173,11 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBin1(LPCOLLISIONEVENT e)
 {
-	CBin1* bin1 = dynamic_cast<CBin1*>(e->obj);
-	if (e->ny > 0)
-	{
-		y += dy;
-	}
-	else if (e->nx != 0)
-	{
-		x += dx;
-	}
-	else
-		if ( y != 0) vy = 0;
 
 }//Chưa hoàn thành
 void CMario::OnCollisionWithBin2(LPCOLLISIONEVENT e)
 {
-	if (IsPlatform())
-	{
-		if (e->ny < 0)
-		{
-			y += dy;
-		}
-		if (e->nx != 0)
-		{
-			x += dx;
-		}
-		else
-		{
-			//if (e->ny != 0) vy = 0;
-		}
-	}
+
 }
 //Chưa hoàn thành
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)

@@ -10,7 +10,7 @@ goomba.txt
 map.txt
 platform.txt
 bin.txt
-bullet_plant.txt
+bulletplant.txt
 plant_red_shoot.txt
 pipe_plant_shoot.txt
 [MAP]
@@ -32,7 +32,8 @@ pipe_plant_shoot.txt
 4	210	410
 #BRICK
 1	230	410
-
+1	246	410
+1	246	394
 #GOOMBA
 #2	370	10
 #2	390	10
@@ -61,10 +62,10 @@ pipe_plant_shoot.txt
 #BIN
 #Bin1
 #77	264	368
-77	200	391
+#77	200	391
 #Bin2
 #78	296	334
-78	296	338
+#78	296	338
 
 #Platform
 #5 	100	180	16	15	32	51000	52000	53000
@@ -82,4 +83,7 @@ pipe_plant_shoot.txt
 9	184	360
 #Portal
 #50	200	160	216	180	1
+
+130	367	340	
+
 

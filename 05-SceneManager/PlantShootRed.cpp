@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "PlayScene.h"
 #include "GameObject.h"
+#include "bullet_plant.h"
 
 
 CPlantShootRed::CPlantShootRed(float x, float y) :CGameObject(x, y)
@@ -44,9 +45,8 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (GetTickCount64() - time_shoot < TIME_SHOOT)
 					{
 						isShoot = true;
-						bool atTop = false;
-						bool atLeft = false;
-						if(PosWithXMario()==1)
+						bool atTop = false, atLeft = false;
+						if(PosWithXMario() ==1)
 						{
 							atTop = true;
 						}
@@ -54,6 +54,27 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						{
 							atLeft = true;
 						}
+						/*if (atTop && atLeft)
+						{
+							Cbullet_plant* bullet = new Cbullet_plant(x,y, atLeft, !atTop);
+							scene->AddObject(bullet);
+						}
+						if (!atTop && atLeft)
+						{
+							Cbullet_plant* bullet = new Cbullet_plant(x, y, atLeft, !atTop);
+							scene->AddObject(bullet);
+						}
+						if(atTop && !atLeft)
+						{
+							Cbullet_plant* bullet = new Cbullet_plant(x, y, atLeft, !atTop);
+							scene->AddObject(bullet);
+						}
+						if(!atTop && !atLeft)
+						{
+							Cbullet_plant* bullet = new Cbullet_plant(x, y, atLeft, !atTop);
+							scene->AddObject(bullet);
+						}*/
+						
 					}
 				}
 			}
@@ -105,7 +126,7 @@ int CPlantShootRed::PosWithXMario() {
 
 int CPlantShootRed::PosWithYMario() {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetY() < GetY()) //Mario o phia tren cai cay //he toa do truc Y bi nguoc
+	if (mario->GetY() < GetY()) //Mario o phia tren cai cay 
 	{
 		return 1;
 	}

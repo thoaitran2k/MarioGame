@@ -17,6 +17,8 @@
 #include "Bin2.h"
 #include "PipePlantShoot.h"
 #include "PlantShootRed.h"
+#include "bullet_plant.h"
+
 
 
 
@@ -169,6 +171,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK_Q_MUSHROOM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_MUSHROOM); break;
 	case OBJECT_TYPE_LONG_PIPE: obj = new CPipePlantShoot(x, y, MODEL_L_PIPE); break;
 	case OBJECT_TYPE_PLANT_SHOOT_RED: obj = new CPlantShootRed(x, y); break;
+	case OBJECT_TYPE_BULLET_PLANT: obj = new Cbullet_plant(x, y); break;
 	case OBJECT_TYPE_PIPE_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_PIPE); break;
 	//case OBJECT_TYPE_BRICK_Q: obj = new CBrickQuestion(x, y); break;
 	case OBJECT_TYPE_BIN1: obj = new CBin1(x, y); 
