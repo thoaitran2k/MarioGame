@@ -1,4 +1,15 @@
 #include "PipePlantShoot.h"
+#include "Animation.h"
+#include "Animations.h"
+
+
+CPipePlantShoot::CPipePlantShoot(float x, float y, int model) :CGameObject(x, y)
+{
+	this->x = x;
+	this->y = y;
+	this->model = model;
+	
+}
 
 void CPipePlantShoot::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
@@ -21,7 +32,7 @@ void CPipePlantShoot::Render()
 {
 
 	CAnimations* animations = CAnimations::GetInstance();
-	int aniId = -1;
+	int aniId;
 	if (model == MODEL_L_PIPE) aniId = ID_ANI_LONG_PIPE;
 	if (model == MODEL_M_PIPE) aniId = ID_ANI_MEDIUM_PIPE;
 

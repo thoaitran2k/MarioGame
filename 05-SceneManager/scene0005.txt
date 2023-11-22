@@ -10,6 +10,9 @@ goomba.txt
 map.txt
 platform.txt
 bin.txt
+bullet_plant.txt
+plant_red_shoot.txt
+pipe_plant_shoot.txt
 [MAP]
 #MAP
 99	1408	216
