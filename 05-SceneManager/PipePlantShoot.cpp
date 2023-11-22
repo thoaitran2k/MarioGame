@@ -35,6 +35,7 @@ void CPipePlantShoot::Render()
 	int aniId;
 	if (model == MODEL_L_PIPE) aniId = ID_ANI_LONG_PIPE;
 	if (model == MODEL_M_PIPE) aniId = ID_ANI_MEDIUM_PIPE;
+	else aniId = ID_ANI_EMPTY_PIPE;
 
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();

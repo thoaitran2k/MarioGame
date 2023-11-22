@@ -3,18 +3,18 @@
 
 #define SPEED_GROW_UP 0.025f
 
-#define TIME_OUT_PIPE 5000
+#define TIME_OUT_PIPE 3000
 #define TIME_SHOOT 100
-#define TIME_DOWN_PIPE 3000
+#define TIME_DOWN_PIPE 2000
 
-#define PLANT_SHOOT_RED 0.025f
+#define PLANT_SHOOT_RED 1
 
 #define PLANT_BBOX_WIDTH 12
 #define PLANT_BBOX_HEIGHT_SMALL 24
 #define PLANT_BBOX_HEIGHT 32
 
-#define STATE_UP 100
-#define STATE_DOWN 200
+#define PLANT_STATE_UP 100
+#define PLANT_STATE_DOWN 200
 
 #define ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT	301
 #define ID_ANI_PLANT_LEFT_UNDER_SHOOT 302
@@ -46,7 +46,6 @@ class CPlantShootRed : public CGameObject
 		int PosWithXMario();
 		int PosWithYMario();
 
-		virtual int IsCollidable() { return 1; };
 		virtual int IsBlocking() { return 0; }
 
 		virtual void OnNoCollision(DWORD dt);

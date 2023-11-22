@@ -8,7 +8,7 @@ CPlantShootRed::CPlantShootRed(float x, float y) :CGameObject(x, y)
 {
 	startY = y;
 	minY = startY - PLANT_BBOX_HEIGHT;
-	SetState(STATE_UP);
+	SetState(PLANT_STATE_UP);
 	
 }
 
@@ -26,7 +26,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (isUpping) {
-		if (y>minY)
+		if (y >minY)
 		{
 			vy = -SPEED_GROW_UP;
 		}
@@ -36,7 +36,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y = minY;
 			if (GetTickCount64() - time_out_pipe > TIME_OUT_PIPE)
 			{
-				SetState(STATE_DOWN);
+				SetState(PLANT_STATE_DOWN);
 			}
 			else {
 				if (!isShoot) 
@@ -60,7 +60,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 	else if (isDowning) {
-		if(y < startY +2)
+		if(y < startY +2 - DISTANCE_PIPE_LONG_SHORT)
 		{
 			vy = SPEED_GROW_UP;
 		}
@@ -68,7 +68,19 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy = 0;
 			y = startY + 2;
 			if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
-				SetState(STATE_UP);
+				SetState(PLANT_STATE_UP);
+			}
+		}
+	}
+	else {
+		if (y < startY + 2 - DISTANCE_PIPE_LONG_SHORT) {
+			vy = SPEED_GROW_UP;
+		}
+		else {
+			vy = 0;
+			y = startY + 2 - DISTANCE_PIPE_LONG_SHORT;
+			if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
+				SetState(PLANT_STATE_UP);
 			}
 		}
 	}
@@ -93,7 +105,7 @@ int CPlantShootRed::PosWithXMario() {
 
 int CPlantShootRed::PosWithYMario() {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetY() > GetY()) //Mario o phia tren cai cay //he toa do truc Y bi nguoc
+	if (mario->GetY() < GetY()) //Mario o phia tren cai cay //he toa do truc Y bi nguoc
 	{
 		return 1;
 	}
@@ -104,7 +116,7 @@ void CPlantShootRed::Render()
 {
 
 	CAnimations* animations = CAnimations::GetInstance();
-	int aniId;
+	int aniId = -1;
 	if (PosWithXMario() == 1 && PosWithYMario() == -1)
 		if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT;
 		else aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
@@ -127,7 +139,7 @@ void CPlantShootRed::SetState(int state)
 {
 	switch (state)
 	{
-	case STATE_UP:
+	case PLANT_STATE_UP:
 		isUpping = true;
 		isDowning = false;
 		isShoot = true;
@@ -135,7 +147,7 @@ void CPlantShootRed::SetState(int state)
 		time_down_pipe = 0;
 		break;
 
-	case STATE_DOWN:
+	case PLANT_STATE_DOWN:
 		isShoot = false;
 		isUpping = false;
 		isDowning = true;
