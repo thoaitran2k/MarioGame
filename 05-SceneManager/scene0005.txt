@@ -15,6 +15,7 @@ plant_red_shoot.txt
 pipe_plant_shoot.txt
 koopa.txt
 Boxs.txt
+leaf.txt
 [MAP]
 #MAP
 99	1408	216
@@ -55,6 +56,8 @@ Boxs.txt
 2000	248	313
 #BQ_COIN
 1000	423	328
+#BQ_LEAF
+3000	664	392
 
 
 #BrickQuestionEmpty

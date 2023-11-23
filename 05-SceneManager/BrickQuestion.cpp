@@ -83,7 +83,7 @@ void CBrickQuestion::Render()
 {
 
 	int aniId;
-	if (model == QUESTION_BRICK_COIN || QUESTION_BRICK_MUSHROOM) {
+	if (model == QUESTION_BRICK_COIN || QUESTION_BRICK_MUSHROOM || QUESTION_BRICK_LEAF) {
 		aniId = ID_ANI_BRICK_Q;
 	}
 	if (isEmpty || isUnbox)
