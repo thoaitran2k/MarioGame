@@ -21,7 +21,7 @@ Boxs.txt
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 8 = BrickQuestion, 17 = MushRoom
-#	55 =  Long_Pipe, 56 = Medium_Pipe, 270 = BOX RED   	
+#	55 =  Long_Pipe, 56 = Medium_Pipe, 150 = RED KOOPA   	
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
@@ -93,17 +93,8 @@ Boxs.txt
 #KOOPA GREEN NOT WING
 140	450	390
 
-
-#RED BOX
-270	248	376
-270	256	376
-270	264	376
-#270	
-#270
-#270
-#270
-#270
-#270
+#RED KOOPA WALKING
+150	250	390
 
 
 

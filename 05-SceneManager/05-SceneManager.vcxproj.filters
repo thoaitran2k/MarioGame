@@ -99,6 +99,9 @@
     <ClCompile Include="Koopa_Green_Not_Wing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Red_Koopa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -192,6 +195,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Koopa_Green_Not_Wing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Red_Koopa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
