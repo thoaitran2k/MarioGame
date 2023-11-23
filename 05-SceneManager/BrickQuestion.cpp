@@ -17,8 +17,8 @@ CBrickQuestion::CBrickQuestion(float x, float y, int model) :CGameObject(x, y)
 
 void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - BRICK_Q_BBOX_WIDTH / 2;
-	t = y - BRICK_Q_BBOX_HEIGHT / 2;
+	l = x - BRICK_Q_BBOX_WIDTH/2 ;
+	t = y - BRICK_Q_BBOX_HEIGHT/2 ;
 	r = l + BRICK_Q_BBOX_WIDTH;
 	b = t + BRICK_Q_BBOX_HEIGHT;
 }
@@ -36,7 +36,8 @@ void CBrickQuestion::OnNoCollision(DWORD dt)
 
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	
+
+
 		vy += ay * dt;
 		if (y <= minY)
 		{
@@ -48,8 +49,9 @@ void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy = 0;
 			isEmpty = true;
 			isUnbox = true;
-		
-	}
+
+		}
+	
 
 
 

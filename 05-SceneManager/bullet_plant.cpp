@@ -5,27 +5,28 @@
 #include "PipePlantShoot.h"
 #include "PlantShootRed.h"
 #include "Platform.h"
+#include "Background.h"
 
 
 
 
-Cbullet_plant::Cbullet_plant(float x, float y) : CGameObject(x ,y ){
-	this->ax = 0;
-	this->ay = 0.00001f;
+CbulletPlant::CbulletPlant(float x, float y) : CGameObject(x ,y ){
+	this->ax = 0.00005f;
+	this->ay = 0.00005f;
 
 	vy = 0;
-	startX = x;
 	startY = y;
+	startX = x;
 	SetState(BULLET_ROI_XUONG);
 	
 }
 
-void Cbullet_plant::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CbulletPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	l = x;
-	t = y ;
-	r = l + BULLET_BBOX_WIDTH;
-	b = t + BULLET_BBOX_HEIGHT;
+	left = x - BULLET_BBOX_WIDTH / 2;
+	top = y - BULLET_BBOX_HEIGHT / 2;
+	right = left + BULLET_BBOX_WIDTH;
+	bottom = top + BULLET_BBOX_HEIGHT;
 }
 
 
@@ -62,25 +63,19 @@ void Cbullet_plant::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 ///////////////////////////////////////////////////////////////////////
 
-void Cbullet_plant::Update(DWORD dt, vector<LPGAMEOBJECT>*coObjects) {
+void CbulletPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	if (state == BULLET_ROI_XUONG) {
-		vx = 0;
+	if (state == BULLET_RIGHT) {
+		vx += ax * dt; 
 		vy += ay * dt;
 	}
 	else if (state == BULLET_LEFT)
 	{
-		if (startX > mario->GetX())
-		{
-			vx = -vx;
-		}
-		else  SetState(BULLET_RIGHT);
+		vx -= ax * dt;
+		vy += ay * dt;
 	}
-
-
-
 
 
 	//if (state = MARIO_STATE_DIE) return;
@@ -93,65 +88,74 @@ void Cbullet_plant::Update(DWORD dt, vector<LPGAMEOBJECT>*coObjects) {
 
 }
 
-
-
-
-void Cbullet_plant::OnCollisionWith(LPCOLLISIONEVENT e) {
-	{
-		if (!e->obj->IsBlocking() && !e->obj->IsPlatform()) return;
-		if (!e->obj->IsPlayer()) {
-			if (e->ny != 0)
-			{
-				vy = 0;
-			}
-			else if (e->nx != 0)
-			{
-				vx = -vx;
-			}
-		}
-
-		if (dynamic_cast<Cbullet_plant*>(e->obj)) {}
-		else if (dynamic_cast<CPlatform*>(e->obj))
-			OnCollisionWithPlatForm(e);
-
-	}
-}
-
-void Cbullet_plant::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
+void CbulletPlant::OnNoCollision(DWORD dt)
 {
-	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+	x += vx * dt;
+	y += vy * dt;
+};
+
+
+void CbulletPlant::OnCollisionWith(LPCOLLISIONEVENT e) 
+{
+	
+	if (e->obj->IsPlatform() && e->obj->IsBlocking()) isDeleted = true;
+	if (dynamic_cast<CbulletPlant* >(e->obj)) return;
+
+		if (e->ny != 0)
+		{
+			vy = 0;
+		}
+		else if (e->nx != 0)
+		{
+			vx = -vx;
+		}
+	
+	}
+
+void CbulletPlant::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
+{
+	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
 	if (platform->IsBlocking()) {}
 	else if (e->ny < 0) {
-		SetY(platform->GetY() - BULLET_BBOX_HEIGHT);
+		SetY(platform->GetY() - 9);
 	}
 }
 
-void Cbullet_plant::Render() {
+void CbulletPlant::Render() {
 	CAnimations* animations = CAnimations::GetInstance();
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	
 
-	int aniId = ID_ANI_BULLET_RIGHT;
-	if (state == BULLET_ROI_XUONG)
+	int aniId;
+	
+	
+	if (mario->GetX() > 248)
 	{
-		aniId = ID_ANI_BULLET_RIGHT;
+		state = BULLET_LEFT;
+		aniId = ID_ANI_BULLET_LEFT;
+		
 	}
-	else aniId = ID_ANI_BULLET_LEFT;
-	/*if (vx > 0)
-	{
-		aniId = ID_ANI_BULLET_RIGHT;
-	}*/
-	//else aniId = ID_ANI_BULLET_RIGHT;
+
+	else {
+		aniId = ID_ANI_BULLET_BLUE;
+		state = BULLET_RIGHT;
+	}
+	
 	animations->Get(aniId)->Render(x, y);
 }
 
-void Cbullet_plant::SetState(int state)
+void CbulletPlant::SetState(int state)
 {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	switch (state)
 	{
-	case BULLET_RIGHT:
-		if (x < mario->GetX()) vx = vx;
+	case BULLET_LEFT:
+		vx = -vx;
 		break;
+	case BULLET_ROI_XUONG:
+		vx = 0;
+		vy = 0.005f;
 	}
 	CGameObject::SetState(state);
 }

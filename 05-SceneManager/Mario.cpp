@@ -16,6 +16,7 @@
 #include "Bin1.h"
 #include "Bin2.h"
 #include "bullet_plant.h"
+#include "PlantShootRed.h"
 
 
 
@@ -109,6 +110,8 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
+	
+
 	e->obj->Delete();
 	coin++;
 }
@@ -125,7 +128,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 		
 
 		
-		if (e->ny > 0 && (!isUnBox && !isEmpty)) {
+		if (e->ny > 0 && !isUnBox && !isEmpty) {
 			
 			float xTemp, yTemp, minY;
 			xTemp = questionBrick->GetX();
@@ -138,12 +141,12 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 				if (level == MARIO_LEVEL_SMALL) {
 					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
 
-					Cbullet_plant* bullet = new Cbullet_plant(xTemp + 50, yTemp);
+					//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
 					//CBrick* newbullet = new CBrick(367, 320);
 
 
 					scene->AddObject(mushroom);
-					scene->AddObject(bullet);
+					//scene->AddObject(bullet);
 
 					//scene->AddObject(newbullet);
 					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
