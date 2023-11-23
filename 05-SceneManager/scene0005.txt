@@ -14,6 +14,7 @@ bulletplant.txt
 plant_red_shoot.txt
 pipe_plant_shoot.txt
 koopa.txt
+Boxs.txt
 [MAP]
 #MAP
 99	1408	216
