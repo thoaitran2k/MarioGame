@@ -5,8 +5,9 @@
 #include "bullet_plant.h"
 
 
-CPlantShootRed::CPlantShootRed(float x, float y) :CGameObject(x, y)
+CPlantShootRed::CPlantShootRed(float x, float y, int model):CGameObject(x, y)
 {
+	this->model = model;
 	startY = y;
 	minY = startY - PLANT_BBOX_HEIGHT;
 	SetState(PLANT_STATE_UP);
@@ -40,41 +41,41 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				SetState(PLANT_STATE_DOWN);
 			}
 			else {
-				if (!isShoot) 
-				{
-					if (GetTickCount64() - time_shoot < TIME_SHOOT)
-					{
-						isShoot = true;
-						bool atTop = false, atLeft = false;
-						if(PosWithXMario() ==1)
-						{
-							atTop = true;
+				if (model == PLANT_SHOOT_RED) {
+					if (!isShoot) {
+						if (GetTickCount64() - time_shoot < TIME_SHOOT) {
+							isShoot = true;
+							bool isOnTop = false, isLeft = false;
+							if (PosWithXMario() == 1)
+							{
+								isOnTop = true;
+							}
+							if (PosWithYMario() == 1)
+							{
+								isLeft = true;
+							}
+							/*if (isOnTop && isLeft)
+							{
+								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
+								scene->AddObject(bullet);
+							}
+							if (!isOnTop && isLeft)
+							{
+								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
+								scene->AddObject(bullet);
+							}
+							if (isOnTop && !isLeft)
+							{
+								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
+								scene->AddObject(bullet);
+							}
+							if (!isOnTop && !isLeft)
+							{
+								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
+								scene->AddObject(bullet);
+							}
+							*/
 						}
-						if (PosWithYMario() == 1)
-						{
-							atLeft = true;
-						}
-						/*if (atTop && atLeft)
-						{
-							Cbullet_plant* bullet = new Cbullet_plant(x,y, atLeft, !atTop);
-							scene->AddObject(bullet);
-						}
-						if (!atTop && atLeft)
-						{
-							Cbullet_plant* bullet = new Cbullet_plant(x, y, atLeft, !atTop);
-							scene->AddObject(bullet);
-						}
-						if(atTop && !atLeft)
-						{
-							Cbullet_plant* bullet = new Cbullet_plant(x, y, atLeft, !atTop);
-							scene->AddObject(bullet);
-						}
-						if(!atTop && !atLeft)
-						{
-							Cbullet_plant* bullet = new Cbullet_plant(x, y, atLeft, !atTop);
-							scene->AddObject(bullet);
-						}*/
-						
 					}
 				}
 			}
@@ -138,20 +139,22 @@ void CPlantShootRed::Render()
 
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
-	if (PosWithXMario() == 1 && PosWithYMario() == -1)
-		if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT;
-		else aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
-	else if (PosWithXMario() == 1 && PosWithYMario() == 1)
-		if (!isShoot) aniId = ID_ANI_PLANT_LEFT_TOP_NOT_SHOOT;
-		else aniId = ID_ANI_PLANT_LEFT_TOP_SHOOT;
-	else if (PosWithXMario() == -1 && PosWithYMario() == 1)
-		if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_TOP_NOT_SHOOT;
-		else aniId = ID_ANI_PLANT_RIGHT_TOP_SHOOT;
-	else {
-		if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_UNDER_NOT_SHOOT;
-		else aniId = ID_ANI_PLANT_RIGHT_UNDER_SHOOT;
+	if (model == PLANT_SHOOT_RED)
+	{
+		if (PosWithXMario() == 1 && PosWithYMario() == -1)
+			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT;
+			else aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
+		else if (PosWithXMario() == 1 && PosWithYMario() == 1)
+			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_TOP_NOT_SHOOT;
+			else aniId = ID_ANI_PLANT_LEFT_TOP_SHOOT;
+		else if (PosWithXMario() == -1 && PosWithYMario() == 1)
+			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_TOP_NOT_SHOOT;
+			else aniId = ID_ANI_PLANT_RIGHT_TOP_SHOOT;
+		else {
+			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_UNDER_NOT_SHOOT;
+			else aniId = ID_ANI_PLANT_RIGHT_UNDER_SHOOT;
+		}
 	}
-
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }

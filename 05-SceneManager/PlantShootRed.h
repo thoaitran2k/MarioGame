@@ -9,6 +9,7 @@
 
 #define PLANT_SHOOT_RED 1
 
+
 #define PLANT_BBOX_WIDTH 12
 #define PLANT_BBOX_HEIGHT_SMALL 24
 #define PLANT_BBOX_HEIGHT 32
@@ -35,6 +36,7 @@ class CPlantShootRed : public CGameObject
 		float startY;
 		float minY;
 		bool isShoot = false;
+		int model;
 		bool isUpping, isDowning;
 		ULONGLONG time_out_pipe;
 		ULONGLONG time_shoot;
@@ -51,11 +53,11 @@ class CPlantShootRed : public CGameObject
 		virtual void OnNoCollision(DWORD dt);
 
 	public:
-		CPlantShootRed(float x, float y);
+		CPlantShootRed(float x, float y, int model);
 
 		
 		virtual void SetState(int state);
-		//void SetModel (int model) { this->model = model; }
-		//int GetModel() { return model ; }
+		void SetModel (int model) { this->model = model; }
+		int GetModel() { return model ; }
 };
 

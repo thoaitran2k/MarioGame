@@ -137,9 +137,15 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			{
 				if (level == MARIO_LEVEL_SMALL) {
 					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
-					CBrick* newbullet = new CBrick(367, 320);
+
+					Cbullet_plant* bullet = new Cbullet_plant(xTemp + 50, yTemp);
+					//CBrick* newbullet = new CBrick(367, 320);
+
+
 					scene->AddObject(mushroom);
-					scene->AddObject(newbullet);
+					scene->AddObject(bullet);
+
+					//scene->AddObject(newbullet);
 					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
 					questionBrick->SetState(BRICK_Q_STATE_UP);
 					questionBrick->SetIsEmpty(true);
