@@ -13,6 +13,7 @@ bin.txt
 bulletplant.txt
 plant_red_shoot.txt
 pipe_plant_shoot.txt
+koopa.txt
 [MAP]
 #MAP
 99	1408	216
@@ -86,6 +87,9 @@ pipe_plant_shoot.txt
 #Portal
 #50	200	160	216	180	1
 
-130	367	340	
+130	367	340
+
+#KOOPA GREEN NOT WING
+140	450	390	
 
 
