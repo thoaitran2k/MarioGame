@@ -151,7 +151,6 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Bin1.cpp" />
     <ClCompile Include="Bin2.cpp" />
-    <ClCompile Include="Blue_Box.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickQuestion.cpp" />
     <ClCompile Include="bullet_plant.cpp" />
@@ -161,7 +160,6 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
-    <ClCompile Include="Green_Box.cpp" />
     <ClCompile Include="Koopa_Green_Not_Wing.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
@@ -172,13 +170,11 @@
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
-    <ClCompile Include="Red_Box.cpp" />
     <ClCompile Include="SampleKeyEventHandler.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="White_Box.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -188,7 +184,6 @@
     <ClInclude Include="Background.h" />
     <ClInclude Include="Bin1.h" />
     <ClInclude Include="Bin2.h" />
-    <ClInclude Include="Blue_Box.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickQuestion.h" />
     <ClInclude Include="bullet_plant.h" />
@@ -198,7 +193,6 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
-    <ClInclude Include="Green_Box.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopa_Green_Not_Wing.h" />
     <ClInclude Include="Map.h" />
@@ -209,7 +203,6 @@
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Portal.h" />
-    <ClInclude Include="Red_Box.h" />
     <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Sprite.h" />
@@ -217,7 +210,6 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="White_Box.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
