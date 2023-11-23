@@ -83,6 +83,25 @@ void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
+	else // hit by koopa not wing walking
+	{
+		if (untouchable == 0)
+		{
+			if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISDEFEND)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
+	}
 }
 
 

@@ -83,7 +83,6 @@ void CKoopa_Green_Not_Wing::SetState(int state)
 		vx = 0;
 
 		
-		
 		break;
 	case KOOPA_GREEN_NOT_WING_STATE_WALKING:
 		vx = -KOOPA_GREEN_NOT_WING_WALKING_SPEED;
