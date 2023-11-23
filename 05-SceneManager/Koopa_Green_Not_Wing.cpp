@@ -1,4 +1,5 @@
 #include "Koopa_Green_Not_Wing.h"
+#include "Platform.h"
 
 CKoopa_Green_Not_Wing::CKoopa_Green_Not_Wing(float x, float y) :CGameObject(x, y)
 {
@@ -62,7 +63,13 @@ void CKoopa_Green_Not_Wing::Render()
 	{
 		 aniId = ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_RIGHT;
 	} 
-	else aniId = ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_LEFT;
+	else if (vx < 0) {
+		aniId = ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_LEFT;
+	}
+	else
+		aniId = ID_ANI_KOOPA_GREEN_NOT_WING_DEFEND;
+
+
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 }
@@ -72,6 +79,12 @@ void CKoopa_Green_Not_Wing::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+	case KOOPA_GREEN_NOT_WING_STATE_ISDEFEND:
+		vx = 0;
+
+		
+		
+		break;
 	case KOOPA_GREEN_NOT_WING_STATE_WALKING:
 		vx = -KOOPA_GREEN_NOT_WING_WALKING_SPEED;
 		break;

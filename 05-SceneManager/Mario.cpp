@@ -17,6 +17,7 @@
 #include "Bin2.h"
 #include "bullet_plant.h"
 #include "PlantShootRed.h"
+#include "Koopa_Green_Not_Wing.h"
 
 
 
@@ -60,7 +61,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-
+	if (dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj))
+		OnCollisionWithKoopa_Green_notWing(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -74,6 +76,21 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CMushRoom*>(e->obj))
 		OnCollisionWithMushRoom(e);
 }
+
+void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
+{
+	CKoopa_Green_Not_Wing* koopa = dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj);
+
+	if (e->ny < 0)
+	{
+		if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISDEFEND)
+		{
+			koopa->SetState(KOOPA_GREEN_NOT_WING_STATE_ISDEFEND);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+}
+
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {

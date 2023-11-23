@@ -122,6 +122,7 @@ class CMario : public CGameObject
 	void OnCollisionWithBin1(LPCOLLISIONEVENT e);
 	void OnCollisionWithBin2(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e);
 
 
 	int GetAniIdBig();
