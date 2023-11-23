@@ -16,6 +16,7 @@
 #include "bullet_plant.h"
 #include "PlantShootRed.h"
 #include "Koopa_Green_Not_Wing.h"
+#include "Red_Koopa.h"
 
 
 
@@ -59,8 +60,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	if (dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj))
+	else if (dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj))
 		OnCollisionWithKoopa_Green_notWing(e);
+	else if (dynamic_cast<CRed_Koopa*>(e->obj))
+		OnCollisionWithRed_Koopa(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -102,6 +105,40 @@ void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
 			}
 		}
 	}
+}
+
+void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
+{
+	CRed_Koopa* koopared = dynamic_cast<CRed_Koopa*>(e->obj);
+
+	if (e->ny < 0)
+	{
+		if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND)
+		{
+			koopared->SetState(KOOPA_RED_STATE_ISDEFEND);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else // hit by koopa not wing walking
+	{
+		if (untouchable == 0)
+		{
+			if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
+	}
+
 }
 
 
