@@ -57,7 +57,7 @@ leaf.txt
 #BQ_COIN
 1000	423	328
 #BQ_LEAF
-3000	664	392
+3000	100	408
 
 
 #BrickQuestionEmpty

@@ -17,6 +17,9 @@
 #include "PlantShootRed.h"
 #include "Koopa_Green_Not_Wing.h"
 #include "Red_Koopa.h"
+#include "leaf.h"
+
+
 
 
 
@@ -186,61 +189,83 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
-		
-		CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
-		CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-		BOOLEAN isUnBox, isEmpty;
-		isUnBox = questionBrick->GetIsUnbox();
-		isEmpty = questionBrick->GetIsEmpty();
 
-		
+	CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	BOOLEAN isUnBox, isEmpty;
+	isUnBox = questionBrick->GetIsUnbox();
+	isEmpty = questionBrick->GetIsEmpty();
 
-		
-		if (e->ny > 0 && !isUnBox && !isEmpty) {
-			
-			float xTemp, yTemp, minY;
-			xTemp = questionBrick->GetX();
-			yTemp = questionBrick->GetY();
-			minY = questionBrick->GetMinY();
-			
-
-			if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
-			{
-				if (level == MARIO_LEVEL_SMALL) {
-					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
-
-					//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
-					//CBrick* newbullet = new CBrick(367, 320);
+	float xTemp, yTemp, minY;
+	xTemp = questionBrick->GetX();
+	yTemp = questionBrick->GetY();
+	minY = questionBrick->GetMinY();
 
 
-					scene->AddObject(mushroom);
-					//scene->AddObject(bullet);
 
-					//scene->AddObject(newbullet);
+	if (e->ny > 0 && !isUnBox && !isEmpty) {
+
+
+
+		if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
+		{
+			if (level == MARIO_LEVEL_SMALL) {
+				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+
+				//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
+				//CBrick* newbullet = new CBrick(367, 320);
+
+
+				scene->AddObject(mushroom);
+				//scene->AddObject(bullet);
+
+				//scene->AddObject(newbullet);
+				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+				questionBrick->SetState(BRICK_Q_STATE_UP);
+				questionBrick->SetIsEmpty(true);
+
+			}
+		}
+			}
+			else if (questionBrick->GetModel() == QUESTION_BRICK_COIN)
+				{
+
+					SetCoin(GetCoin() + 1);
+					CCoin* coin = new CCoin(xTemp, yTemp);
+					coin->SetState(COIN_SUMMON_STATE);
+					scene->AddObject(coin);
 					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
 					questionBrick->SetState(BRICK_Q_STATE_UP);
 					questionBrick->SetIsEmpty(true);
+					coin++;
 
 				}
-			}
-				else
-				if(questionBrick->GetModel() == QUESTION_BRICK_COIN)
-				{
-					
-						SetCoin(GetCoin() + 1);
-						CCoin* coin = new CCoin(xTemp, yTemp);
-						coin->SetState(COIN_SUMMON_STATE);
-						scene->AddObject(coin);
-						questionBrick->SetState(BRICK_Q_STATE_EMPTY);
-						questionBrick->SetState(BRICK_Q_STATE_UP);
-						questionBrick->SetIsEmpty(true);
-						coin++;
-					
-				}
-				
+	if (e->nx != 0 && !isUnBox && !isEmpty) {
 
+		float xTemp, yTemp, minY;
+		xTemp = questionBrick->GetX();
+		yTemp = questionBrick->GetY();
+		minY = questionBrick->GetMinY();
+
+
+		if (questionBrick->GetModel() == QUESTION_BRICK_LEAF)
+		{
+			CLeaf* leaf = new CLeaf(xTemp, yTemp);
+
+			//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
+			//CBrick* newbullet = new CBrick(367, 320);
+			leaf->SetState(LEAF_SUMMON_STATE);
+			scene->AddObject(leaf);
+			//scene->AddObject(bullet);
+
+			//scene->AddObject(newbullet);
+			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+			questionBrick->SetState(BRICK_Q_STATE_UP);
+			questionBrick->SetIsEmpty(true);
 		}
+	}
 }
+
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;

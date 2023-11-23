@@ -10,6 +10,7 @@
 
 
 #define LEAF_GRAVITY 0.0003f
+#define SPEED_COME_MARIO 0.0001f
 #define	LEAF_WIDTH 10
 #define OUT_BRICK 0.2f
 #define LEAF_MAX_SPEED_FALL 0.1f
@@ -21,11 +22,15 @@
 class CLeaf : public CGameObject {
 	int state;
 	float ay;
+	float ax;
+	float startY;
 	bool canCollect;
 public:
 	CLeaf(float x, float y) : CGameObject(x, y) {
 		state = LEAF_NOT_SUMMON_STATE;
 		ay = LEAF_GRAVITY;
+		ax = SPEED_COME_MARIO;
+		this->startY = y;
 	};
 	int GetState() { return state; }
 	void SetState(int s);
