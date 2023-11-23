@@ -13,8 +13,6 @@
 #include "GameObject.h"
 #include "PlayScene.h"
 #include "MushRoom.h"
-#include "Bin1.h"
-#include "Bin2.h"
 #include "bullet_plant.h"
 #include "PlantShootRed.h"
 #include "Koopa_Green_Not_Wing.h"
@@ -69,10 +67,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CBrickQuestion*>(e->obj))
 		OnCollisionWithBrickQuestion(e);
-	else if (dynamic_cast<CBin1*>(e->obj))
-		OnCollisionWithBin1(e);
-	else if (dynamic_cast<CBin2*>(e->obj))
-		OnCollisionWithBin2(e);
 	else if (dynamic_cast<CMushRoom*>(e->obj))
 		OnCollisionWithMushRoom(e);
 }
@@ -198,15 +192,6 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 }
 
 
-void CMario::OnCollisionWithBin1(LPCOLLISIONEVENT e)
-{
-
-}//Chưa hoàn thành
-void CMario::OnCollisionWithBin2(LPCOLLISIONEVENT e)
-{
-
-}
-//Chưa hoàn thành
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
 	CMushRoom* mr = dynamic_cast<CMushRoom*>(e->obj);

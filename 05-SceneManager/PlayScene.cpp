@@ -13,13 +13,10 @@
 #include "MushRoom.h"
 #include "Map.h"
 #include "Background.h"
-#include "Bin1.h"
-#include "Bin2.h"
 #include "PipePlantShoot.h"
 #include "PlantShootRed.h"
 #include "bullet_plant.h"
 #include "Koopa_Green_Not_Wing.h"
-#include "Red_Box.h"
 
 
 
@@ -175,10 +172,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PLANT_SHOOT_RED: obj = new CPlantShootRed(x, y, PLANT_SHOOT_RED); break;
 	case OBJECT_TYPE_PIPE_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_PIPE); break;
 	case OBJECT_TYPE_KOOPA_GREEN_WALKING: obj = new CKoopa_Green_Not_Wing(x, y); break;
-	case OBJECT_TYPE_REDBOX: obj = new CRedBox(x, y); break;
 	//case OBJECT_TYPE_BRICK_Q: obj = new CBrickQuestion(x, y); break;
-	case OBJECT_TYPE_BIN1: obj = new CBin1(x, y); 
-	break; case OBJECT_TYPE_BIN2: obj = new CBin2(x, y); break;
 	
 
 
