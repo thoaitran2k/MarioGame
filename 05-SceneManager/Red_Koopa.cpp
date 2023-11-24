@@ -1,5 +1,9 @@
 #include "Red_Koopa.h"
 #include "Platform.h"
+#include "Mario.h"
+#include "PlayScene.h"
+#include "Game.h"
+
 
 CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 {
@@ -7,6 +11,9 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	this->ay = KOOPA_RED_GRAVITY;
 	die_start = -1;
 	SetState(KOOPA_RED_STATE_WALKING);
+	isTurtleShell = false;
+	isCollis = false;
+	
 }
 
 void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -46,29 +53,34 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == KOOPA_RED_STATE_ISDEFEND) && (GetTickCount64() - die_start > KOOPA_RED_DIE_TIMEOUT))
-	{
-		return;
-	}
+	
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
+int CRed_Koopa::LeftOrRightMarrio() {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario->GetX() < GetX()) return 1;
+	else return -1;
+}
 
 void CRed_Koopa::Render()
 {
 	int aniId;
-	if (vx > 0)
+	
+		if (vx > 0)
+		{
+			aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
+		}
+		else if (vx < 0) {
+			aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
+		}
+	
+	 if (isTurtleShell)
 	{
-		aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
-	}
-	else if (vx < 0) {
-		aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
-	}
-	else
 		aniId = ID_ANI_KOOPA_RED_DEFEND;
-
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
@@ -80,12 +92,25 @@ void CRed_Koopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISDEFEND:
+		isTurtleShell = true;
+		isCollis = true; 
 		vx = 0;
-
-
+		vy = 0;
 		break;
+		
+	case KOOPA_RED_STATE_ISKICKED:
+		isTurtleShell = true;
+		isCollis = true;
+		vx = 0.05f * LeftOrRightMarrio();
+		break;
+
 	case KOOPA_RED_STATE_WALKING:
 		vx = -KOOPA_RED_WALKING_SPEED;
+		isCollis = true;
 		break;
+ 
+
 	}
+	
+
 }

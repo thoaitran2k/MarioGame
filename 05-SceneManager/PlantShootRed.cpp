@@ -11,6 +11,7 @@ CPlantShootRed::CPlantShootRed(float x, float y, int model):CGameObject(x, y)
 	startY = y;
 	minY = startY - PLANT_BBOX_HEIGHT;
 	SetState(PLANT_STATE_UP);
+	range = y + PLANT_BBOX_HEIGHT;
 	
 }
 
@@ -54,6 +55,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							{
 								isLeft = true;
 							}
+
 							/*if (isOnTop && isLeft)
 							{
 								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);

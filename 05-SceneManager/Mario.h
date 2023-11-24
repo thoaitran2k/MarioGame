@@ -78,6 +78,8 @@
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
 
+// 
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -120,6 +122,7 @@ class CMario : public CGameObject
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushRoom(LPCOLLISIONEVENT e);
+	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e);
 	void OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e);
 

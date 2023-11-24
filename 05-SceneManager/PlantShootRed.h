@@ -38,6 +38,8 @@ class CPlantShootRed : public CGameObject
 		bool isShoot = false;
 		int model;
 		bool isUpping, isDowning;
+		float range;
+
 		ULONGLONG time_out_pipe;
 		ULONGLONG time_shoot;
 		ULONGLONG time_down_pipe;

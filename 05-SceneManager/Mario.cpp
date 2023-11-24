@@ -75,11 +75,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrickQuestion(e);
 	else if (dynamic_cast<CMushRoom*>(e->obj))
 		OnCollisionWithMushRoom(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
 }
 
 void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
 {
 	CKoopa_Green_Not_Wing* koopa = dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj);
+
 
 	if (e->ny < 0)
 	{
@@ -114,16 +117,35 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 {
 	CRed_Koopa* koopared = dynamic_cast<CRed_Koopa*>(e->obj);
 
-	if (e->ny < 0)
+	
+		if (koopared->GetState() == KOOPA_RED_STATE_ISDEFEND)
+		{
+			koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+			DebugOut(L">>> TURTLESHELL is KICKED by MARIO >>> \n");
+		}
+	
+	else if (e->ny < 0)
 	{
-		if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND)
+			
+		if (koopared->GetState() == KOOPA_RED_STATE_ISDEFEND)
+		{
+
+
+			koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			DebugOut(L">>> TURTLESHELL -> DI CHUYEN >>> \n");
+
+		}
+
+		else if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND && koopared->GetState() != KOOPA_RED_STATE_ISKICKED)
 		{
 			koopared->SetState(KOOPA_RED_STATE_ISDEFEND);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO >>> \n");
 		}
 	}
-	else // hit by koopa not wing walking
-	{
+	else
+		{// hit by red koopa (walking or turtleshell is kicked)
 		if (untouchable == 0)
 		{
 			if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND)
@@ -132,10 +154,11 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
+					DebugOut(L">>> Mario biến nhỏ >>> \n");
 				}
 				else
 				{
-					DebugOut(L">>> Mario DIE >>> \n");
+					DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
 			}
@@ -206,10 +229,8 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 	if (e->ny > 0 && !isUnBox && !isEmpty) {
 
 
-
 		if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
 		{
-			if (level == MARIO_LEVEL_SMALL) {
 				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
 
 				//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
@@ -224,22 +245,22 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 				questionBrick->SetState(BRICK_Q_STATE_UP);
 				questionBrick->SetIsEmpty(true);
 
-			}
+			
 		}
-			}
-			else if (questionBrick->GetModel() == QUESTION_BRICK_COIN)
-				{
+		  else if (questionBrick->GetModel() == QUESTION_BRICK_COIN)
+		{
 
-					SetCoin(GetCoin() + 1);
-					CCoin* coin = new CCoin(xTemp, yTemp);
-					coin->SetState(COIN_SUMMON_STATE);
-					scene->AddObject(coin);
-					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
-					questionBrick->SetState(BRICK_Q_STATE_UP);
-					questionBrick->SetIsEmpty(true);
-					coin++;
+			SetCoin(GetCoin() + 1);
+			CCoin* coin = new CCoin(xTemp, yTemp);
+			coin->SetState(COIN_SUMMON_STATE);
+			scene->AddObject(coin);
+			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+			questionBrick->SetState(BRICK_Q_STATE_UP);
+			questionBrick->SetIsEmpty(true);
+			coin++;
 
-				}
+		}
+	}
 	if (e->nx != 0 && !isUnBox && !isEmpty) {
 
 		float xTemp, yTemp, minY;
@@ -285,6 +306,17 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 		}
 	}
 	mr->Delete();
+}
+
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		SetLevel(MARIO_LEVEL_BIG);
+		y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
+	}
+	leaf->Delete();
 }
 //
 // Get animation ID for small Mario

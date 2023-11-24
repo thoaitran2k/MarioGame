@@ -23,12 +23,16 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (!canCollect) vy += ay * dt;
+	vx -= ax * dt;
 	
 
 	//DebugOut(L"[VANTOC] %f\n", vy);
 	if (vy > LEAF_MAX_SPEED_FALL) {
 
-		Delete();
+		if (x<50)
+		{
+			vx = 0;
+		}
 		
 	}
 	CGameObject::Update(dt, coObjects);

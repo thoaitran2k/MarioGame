@@ -11,8 +11,8 @@
 
 
 CbulletPlant::CbulletPlant(float x, float y) : CGameObject(x ,y ){
-	this->ax = 0.00005f;
-	this->ay = 0.00005f;
+	this->ax = 0;
+	this->ay = 0;
 
 	vy = 0;
 	startY = y;
