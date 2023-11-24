@@ -11,8 +11,8 @@
 
 
 CbulletPlant::CbulletPlant(float x, float y) : CGameObject(x ,y ){
-	this->ax = 0;
-	this->ay = 0;
+	this->ax = 0.003f;
+	this->ay = 0.003f;
 
 	vy = 0;
 	startY = y;
@@ -129,17 +129,10 @@ void CbulletPlant::Render() {
 	int aniId;
 	
 	
-	if (mario->GetX() > 248)
-	{
-		state = BULLET_LEFT;
+
 		aniId = ID_ANI_BULLET_LEFT;
 		
-	}
-
-	else {
-		aniId = ID_ANI_BULLET_BLUE;
-		state = BULLET_RIGHT;
-	}
+	
 	
 	animations->Get(aniId)->Render(x, y);
 }
@@ -154,7 +147,7 @@ void CbulletPlant::SetState(int state)
 		vx = -vx;
 		break;
 	case BULLET_ROI_XUONG:
-		vx = 0;
+		vx = -0.07f;
 		vy = 0.005f;
 	}
 	CGameObject::SetState(state);

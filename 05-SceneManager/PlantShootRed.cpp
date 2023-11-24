@@ -5,20 +5,20 @@
 #include "bullet_plant.h"
 
 
-CPlantShootRed::CPlantShootRed(float x, float y, int model):CGameObject(x, y)
+
+CPlantShootRed::CPlantShootRed(float x, float y):CGameObject(x, y)
 {
-	this->model = model;
 	startY = y;
+	loacationX = x;
 	minY = startY - PLANT_BBOX_HEIGHT;
 	SetState(PLANT_STATE_UP);
-	range = y + PLANT_BBOX_HEIGHT;
 	
 }
 
 void CPlantShootRed::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x - PLANT_BBOX_WIDTH / 2;
-	t = y - PLANT_BBOX_HEIGHT / 2 + 4;
+	t = y - PLANT_BBOX_HEIGHT / 2 ;
 	r = l + PLANT_BBOX_WIDTH;
 	b = t + PLANT_BBOX_HEIGHT;
 	
@@ -39,23 +39,28 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			y = minY;
 			if (GetTickCount64() - time_out_pipe > TIME_OUT_PIPE)
 			{
+				
 				SetState(PLANT_STATE_DOWN);
 			}
 			else {
-				if (model == PLANT_SHOOT_RED) {
 					if (!isShoot) {
 						if (GetTickCount64() - time_shoot < TIME_SHOOT) {
 							isShoot = true;
 							bool isOnTop = false, isLeft = false;
+							CbulletPlant* bullet = new CbulletPlant(x - 5, y);
+							scene->AddObject(bullet);
 							if (PosWithXMario() == 1)
-							{
-								isOnTop = true;
-							}
-							if (PosWithYMario() == 1)
 							{
 								isLeft = true;
 							}
-
+							if (PosWithYMario() == 1)
+							{
+								isOnTop = true;
+							}
+							DebugOut(L">>> SINH RA VIEN DAN>>> \n");
+							
+								
+							
 							/*if (isOnTop && isLeft)
 							{
 								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
@@ -79,12 +84,28 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							*/
 						}
 					}
-				}
 			}
 		}
 	}
 	else if (isDowning) {
-		if(y < startY +2 - DISTANCE_PIPE_LONG_SHORT)
+		
+		if(y < startY +2) //- DISTANCE_PIPE_LONG_SHORT)
+		{
+			vy = SPEED_GROW_UP;
+		}
+		else {
+			vy = 0;
+			y = startY + 2;
+			
+			if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
+				SetState(PLANT_STATE_UP);
+				//CbulletPlant* bullet = new CbulletPlant(x, y-50);
+				//scene->AddObject(bullet);
+			}
+		}
+	}
+	else {
+		if (y < startY + 2 )
 		{
 			vy = SPEED_GROW_UP;
 		}
@@ -94,18 +115,8 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
 				SetState(PLANT_STATE_UP);
 			}
-		}
-	}
-	else {
-		if (y < startY + 2 - DISTANCE_PIPE_LONG_SHORT) {
-			vy = SPEED_GROW_UP;
-		}
-		else {
-			vy = 0;
-			y = startY + 2 - DISTANCE_PIPE_LONG_SHORT;
-			if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
-				SetState(PLANT_STATE_UP);
-			}
+
+
 		}
 	}
 	CGameObject::Update(dt, coObjects);
@@ -116,6 +127,13 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CPlantShootRed::OnNoCollision(DWORD dt) {
 	x += vx * dt;
 	y += vy * dt;
+}
+
+float CPlantShootRed::distanceMario_PlantEnemies() {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	return abs(mario->GetX() - x);
+
 }
 
 int CPlantShootRed::PosWithXMario() {
@@ -141,8 +159,8 @@ void CPlantShootRed::Render()
 
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId = -1;
-	if (model == PLANT_SHOOT_RED)
-	{
+
+	
 		if (PosWithXMario() == 1 && PosWithYMario() == -1)
 			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT;
 			else aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
@@ -155,20 +173,27 @@ void CPlantShootRed::Render()
 		else {
 			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_UNDER_NOT_SHOOT;
 			else aniId = ID_ANI_PLANT_RIGHT_UNDER_SHOOT;
-		}
-	}
+			 }
+
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
 
 void CPlantShootRed::SetState(int state)
 {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (state)
 	{
 	case PLANT_STATE_UP:
-		isUpping = true;
+
+		if (distanceMario_PlantEnemies() < DISTANCE_PLANT_ENEMIS_SHOW_UP)
+		{
+			isUpping = true;
+
+		}
+		else isUpping = false;
 		isDowning = false;
-		isShoot = true;
+		isShoot = false;
 		time_out_pipe = GetTickCount64();
 		time_down_pipe = 0;
 		break;

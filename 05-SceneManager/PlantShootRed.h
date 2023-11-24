@@ -3,11 +3,11 @@
 
 #define SPEED_GROW_UP 0.025f
 
-#define TIME_OUT_PIPE 3000
+#define TIME_OUT_PIPE 4000
 #define TIME_SHOOT 100
-#define TIME_DOWN_PIPE 2000
+#define TIME_DOWN_PIPE 4000
 
-#define PLANT_SHOOT_RED 1
+#define DISTANCE_PLANT_ENEMIS_SHOW_UP 70
 
 
 #define PLANT_BBOX_WIDTH 12
@@ -33,12 +33,13 @@
 class CPlantShootRed : public CGameObject
 {
 	protected:
+		float loacationX;
 		float startY;
 		float minY;
 		bool isShoot = false;
-		int model;
 		bool isUpping, isDowning;
 		float range;
+		float distanceMario_PlantEnemies();
 
 		ULONGLONG time_out_pipe;
 		ULONGLONG time_shoot;
@@ -55,11 +56,11 @@ class CPlantShootRed : public CGameObject
 		virtual void OnNoCollision(DWORD dt);
 
 	public:
-		CPlantShootRed(float x, float y, int model);
+		CPlantShootRed(float x, float y);
 
 		
 		virtual void SetState(int state);
-		void SetModel (int model) { this->model = model; }
-		int GetModel() { return model ; }
+		//void SetModel (int model) { this->model = model; }
+		//int GetModel() { return model ; }
 };
 
