@@ -17,50 +17,42 @@
 #define BULLET_BLUE_BBOX_WIDTH 12
 #define BULLET_BLUE_BBOX_HEIGHT 12
 
-#define BULLET_SPEED_X 0.05f
-#define BULLET_SPEED_Y 0.07f
+#define BULLET_SPEED_X 0.03f
+#define BULLET_SPEED_Y 0.02f
 
 #define ADJUST_VECTOR_Y 30
 #define CHANGE_DIRECTION 30
 #define TIME_BULLET_DELETE 4000
 
-#define BULLET_LEFT 701
-#define BULLET_RIGHT 702
-#define BULLET_ROI_XUONG 703
+#define BULLET_LEFT_BOT 1
+#define BULLET_LEFT_TOP 2
+#define BULLET_RIGHT_BOT 3
+#define BULLET_RIGHT_TOP 4
 
 
 class CbulletPlant : public CGameObject {
 
 protected:
-		float ax;
-		float ay;
-
-		float startY;
-		float startX;
 
 
-		virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-		void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
-		virtual int IsCollidable() { return 1; };
-		virtual int IsBlocking() { return 0; }
-		virtual void OnNoCollision(DWORD dt);
-
-		virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-		//ULONGLONG start_deleted;
-		//virtual int IsColliable() { return 0; }
+		virtual int IsCollidable() { return 0; };
+		ULONGLONG start_deleted;
+		
 
 	public:
 
-		CbulletPlant(float x, float y);
+		
 
-		//Cbullet_plant(float bx, float by, bool Left, bool Right);
+		CbulletPlant(float bx, float by, bool top_bottom, bool left_right);
+
 
 		void Render();
 		virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	
+		virtual void OnNoCollision(DWORD dt);
 
-
-		virtual void SetState(int state);
+		virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+		virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+		//virtual void SetState(int state);
 
 };
 

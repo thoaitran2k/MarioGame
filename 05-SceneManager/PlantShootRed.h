@@ -7,7 +7,7 @@
 #define TIME_SHOOT 100
 #define TIME_DOWN_PIPE 4000
 
-#define DISTANCE_PLANT_ENEMIS_SHOW_UP 70
+#define DISTANCE_PLANT_ENEMIS_SHOW_UP 140
 
 
 #define PLANT_BBOX_WIDTH 12
@@ -48,8 +48,8 @@ class CPlantShootRed : public CGameObject
 		virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 		virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 		virtual void Render();
-		int PosWithXMario();
-		int PosWithYMario();
+		int LeftORightMario();
+		int TopOrBottomYMario();
 
 		virtual int IsBlocking() { return 0; }
 

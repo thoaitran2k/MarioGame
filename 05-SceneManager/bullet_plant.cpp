@@ -10,17 +10,6 @@
 
 
 
-CbulletPlant::CbulletPlant(float x, float y) : CGameObject(x ,y ){
-	this->ax = 0.003f;
-	this->ay = 0.003f;
-
-	vy = 0;
-	startY = y;
-	startX = x;
-	SetState(BULLET_ROI_XUONG);
-	
-}
-
 void CbulletPlant::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x - BULLET_BBOX_WIDTH / 2;
@@ -30,35 +19,39 @@ void CbulletPlant::GetBoundingBox(float& left, float& top, float& right, float& 
 }
 
 
-//Cbullet_plant::Cbullet_plant(float bx, float by, bool Left, bool Right)
-//{
-	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+CbulletPlant::CbulletPlant(float bx, float by, bool top_bottom, bool left_right)
+{
 
-	/*if (Up)
-	{
-		y = by - PLANT_BBOX_HEIGHT / 2;
-		vy = -BULLET_SPEED_Y;
-	}
-	else
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	if (top_bottom)
 	{
 		y = by + PLANT_BBOX_HEIGHT / 2;
 		vy = BULLET_SPEED_Y;
 	}
+	else
+	{
+		y = by - PLANT_BBOX_HEIGHT / 2;
+		vy = -BULLET_SPEED_Y;
+	}
 
-	if (Right)
+	if (left_right)
 	{
 		x = bx + PLANT_BBOX_WIDTH;
-		vx = BULLET_SPEED_X;
+		vx = BULLET_SPEED_X*2;
 	}
 	else
 	{
 		x = bx - PLANT_BBOX_WIDTH;
-		vx = -BULLET_SPEED_X;
+		vx = -BULLET_SPEED_X*2;
 	}
 	start_deleted = GetTickCount64();
-	*/
+	//SetState(BULLET_LEFT_BOT);
+	//this->x = x;
+	//this->y = y;
+	
 
-//}
+}
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -67,21 +60,9 @@ void CbulletPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	if (state == BULLET_RIGHT) {
-		vx += ax * dt; 
-		vy += ay * dt;
+	if (GetTickCount64() - start_deleted > TIME_BULLET_DELETE) {
+		isDeleted = true;
 	}
-	else if (state == BULLET_LEFT)
-	{
-		vx -= ax * dt;
-		vy += ay * dt;
-	}
-
-
-	//if (state = MARIO_STATE_DIE) return;
-	//if (GetTickCount64() - start_deleted > TIME_BULLET_DELETE) {
-		//isDeleted = true;
-	//}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -95,60 +76,63 @@ void CbulletPlant::OnNoCollision(DWORD dt)
 };
 
 
-void CbulletPlant::OnCollisionWith(LPCOLLISIONEVENT e) 
+void CbulletPlant::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	
+
 	if (e->obj->IsPlatform() && e->obj->IsBlocking()) isDeleted = true;
-	if (dynamic_cast<CbulletPlant* >(e->obj)) return;
-
-		if (e->ny != 0)
-		{
-			vy = 0;
-		}
-		else if (e->nx != 0)
-		{
-			vx = -vx;
-		}
-	
-	}
-
-void CbulletPlant::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
-{
-	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
-	if (platform->IsBlocking()) {}
-	else if (e->ny < 0) {
-		SetY(platform->GetY() - 9);
-	}
 }
+
 
 void CbulletPlant::Render() {
 	CAnimations* animations = CAnimations::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	
-
-	int aniId;
-	
-	
-
+	int aniId = 0;
+	if (vx > 0)
+		aniId = ID_ANI_BULLET_RIGHT;
+	else
 		aniId = ID_ANI_BULLET_LEFT;
+
 		
 	
 	
 	animations->Get(aniId)->Render(x, y);
 }
 
-void CbulletPlant::SetState(int state)
-{
-	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-
-	switch (state)
-	{
-	case BULLET_LEFT:
-		vx = -vx;
-		break;
-	case BULLET_ROI_XUONG:
-		vx = -0.07f;
-		vy = 0.005f;
-	}
-	CGameObject::SetState(state);
-}
+//void CbulletPlant::SetState(int state)
+//{
+//	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+//
+//	switch (state)
+//	{
+//	case BULLET_LEFT_BOT:
+//		//if (mario->GetX() < x && mario->GetY() < y)
+//		//{
+//			//y = y + PLANT_BBOX_HEIGHT / 2;
+//			vy = BULLET_SPEED_Y;
+//			//x = x + PLANT_BBOX_WIDTH;
+//			vx = -BULLET_SPEED_X;
+//		//}
+//		break;
+//	/*case BULLET_LEFT_TOP:
+//		y = y - PLANT_BBOX_HEIGHT / 2;
+//		vy = -BULLET_SPEED_Y;
+//		x = x + PLANT_BBOX_WIDTH;
+//		vx = -BULLET_SPEED_X;
+//		break;
+//	case BULLET_RIGHT_BOT:
+//		x = x + PLANT_BBOX_WIDTH;
+//		vx = BULLET_SPEED_X;
+//		y = y - PLANT_BBOX_HEIGHT / 2;
+//		vy = -BULLET_SPEED_Y;
+//		
+//		break;
+//	case BULLET_RIGHT_TOP:
+//		x = x + PLANT_BBOX_WIDTH;
+//		vx = BULLET_SPEED_X;
+//		y = y - PLANT_BBOX_HEIGHT / 2;
+//		vy = -BULLET_SPEED_Y;
+//		break;*/
+//	}
+//	CGameObject::SetState(state);
+//}

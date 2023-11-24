@@ -46,20 +46,70 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (!isShoot) {
 						if (GetTickCount64() - time_shoot < TIME_SHOOT) {
 							isShoot = true;
-							bool isOnTop = false, isLeft = false;
-							CbulletPlant* bullet = new CbulletPlant(x - 5, y);
-							scene->AddObject(bullet);
-							if (PosWithXMario() == 1)
+							bool theoX = true, theoY = true;
+							//CbulletPlant* bullet = new CbulletPlant(x - 5, y,theoY , theoX);
+							//scene->AddObject(bullet);
+
+						/*	if (PosWithXMario() == 1)
 							{
-								isLeft = true;
+								theoX = true;
+								
 							}
 							if (PosWithYMario() == 1)
 							{
-								isOnTop = true;
-							}
-							DebugOut(L">>> SINH RA VIEN DAN>>> \n");
-							
 								
+								theoY = true;
+							}*/
+							DebugOut(L">>> SINH RA VIEN DAN>>> \n");
+
+							if (mario->GetX() <x && mario->GetY() < y)
+							{
+								CbulletPlant* bullet = new CbulletPlant(x,y-5, !theoY, !theoX);
+									scene->AddObject(bullet);
+							}
+							else 
+								if(mario->GetX() < x && mario->GetY() > y)
+							{
+								CbulletPlant* bullet = new CbulletPlant(x, y - 5, theoY, !theoX);
+								scene->AddObject(bullet);
+							}
+							
+							if (mario->GetX() > x && mario->GetY() > y)
+							{
+								CbulletPlant* bullet = new CbulletPlant(x, y - 5, theoY, theoX);
+								scene->AddObject(bullet);
+							}
+							else
+								if(mario->GetX() > x && mario->GetY() < y)
+							{
+								CbulletPlant* bullet = new CbulletPlant(x, y - 5, !theoY, theoX);
+								scene->AddObject(bullet);
+							}
+
+							/*if (mario->GetX() > x && mario->GetY() < y)
+							{
+								
+								CbulletPlant* bullet = new CbulletPlant(x, y-5, theoY, theoX);
+								scene->AddObject(bullet);
+							}
+							if (mario->GetX() < x && mario->GetY() > y)
+							{
+								CbulletPlant* bullet = new CbulletPlant(x, y - 5, theoY, theoX);
+								scene->AddObject(bullet);
+							}
+							if(mario->GetX() > x && mario->GetY() < y)
+							{
+
+								CbulletPlant* bullet = new CbulletPlant(x, y - 5, theoY, theoX);
+								scene->AddObject(bullet);
+							}*/
+							
+							
+							
+							//if (Phai && Duoi)
+							//{
+								
+							//}
 							
 							/*if (isOnTop && isLeft)
 							{
@@ -136,7 +186,7 @@ float CPlantShootRed::distanceMario_PlantEnemies() {
 
 }
 
-int CPlantShootRed::PosWithXMario() {
+int CPlantShootRed::LeftORightMario() {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetX() < GetX()) //Mario ben trai cai cay
 	{
@@ -145,7 +195,8 @@ int CPlantShootRed::PosWithXMario() {
 	else return - 1;
 }
 
-int CPlantShootRed::PosWithYMario() {
+int CPlantShootRed::TopOrBottomYMario()
+{
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetY() < GetY()) //Mario o phia tren cai cay 
 	{
@@ -161,13 +212,13 @@ void CPlantShootRed::Render()
 	int aniId = -1;
 
 	
-		if (PosWithXMario() == 1 && PosWithYMario() == -1)
+		if (LeftORightMario() == 1 && TopOrBottomYMario() == -1)
 			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT;
 			else aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
-		else if (PosWithXMario() == 1 && PosWithYMario() == 1)
+		else if (LeftORightMario() == 1 && TopOrBottomYMario() == 1)
 			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_TOP_NOT_SHOOT;
 			else aniId = ID_ANI_PLANT_LEFT_TOP_SHOOT;
-		else if (PosWithXMario() == -1 && PosWithYMario() == 1)
+		else if (LeftORightMario() == -1 && TopOrBottomYMario() == 1)
 			if (!isShoot) aniId = ID_ANI_PLANT_RIGHT_TOP_NOT_SHOOT;
 			else aniId = ID_ANI_PLANT_RIGHT_TOP_SHOOT;
 		else {
