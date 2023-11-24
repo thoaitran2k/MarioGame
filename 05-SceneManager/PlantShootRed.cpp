@@ -82,7 +82,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							else
 								if(mario->GetX() > x && mario->GetY() < y)
 							{
-								CbulletPlant* bullet = new CbulletPlant(x, y - 5, !theoY, theoX);
+								CbulletPlant* bullet = new CbulletPlant(x, y - 5, !		theoY, theoX);
 								scene->AddObject(bullet);
 							}
 

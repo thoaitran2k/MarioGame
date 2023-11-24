@@ -26,7 +26,7 @@ leaf.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	275	400
+0	750	370
 #COIN
 4	130	410
 4	150	410
@@ -99,6 +99,9 @@ leaf.txt
 
 #RED KOOPA WALKING
 150	250	390
+
+#PARA_GOOMBA
+160	886	360
 
 
 

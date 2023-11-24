@@ -14,6 +14,8 @@
 #define GOOMBA_STATE_WALKING 100
 #define GOOMBA_STATE_DIE 200
 
+
+
 #define ID_ANI_GOOMBA_WALKING 5000
 #define ID_ANI_GOOMBA_DIE 5001
 
@@ -22,8 +24,10 @@ class CGoomba : public CGameObject
 protected:
 	float ax;				
 	float ay; 
-
+	int model;
 	ULONGLONG die_start;
+
+
 
 	virtual void GetBoundingBox(float &left, float &top, float &right, float &bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
@@ -36,6 +40,11 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public: 	
+	
 	CGoomba(float x, float y);
+
+	//void SetModel(int model) { this->model = model; }
+	//int GetModel() { return model; }
 	virtual void SetState(int state);
+
 };
