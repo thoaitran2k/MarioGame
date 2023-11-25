@@ -1,11 +1,11 @@
-#include "Platform.h"
+#include "Box.h"
 
 #include "Sprite.h"
 #include "Sprites.h"
 
 #include "Textures.h"
 
-void CPlatform::RenderBoundingBox()
+void CBox::RenderBoundingBox()
 {
 	D3DXVECTOR3 p(x, y, 0);
 	RECT rect;
@@ -28,12 +28,12 @@ void CPlatform::RenderBoundingBox()
 	CGame::GetInstance()->Draw(xx - cx, y - cy, bbox, nullptr, BBOX_ALPHA, rect.right - 1, rect.bottom - 1);
 }
 
-void CPlatform::Render()
+void CBox::Render()
 {
 	RenderBoundingBox();
 }
 
-void CPlatform::GetBoundingBox(float& l, float& t, float& r, float& b)
+void CBox::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	float cellWidth_div_2 = this->cellWidth / 2;
 	l = x - cellWidth_div_2;

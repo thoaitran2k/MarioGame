@@ -51,6 +51,7 @@
 
 
 #define OBJECT_TYPE_PORTAL	50
+#define OBJECT_TYPE_BOX	10
 
 
 #pragma region MARIO 

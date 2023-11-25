@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 #include "debug.h"
+#include "Box.h"
 
 #define BLOCK_PUSH_FACTOR 0.4f
 
@@ -199,6 +200,11 @@ void CCollision::Filter( LPGAMEOBJECT objSrc,
 		if (filterBlock == 1 && !c->obj->IsBlocking()) 
 		{
 			continue;
+		}
+		if (dynamic_cast<CBox*>(c->obj))
+		{
+			if (c->nx != 0) continue;
+			if (c->ny > 0) continue;
 		}
 
 		if (c->t < min_tx && c->nx != 0 && filterX == 1) {
