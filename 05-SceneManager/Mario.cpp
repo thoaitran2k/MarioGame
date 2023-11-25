@@ -168,16 +168,29 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 	xTemp = pr_goomba->GetX();
 	yTemp = pr_goomba->GetY();
 
-
-	if (pr_goomba->GetState() == GOOMBA_RED_STATE_WALKING)
+	
+	if (e->ny < 0)
 	{
-
-
-		CGoomba* gb1 = new CGoomba(xTemp+60, yTemp - (GOOMBA_BBOX_HEIGHT), GOOMBA_RED );
-
-		scene->AddObject(gb1);
+		if (pr_goomba->IsFly()) pr_goomba->SetState(GOOMBA_RED_STATE_FALL);
+		else pr_goomba->SetState(GOOMBA_RED_STATE_DIE);
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
-	e->obj->Delete();
+	else // hit by koopa not wing walking
+	{
+		if (untouchable == 0)
+		{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+		}
+	}
 	
 }
 
