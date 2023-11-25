@@ -19,10 +19,11 @@ CPlantShootRed::CPlantShootRed(float x, float y):CGameObject(x, y)
 void CPlantShootRed::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	if (!IsActive) return;
-	l = x - PLANT_BBOX_WIDTH / 2;
-	t = y - PLANT_BBOX_HEIGHT / 2 ;
-	r = l + PLANT_BBOX_WIDTH;
-	b = t + PLANT_BBOX_HEIGHT;
+	
+		l = x - PLANT_BBOX_WIDTH / 2;
+		t = y - PLANT_BBOX_HEIGHT / 2;
+		r = l + PLANT_BBOX_WIDTH;
+		b = t + PLANT_BBOX_HEIGHT;
 	
 }
 
@@ -113,27 +114,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								
 							//}
 							
-							/*if (isOnTop && isLeft)
-							{
-								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
-								scene->AddObject(bullet);
-							}
-							if (!isOnTop && isLeft)
-							{
-								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
-								scene->AddObject(bullet);
-							}
-							if (isOnTop && !isLeft)
-							{
-								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
-								scene->AddObject(bullet);
-							}
-							if (!isOnTop && !isLeft)
-							{
-								Cbullet_plant* bullet = new Cbullet_plant(x, y, isLeft, !isOnTop);
-								scene->AddObject(bullet);
-							}
-							*/
+						
 						}
 					}
 			}
@@ -149,14 +130,12 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy = 0;
 			y = startY + 2;
 			if (GetTickCount64() - time_down_pipe > TIME_DOWN_PIPE) {
-				if (distanceMario_PlantEnemies() > 50)
+				if (distanceMario_PlantEnemies() > 30)
 				{
 					SetState(PLANT_STATE_UP);
 					IsActive = true;
 				}
 				else IsActive = false;
-				//CbulletPlant* bullet = new CbulletPlant(x, y-50);
-				//scene->AddObject(bullet);
 			}
 		}
 	}

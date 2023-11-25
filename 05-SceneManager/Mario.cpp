@@ -142,20 +142,19 @@ void CMario::OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithFire_Bullet(LPCOLLISIONEVENT e)
 {
-		//CbulletPlant* fire_bullet = dynamic_cast<CbulletPlant*>(e->obj);
+		CbulletPlant* fire_bullet = dynamic_cast<CbulletPlant*>(e->obj);
 
-		//if (level > MARIO_LEVEL_SMALL)
-		//{
-		//	level = MARIO_LEVEL_SMALL;
-		//	StartUntouchable();
-		//}
-		//else
-		//{
-		//	DebugOut(L">>> Mario DIE by Fire_Bullet >>> \n");
-		//	SetState(MARIO_STATE_DIE);
-		//	//isDeleted = true; sai
-		//}
-		//e->obj -> Delete();
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE by Fire_Bullet >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+		e->obj -> Delete();
 
 }
 
@@ -173,7 +172,9 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 	{
 		if (pr_goomba->IsFly()) pr_goomba->SetState(GOOMBA_RED_STATE_FALL);
 		else pr_goomba->SetState(GOOMBA_RED_STATE_DIE);
+
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
+
 	}
 	else // hit by koopa not wing walking
 	{

@@ -129,7 +129,6 @@ void CPara_Goomba::SetState(int state)
 		else vx = -PARA_GOOMBA_WALKING_SPEED;
 		vy = -0.2f;
 		
-
 		isOnPlatForm = false;
 		break;
 	case GOOMBA_RED_STATE_FALL:

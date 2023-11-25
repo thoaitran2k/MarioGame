@@ -42,6 +42,8 @@ protected:
 	float minY;
 
 	ULONGLONG count_start;
+	ULONGLONG die_start_red;
+
 
 	bool isOnPlatForm;
 	bool isFly;
