@@ -1,13 +1,13 @@
 #pragma once
 #include "Gameobject.h"
 
-#define SPEED_GROW_UP 0.025f
+#define SPEED 0.025f
 
 #define TIME_OUT_PIPE 4000
 #define TIME_SHOOT 100
 #define TIME_DOWN_PIPE 4000
 
-#define DISTANCE_PLANT_ENEMIS_SHOW_UP 140
+#define DISTANCE_PLANT_ENEMIS_SHOW_UP 150
 
 
 #define PLANT_BBOX_WIDTH 12
@@ -39,7 +39,9 @@ class CPlantShootRed : public CGameObject
 		bool isShoot = false;
 		bool isUpping, isDowning;
 		float range;
+		bool IsActive;
 		float distanceMario_PlantEnemies();
+		BOOLEAN isNotCollisMario = false;
 
 		ULONGLONG time_out_pipe;
 		ULONGLONG time_shoot;
@@ -50,6 +52,9 @@ class CPlantShootRed : public CGameObject
 		virtual void Render();
 		int LeftORightMario();
 		int TopOrBottomYMario();
+
+	
+
 
 		virtual int IsBlocking() { return 0; }
 

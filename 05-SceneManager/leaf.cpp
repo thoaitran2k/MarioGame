@@ -4,8 +4,15 @@
 
 void CLeaf::Render()
 {
+	int aniId;
+	if (vx > 0)
+	{
+		aniId = ID_ANI_LEAF_RIGHT;
+
+	}
+	else aniId= ID_ANI_LEAF_LEFT;
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_LEAF_RIGHT)->Render(x, y);
+	animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
 }
@@ -22,18 +29,29 @@ void CLeaf::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	if (!canCollect) vy += ay * dt;
-	vx -= ax * dt;
+	//vy += ay * dt;
+	//vx += ax * dt;
 	
 
 	//DebugOut(L"[VANTOC] %f\n", vy);
-	if (vy > LEAF_MAX_SPEED_FALL) {
+	if (y < limitY) {
 
-		if (x<50)
-		{
-			vx = 0;
-		}
+		y = limitY;
+		vy = 0;
+		SetState(LEAF_FALL_STATE);
 		
+	}
+	else {
+		if (x < limitL)
+		{
+		 x = limitL;
+		 vx = -vx;
+		}
+		else if (x > limitR)
+		{
+			x = limitR;
+			vx = -vx;
+		}
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -45,15 +63,19 @@ void CLeaf::OnNoCollision(DWORD dt)
 };
 
 void CLeaf::SetState(int l) {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (l) {
+
 	case LEAF_SUMMON_STATE:
 		vy = -OUT_BRICK;
-		canCollect = false;
+		vx = 0;
 		break;
 
-	case LEAF_NOT_SUMMON_STATE:
-		canCollect = true;
+	case LEAF_FALL_STATE:
+		vy = 0.01f;
+		vx = -LEAF_FALL_SPEED_X;
 		break;
+			
 	}
 	CGameObject::SetState(l);
 }

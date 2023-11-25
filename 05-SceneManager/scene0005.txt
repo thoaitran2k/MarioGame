@@ -26,7 +26,7 @@ leaf.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	750	370
+0	250	370
 #COIN
 4	130	410
 4	150	410
@@ -57,7 +57,7 @@ leaf.txt
 #BQ_COIN
 1000	423	328
 #BQ_LEAF
-3000	100	408
+3000	664	392
 
 
 #BrickQuestionEmpty

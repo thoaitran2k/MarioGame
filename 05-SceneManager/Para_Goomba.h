@@ -25,8 +25,7 @@
 
 #define ID_ANI_GOOMBA_RED_FLY_WALKING 5005
 #define ID_ANI_GOOMBA_RED_FLY_JUMP 5006
-#define ID_ANI_GOOMBA_RED 5003
-#define ID_ANI_GOOMBA_RED_DIE 5004
+
 
 
 class CPara_Goomba : public CGameObject

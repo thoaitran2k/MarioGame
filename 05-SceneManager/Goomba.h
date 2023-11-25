@@ -14,10 +14,16 @@
 #define GOOMBA_STATE_WALKING 100
 #define GOOMBA_STATE_DIE 200
 
+#define GOOMBA_BASIC 1
+#define GOOMBA_RED 2
+
 
 
 #define ID_ANI_GOOMBA_WALKING 5000
 #define ID_ANI_GOOMBA_DIE 5001
+
+#define ID_ANI_GOOMBA_RED 5003
+#define ID_ANI_GOOMBA_RED_DIE 5004
 
 class CGoomba : public CGameObject
 {
@@ -41,10 +47,10 @@ protected:
 
 public: 	
 	
-	CGoomba(float x, float y);
+	CGoomba(float x, float y, int model);
 
-	//void SetModel(int model) { this->model = model; }
-	//int GetModel() { return model; }
+	void SetModel(int model) { this->model = model; }
+	int GetModel() { return model; }
 	virtual void SetState(int state);
 
 };

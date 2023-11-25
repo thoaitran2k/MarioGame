@@ -2,6 +2,7 @@
 #include "Platform.h"
 #include "Mario.h"
 #include "PlayScene.h"
+#include "GameObject.h"
 
 CPara_Goomba::CPara_Goomba(float x, float y) :CGameObject(x, y)
 {

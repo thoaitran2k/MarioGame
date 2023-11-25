@@ -18,6 +18,7 @@
 #include "Koopa_Green_Not_Wing.h"
 #include "Red_Koopa.h"
 #include "leaf.h"
+#include "Para_Goomba.h"
 
 
 
@@ -63,6 +64,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CPara_Goomba*>(e->obj))
+		OnCollisionWithPara_Goomba(e);
 	else if (dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj))
 		OnCollisionWithKoopa_Green_notWing(e);
 	else if (dynamic_cast<CRed_Koopa*>(e->obj))
@@ -77,6 +80,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMushRoom(e);
 	else if (dynamic_cast<CLeaf*>(e->obj))
 		OnCollisionWithLeaf(e);
+	else if (dynamic_cast<CbulletPlant*>(e->obj))
+		OnCollisionWithFire_Bullet(e);
+	else if (dynamic_cast<CPlantShootRed*>(e->obj))
+		OnCollisionWithPlantShootRed(e);
 }
 
 void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
@@ -111,6 +118,67 @@ void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
 			}
 		}
 	}
+}
+
+void CMario::OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e)
+{
+	CPlantShootRed* pshootred = dynamic_cast<CPlantShootRed*>(e->obj);
+
+
+	 
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE by Plant Enemies >>> \n");
+			SetState(MARIO_STATE_DIE);
+			//isDeleted = true; sai
+		}
+	
+}
+
+void CMario::OnCollisionWithFire_Bullet(LPCOLLISIONEVENT e)
+{
+		//CbulletPlant* fire_bullet = dynamic_cast<CbulletPlant*>(e->obj);
+
+		//if (level > MARIO_LEVEL_SMALL)
+		//{
+		//	level = MARIO_LEVEL_SMALL;
+		//	StartUntouchable();
+		//}
+		//else
+		//{
+		//	DebugOut(L">>> Mario DIE by Fire_Bullet >>> \n");
+		//	SetState(MARIO_STATE_DIE);
+		//	//isDeleted = true; sai
+		//}
+		//e->obj -> Delete();
+
+}
+
+void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
+{
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CPara_Goomba* pr_goomba = dynamic_cast<CPara_Goomba*>(e->obj);
+	float xTemp, yTemp;
+	int model;
+	xTemp = pr_goomba->GetX();
+	yTemp = pr_goomba->GetY();
+
+
+	if (pr_goomba->GetState() == GOOMBA_RED_STATE_WALKING)
+	{
+
+
+		CGoomba* gb1 = new CGoomba(xTemp+60, yTemp - (GOOMBA_BBOX_HEIGHT), GOOMBA_RED );
+
+		scene->AddObject(gb1);
+	}
+	e->obj->Delete();
+	
 }
 
 void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)

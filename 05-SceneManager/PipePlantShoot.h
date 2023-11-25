@@ -6,7 +6,7 @@
 #define ID_ANI_EMPTY_PIPE 203
 
 #define PIPE_BBOX_WIDTH 32
-#define PIPE_BBOX_L_HEIGHT 48
+#define PIPE_BBOX_L_HEIGHT 50
 #define PIPE_BBOX_M_HEIGHT 32
 
 #define MODEL_L_PIPE 1	//L:LONG
@@ -23,10 +23,9 @@ class CPipePlantShoot : public CGameObject {
 		void Update(DWORD dt) {}
 
 	public:
-		CPipePlantShoot(float x, float y) : CGameObject(x, y) {}
 		CPipePlantShoot(float x, float y, int model);
 		
-		virtual int IsColliable() { return 0; }
+		virtual int IsColliable() { return 1; }
 		virtual int IsBlocking() { return 1; }
 		void SetModel(int model) { this->model = model; }
 		int GetModel() { return model; }
