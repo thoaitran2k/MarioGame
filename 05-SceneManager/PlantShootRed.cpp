@@ -8,7 +8,7 @@
 
 CPlantShootRed::CPlantShootRed(float x, float y):CGameObject(x, y)
 {
-	DebugOut(L">>> BAN DAU CAY DI LEN >>> \n");
+	
 	startY = y;
 	loacationX = x;
 	minY = startY - PLANT_BBOX_HEIGHT;
@@ -20,15 +20,20 @@ CPlantShootRed::CPlantShootRed(float x, float y):CGameObject(x, y)
 
 void CPlantShootRed::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	if ((distanceMario_PlantEnemies() < 50))
+	/*if ((distanceMario_PlantEnemies() < 50))
 	{
 		DebugOut(L">>> CAY O DUOI CONG MARIO KHONG BI DUNG >>>endl>>CAY KHONG TROI LEN VI MARIO DUNG KE BEN>>> \n");
+		return;
+	}*/
+	if ((distanceMario_PlantEnemies() < 50) && isDowning && state == PLANT_STATE_NOT_TOUCH)
+	{
+		DebugOut(L">>> MARIO >>> \n");
 		return;
 	}
 	else {
 
 		l = x - PLANT_BBOX_WIDTH / 2;
-		t = y - PLANT_BBOX_HEIGHT / 2;
+		t = y - PLANT_BBOX_HEIGHT / 3;
 		r = l + PLANT_BBOX_WIDTH;
 		b = t + PLANT_BBOX_HEIGHT;
 	}
@@ -51,7 +56,9 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			time_shoot = GetTickCount64();
 			if (GetTickCount64() - time_out_pipe > TIME_OUT_PIPE)
 			{
-				DebugOut(L">>> CAY SE DI XUONG >>> \n");
+				
+				
+				DebugOut(L">>> CAY LAN XUONG lan thu n >>> \n");
 				
 				SetState(PLANT_STATE_DOWN);
 
@@ -112,15 +119,23 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				
 				if ((distanceMario_PlantEnemies() > 50))
 				{
+					
 					DebugOut(L">>> CAY SE TROI LEN >>> \n");
 					SetState(PLANT_STATE_UP);
 				}
+				else { 
+					DebugOut(L">>> MARIO CO THE DI TREN MIENG CONG DUNG NAM TRONG PHAM VI CAY KHONG HOAT DONG >>> \n");
+					SetState(PLANT_STATE_NOT_TOUCH); }
 				
 				//else IsActive = true;
 			}
 		}
 	}
 	else {
+		/*{
+			DebugOut(L">>> KIEM TRA SETSTATE>>> \n");
+			SetState(PLANT_STATE_NOT_TOUCH);
+		}*/
 		if (y < startY + 2 )
 		{
 			vy = SPEED;
@@ -129,10 +144,9 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy = 0;
 			y = startY + 2;
 			if (GetTickCount64() - time_down_pipe > TIME_IN_PIPE) {
+				DebugOut(L">>> NGOAI PHAM VI CAY HOAT DONG >>> \n");
 				SetState(PLANT_STATE_UP);
 			}
-
-
 		}
 	}
 	//TEST CAY KHONG VA CHAM VOI MARIO
@@ -187,8 +201,9 @@ void CPlantShootRed::Render()
 	
 		if (LeftORightMario() == 1 && TopOrBottomYMario() == -1)
 			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT;
-			else 
-				aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
+			else {
+					aniId = ID_ANI_PLANT_LEFT_UNDER_SHOOT;
+			}
 		else if (LeftORightMario() == 1 && TopOrBottomYMario() == 1)
 			if (!isShoot) aniId = ID_ANI_PLANT_LEFT_TOP_NOT_SHOOT;
 			else aniId = ID_ANI_PLANT_LEFT_TOP_SHOOT;
@@ -233,8 +248,8 @@ void CPlantShootRed::SetState(int state)
 		time_down_pipe = GetTickCount64();
 		time_out_pipe = 0;
 		break;
-	case PLANT_STATE_NOT_TOUNCH:
-		isDeleted = true;
+	case PLANT_STATE_NOT_TOUCH:
+		vy = 0;
 		break;
 	}
 	CGameObject::SetState(state);
