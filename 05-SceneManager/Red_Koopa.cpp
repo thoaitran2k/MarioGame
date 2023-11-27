@@ -3,6 +3,9 @@
 #include "Mario.h"
 #include "PlayScene.h"
 #include "Game.h"
+#include "Background.h"
+#include "MushRoom.h"
+
 
 
 CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
@@ -13,6 +16,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	SetState(KOOPA_RED_STATE_WALKING);
 	isTurtleShell = false;
 	isCollis = false;
+	isOnPlatform = false;
 	
 }
 
@@ -23,7 +27,7 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 	left = x - KOOPA_RED_BBOX_WIDTH / 2;
 	top = y - KOOPA_RED_BBOX_HEIGHT / 2;
 	right = left + KOOPA_RED_BBOX_WIDTH;
-	bottom = top + KOOPA_RED_BBOX_HEIGHT;
+	bottom = top + KOOPA_RED_BBOX_HEIGHT+3;
 
 }
 
@@ -32,6 +36,7 @@ void CRed_Koopa::OnNoCollision(DWORD dt)
 	x += vx * dt;
 	y += vy * dt;
 };
+
 
 void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
@@ -45,6 +50,24 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+	}
+
+	if (dynamic_cast<CBackground*>(e->obj))
+		this->OnCollisionWithPlatForm(e);
+}
+
+void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
+{
+	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	if (e->ny < 0) {
+		isOnPlatform = true;
+	}
+
+	if (isOnPlatform)
+	{
+		isDeleted = true;
+
 	}
 }
 

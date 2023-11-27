@@ -12,7 +12,7 @@ CPlantShootRed::CPlantShootRed(float x, float y):CGameObject(x, y)
 	startY = y;
 	loacationX = x;
 	minY = startY - PLANT_BBOX_HEIGHT;
-	SetState(PLANT_STATE_UP);
+	SetState(PLANT_STATE_DOWN);
 	IsActive = true;
 	
 	
@@ -27,7 +27,7 @@ void CPlantShootRed::GetBoundingBox(float& l, float& t, float& r, float& b)
 	}*/
 	if ((distanceMario_PlantEnemies() < 50) && isDowning && state == PLANT_STATE_NOT_TOUCH)
 	{
-		DebugOut(L">>> MARIO >>> \n");
+		DebugOut(L">>> MARIO WIN >>> \n");
 		return;
 	}
 	else {
@@ -249,6 +249,7 @@ void CPlantShootRed::SetState(int state)
 		time_out_pipe = 0;
 		break;
 	case PLANT_STATE_NOT_TOUCH:
+		y = startY + 2;
 		vy = 0;
 		break;
 	}
