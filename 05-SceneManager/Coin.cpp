@@ -4,8 +4,12 @@
 
 void CCoin::Render()
 {
-	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_COIN)->Render(x, y);
+		int aniId;
+
+		if (state == COIN_STATE_BASIC)
+		aniId = ID_ANI_COIN;
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
 }
@@ -45,7 +49,7 @@ void CCoin::SetState(int l) {
 		canCollect = false;
 		break;
 
-	case COIN_NOT_SUMMON_STATE:
+	case COIN_STATE_BASIC:
 		canCollect = true;
 		break;
 	}

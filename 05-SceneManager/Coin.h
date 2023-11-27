@@ -13,8 +13,8 @@
 #define COIN_MAX_SPEED_FALL 0.1f
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
-#define COIN_SUMMON_STATE	100
-#define COIN_NOT_SUMMON_STATE	200
+#define COIN_SUMMON_STATE 100
+#define COIN_STATE_BASIC 200
 
 class CCoin : public CGameObject {
 	int state;
@@ -22,7 +22,7 @@ class CCoin : public CGameObject {
 	bool canCollect;
 public:
 	CCoin(float x, float y) : CGameObject(x, y) {
-		state = COIN_NOT_SUMMON_STATE;
+		state = COIN_STATE_BASIC;
 		ay = COIN_GRAVITY;
 	};
 	int GetState() { return state; }
