@@ -33,7 +33,7 @@ protected:
 	bool isCollis;
 	bool isOnPlatform;
 
-	ULONGLONG die_start;
+	ULONGLONG count_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

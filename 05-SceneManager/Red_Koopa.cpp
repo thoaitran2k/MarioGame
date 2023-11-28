@@ -8,11 +8,12 @@
 
 
 
+
 CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = KOOPA_RED_GRAVITY;
-	die_start = -1;
+	count_start =GetTickCount64();
 	SetState(KOOPA_RED_STATE_WALKING);
 	isTurtleShell = false;
 	isCollis = false;
@@ -76,7 +77,14 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	CPlayScene* addobject = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	
+	if (GetTickCount64() - count_start > 3000)
+	{
+		count_start = GetTickCount64();
+		addobject->CreateObject(OBJECT_TYPE_GOOMBA, x, y, 0, 0);
+	}
+		
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -92,11 +100,12 @@ void CRed_Koopa::Render()
 {
 	int aniId;
 	
+
 		if (vx > 0)
 		{
 			aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
 		}
-		else if (vx < 0) {
+		else {
 			aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
 		}
 	
@@ -128,7 +137,8 @@ void CRed_Koopa::SetState(int state)
 		break;
 
 	case KOOPA_RED_STATE_WALKING:
-		vx = -KOOPA_RED_WALKING_SPEED;
+		//vx = -KOOPA_RED_WALKING_SPEED;
+		vx = 0;
 		isCollis = true;
 		break;
  

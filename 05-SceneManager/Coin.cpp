@@ -5,7 +5,6 @@
 void CCoin::Render()
 {
 		int aniId;
-
 		if (state == COIN_STATE_BASIC)
 		aniId = ID_ANI_COIN;
 
