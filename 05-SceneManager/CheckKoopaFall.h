@@ -15,32 +15,37 @@ protected:
 	float ax;
 	float ay;
 
-	bool isOnPlatform;
+	
 
 
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	
+
+
+public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	bool GetIsOnPlatform2() { return isOnPlatform; }
 
 
-	void SetIsOnPlatform2(bool b) { isOnPlatform = b; }
+
+	void SetIsOnPlatform(bool b) { isOnPlatformCheck = b; }
 
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
-	bool GetIsOnPlatForm2() { return isOnPlatform; };
+	bool GetIsOnPlatForm2() { return isOnPlatformCheck; };
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-	//virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
-
-
-public:
+	virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	CCheckFall(float x, float y);
 
+	bool isOnPlatformCheck;
+	BOOLEAN GetIsOnPlatform() { return isOnPlatformCheck; }
+
+	
 };
 
 

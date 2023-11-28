@@ -8,6 +8,7 @@
 #include "PlayScene.h"
 #include "Game.h"
 #include "Goomba.h"
+#include "Background.h"
 
 
 
@@ -20,7 +21,7 @@ CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 
 	this->ax = 0;
 	this->ay = 0.003f;
-	isOnPlatform = false;
+	isOnPlatformCheck = false;
 
 
 }
@@ -53,8 +54,16 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
-	//if (dynamic_cast<CPlatform*>(e->obj))
-		//this->OnCollisionWithPlatForm(e);
+	if (dynamic_cast<CBackground*>(e->obj))
+		this->OnCollisionWithPlatForm(e);
+}
+
+void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
+	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
+	if (e->ny < 0) {
+		isOnPlatformCheck = true;
+	}
+	else isOnPlatformCheck = false;
 
 
 }
@@ -64,6 +73,7 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	if (isOnPlatformCheck) isDeleted = true;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

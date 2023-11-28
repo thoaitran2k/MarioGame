@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "CheckKoopaFall.h"
 
 #define KOOPA_RED_GRAVITY 0.002f
 #define KOOPA_RED_WALKING_SPEED 0.05f
@@ -29,8 +30,12 @@ protected:
 	float ax;
 	float ay;
 
+	float startX;
+
+	CCheckFall* checkfall;
+
 	bool isTurtleShell;
-	bool isCollis;
+	//bool isCollis;
 	bool isOnPlatform;
 
 	ULONGLONG count_start;
@@ -40,21 +45,43 @@ protected:
 	virtual void Render();
 
 	int LeftOrRightMarrio();
+
+	void CreateCheckfall();
 	
 	virtual int IsCollidable() { return 1;}
-	virtual int IsColliswithMario() { return isCollis; }
+	//virtual int IsColliswithMario() { return isCollis; }
 	//virtual int IsBlocking() { return 0; }
 	
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
+	void OnCollisionWithCheckFall(LPCOLLISIONEVENT e);
 
 public:
 
 	bool GetIsTurtleShell() { return isTurtleShell; }
-	bool GetIsCollis() { return isCollis; }
+	//bool GetIsCollis() { return isCollis; }
 
+	
+
+	void AddCheck(CGameObject* obj) {
+		if (!dynamic_cast<CCheckFall*>(obj)) return;
+		else if (!checkfall)
+		{
+			CCheckFall* cfall_obj = dynamic_cast<CCheckFall*>(obj);
+			checkfall = cfall_obj;
+			//checkfall->isOnPlatformCheck = true;
+		}
+	}
+	void Check() {
+		if (checkfall) checkfall->GetIsOnPlatform();
+		checkfall = NULL;
+	}
+	
+	
+	
+	
 	
 
 	CRed_Koopa(float x, float y);

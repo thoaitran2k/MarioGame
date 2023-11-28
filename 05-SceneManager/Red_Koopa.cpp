@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "Background.h"
 #include "MushRoom.h"
+#include "CheckKoopaFall.h"
 
 
 
@@ -16,8 +17,10 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	count_start =GetTickCount64();
 	SetState(KOOPA_RED_STATE_WALKING);
 	isTurtleShell = false;
-	isCollis = false;
+	startX = x;
+	//isCollis = false;
 	isOnPlatform = false;
+	checkfall = NULL;
 	
 }
 
@@ -30,6 +33,17 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 	right = left + KOOPA_RED_BBOX_WIDTH;
 	bottom = top + KOOPA_RED_BBOX_HEIGHT+3;
 
+}
+
+void CRed_Koopa::CreateCheckfall() {
+	CPlayScene* addobject = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+		//addobject->CreateObject(OBJECT_TYPE_GOOMBA, x - 50, y, 0 ,0);
+		
+	if (vx < 0 )
+	{ 
+		addobject->CreateObject(OBJECT_TYPE_CHECKFALL_KOOPA, startX-90, y-70, 0, 0);
+	}
 }
 
 void CRed_Koopa::OnNoCollision(DWORD dt)
@@ -55,19 +69,26 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CBackground*>(e->obj))
 		this->OnCollisionWithPlatForm(e);
+	if (dynamic_cast<CCheckFall*>(e->obj))
+		this->OnCollisionWithCheckFall(e);
+}
+
+void CRed_Koopa::OnCollisionWithCheckFall(LPCOLLISIONEVENT e)
+{
+	CCheckFall* checkfall = dynamic_cast<CCheckFall*>(e->obj);
+	SetState(KOOPA_RED_STATE_ISDEFEND);
 }
 
 void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
 	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
-	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	if (e->ny < 0) {
 		isOnPlatform = true;
 	}
 
 	if (isOnPlatform)
 	{
-		isDeleted = true;
+		isTurtleShell = true;
 
 	}
 }
@@ -77,14 +98,25 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	CPlayScene* addobject = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	
-	if (GetTickCount64() - count_start > 2000)
-	{
+
+	if (state == KOOPA_RED_STATE_WALKING && GetTickCount64() - count_start > 2000 && !checkfall ) {
 		count_start = GetTickCount64();
-		addobject->CreateObject(OBJECT_TYPE_GOOMBA, x - 50, y, 0 ,0);
-		addobject->CreateObject(OBJECT_TYPE_CHECKFALL_KOOPA, x - 50, y-17, 0, 0);
+		
+
+			
+			DebugOut(L">>> tao object >>> \n");
+			CreateCheckfall();
+			//Check();
+			//if(checkfall->isOnPlatformCheck = true)
+				vx = -vx;
+			
+			
+			
+			
+			
 	}
+	
 		
 
 	CGameObject::Update(dt, coObjects);
@@ -121,26 +153,29 @@ void CRed_Koopa::Render()
 
 void CRed_Koopa::SetState(int state)
 {
+
+	
+
 	CGameObject::SetState(state);
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISDEFEND:
 		isTurtleShell = true;
-		isCollis = true; 
+		//isCollis = true; 
 		vx = 0;
 		vy = 0;
 		break;
 		
 	case KOOPA_RED_STATE_ISKICKED:
 		isTurtleShell = true;
-		isCollis = true;
+		//isCollis = true;
 		vx = 0.05f * LeftOrRightMarrio();
 		break;
-
 	case KOOPA_RED_STATE_WALKING:
-		//vx = -KOOPA_RED_WALKING_SPEED;
-		vx = 0;
-		isCollis = true;
+		vx = -KOOPA_RED_WALKING_SPEED;
+		
+		//vx = 0;
+		//isCollis = true;
 		break;
  
 
