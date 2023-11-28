@@ -79,10 +79,11 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CPlayScene* addobject = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	
-	if (GetTickCount64() - count_start > 3000)
+	if (GetTickCount64() - count_start > 2000)
 	{
 		count_start = GetTickCount64();
-		addobject->CreateObject(OBJECT_TYPE_GOOMBA, x, y, 0, 0);
+		addobject->CreateObject(OBJECT_TYPE_GOOMBA, x - 50, y, 0 ,0);
+		addobject->CreateObject(OBJECT_TYPE_CHECKFALL_KOOPA, x - 50, y-17, 0, 0);
 	}
 		
 
@@ -115,7 +116,7 @@ void CRed_Koopa::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CRed_Koopa::SetState(int state)

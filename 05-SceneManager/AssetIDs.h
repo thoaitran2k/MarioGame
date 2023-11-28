@@ -53,6 +53,8 @@
 #define OBJECT_TYPE_PORTAL	50
 #define OBJECT_TYPE_BOX	10
 
+#define OBJECT_TYPE_CHECKFALL_KOOPA	666
+
 
 #pragma region MARIO 
 

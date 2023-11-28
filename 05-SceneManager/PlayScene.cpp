@@ -20,6 +20,7 @@
 #include "Red_Koopa.h"
 #include "Para_Goomba.h"
 #include "Box.h"
+#include "CheckKoopaFall.h"
 
 
 
@@ -42,7 +43,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 void CPlayScene::AddObject(LPGAMEOBJECT object)
 {
-	//objects.insert(objects.begin() + 1, object);
+	objects.insert(objects.begin() + 1, object);
 
 }
 
@@ -151,6 +152,8 @@ void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy)
 	switch (object_type)
 	{
 		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
+
+		case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;
 	
 	/*case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
