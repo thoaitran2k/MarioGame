@@ -142,6 +142,36 @@ void CPlayScene::_ParseSection_MAP(string line)
 	Parse a line in section [OBJECTS] 
 */
 
+CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float vx, float vy)
+{
+
+	int object_type = id;
+
+	CGameObject* obj = NULL;
+
+	switch (object_type)
+	{
+	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
+
+	case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;
+
+		
+
+
+	default:
+		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
+		return NULL;
+	}
+
+	// General object setup
+	obj->SetPosition(x, y);
+
+
+	objects.push_back(obj);
+	return obj;
+	
+}
+
 void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy)
 {
 	

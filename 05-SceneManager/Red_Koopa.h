@@ -1,9 +1,10 @@
 #pragma once
 #include "GameObject.h"
 #include "CheckKoopaFall.h"
+#include "debug.h"
 
 #define KOOPA_RED_GRAVITY 0.002f
-#define KOOPA_RED_WALKING_SPEED 0.05f
+#define KOOPA_RED_WALKING_SPEED 0.005f
 
 
 #define KOOPA_RED_BBOX_WIDTH 16
@@ -71,13 +72,13 @@ public:
 		{
 			CCheckFall* cfall_obj = dynamic_cast<CCheckFall*>(obj);
 			checkfall = cfall_obj;
+			DebugOut(L">>> check >>> \n");
+
+
 			//checkfall->isOnPlatformCheck = true;
 		}
 	}
-	void Check() {
-		if (checkfall) checkfall->GetIsOnPlatform();
-		checkfall = NULL;
-	}
+	
 	
 	
 	

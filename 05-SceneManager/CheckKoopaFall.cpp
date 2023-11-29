@@ -19,7 +19,7 @@
 CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 {
 
-	this->ax = 0;
+	this->ax = 0.0003f;
 	this->ay = 0.003f;
 	isOnPlatformCheck = false;
 
@@ -36,13 +36,13 @@ void CCheckFall::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CCheckFall::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
+	//x += vx * dt;
 	y += vy * dt;
 };
 
 void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	//if (!e->obj->IsBlocking()) return;
+	if (!e->obj->IsBlocking()) return;
 	//if (dynamic_cast<CCheckFall*>(e->obj)) return;
 
 
@@ -60,10 +60,12 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
 	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
-	if (e->ny < 0) {
+	
 		isOnPlatformCheck = true;
-	}
-	else isOnPlatformCheck = false;
+	
+	
+
+	
 
 
 }
@@ -71,9 +73,9 @@ void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
 void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	vx += ax * dt;
+	vx += -ax * dt;
 
-	if (isOnPlatformCheck) isDeleted = true;
+	//if (isOnPlatformCheck) isDeleted = true;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

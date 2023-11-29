@@ -35,6 +35,7 @@ public:
 	CPlayScene(int id, LPCWSTR filePath);
 
 	void CreateObject(int id, float x, float y, float vx, float vy);
+	CGameObject* CreateObjectAndReturn(int id, float x, float y, float vx, float vy);
 	void AddObject(LPGAMEOBJECT object);
 	virtual void Load();
 	virtual void Update(DWORD dt);

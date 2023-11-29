@@ -36,14 +36,17 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 }
 
 void CRed_Koopa::CreateCheckfall() {
-	CPlayScene* addobject = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-		//addobject->CreateObject(OBJECT_TYPE_GOOMBA, x - 50, y, 0 ,0);
+		DebugOut(L">>> check >>> \n");
+
+	
+		CGameObject* add_object = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, startX - 20, y, 0, 0);
 		
-	if (vx < 0 )
-	{ 
-		addobject->CreateObject(OBJECT_TYPE_CHECKFALL_KOOPA, startX-90, y-70, 0, 0);
-	}
+		AddCheck(add_object);
+		
+
+
 }
 
 void CRed_Koopa::OnNoCollision(DWORD dt)
@@ -76,7 +79,7 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 void CRed_Koopa::OnCollisionWithCheckFall(LPCOLLISIONEVENT e)
 {
 	CCheckFall* checkfall = dynamic_cast<CCheckFall*>(e->obj);
-	SetState(KOOPA_RED_STATE_ISDEFEND);
+	//SetState(KOOPA_RED_STATE_ISDEFEND);
 }
 
 void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
@@ -100,24 +103,28 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	
 
-	if (state == KOOPA_RED_STATE_WALKING && GetTickCount64() - count_start > 2000 && !checkfall ) {
-		count_start = GetTickCount64();
+	if (state == KOOPA_RED_STATE_WALKING && checkfall == NULL ) {
+		//count_start = GetTickCount64();
 		
 
 			
-			DebugOut(L">>> tao object >>> \n");
+			
 			CreateCheckfall();
-			//Check();
-			//if(checkfall->isOnPlatformCheck = true)
-				vx = -vx;
+			DebugOut(L">>> CHECK TAO OBJ >>> \n");
+
 			
 			
-			
-			
+		
 			
 	}
-	
-		
+
+	if (checkfall)
+	{
+		if (checkfall->GetIsOnPlatform())
+          DebugOut(L">>> Rua doi van toc >>> \n");
+		vx = -vx;
+
+	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
