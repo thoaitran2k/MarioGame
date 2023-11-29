@@ -5,6 +5,8 @@
 #define BOX_BBOX_WIDTH 16
 #define BOX_BBOX_HEIGHT 16
 
+#define STATE_LEFT_KOOPA 100
+#define STATE_RIGHT_KOOPA 200
 
 // 
 // The most popular type of object in Mario! 
@@ -28,7 +30,7 @@ public:
 	virtual void Render();
 
 
-
+	virtual void SetState(int state);
 
 	void SetIsOnPlatform(bool b) { isOnPlatformCheck = b; }
 
@@ -40,6 +42,7 @@ public:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithBox(LPCOLLISIONEVENT e);
 	CCheckFall(float x, float y);
 
 	bool isOnPlatformCheck;

@@ -15,7 +15,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = KOOPA_RED_GRAVITY;
 	count_start =GetTickCount64();
-	SetState(KOOPA_RED_STATE_WALKING);
+	SetState(KOOPA_RED_STATE_WALKING_LEFT);
 	isTurtleShell = false;
 	startX = x;
 	//isCollis = false;
@@ -38,12 +38,33 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 void CRed_Koopa::CreateCheckfall() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-		DebugOut(L">>> check >>> \n");
+		
 
 	
-		CGameObject* add_object = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, startX - 20, y, 0, 0);
+		if (vx < 0)
+		{
+			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()-20, y, 0.008f, 0);
+			AddCheck(add_object_left);
+			DebugOut(L">>> check tao obj left >>> \n");
+			
+			
+		}
+		else if(vx > 0)
+		{
+			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+20, y, 0.008f, 0);
+			AddCheck(add_object_right);
+			DebugOut(L">>> check tao obj right >>> \n");
+			if (checkfall->GetIsOnPlatform()) {
+				checkfall = NULL;
+				DebugOut(L">>> check roi >>> \n");
+			}
+			
+		}
+
 		
-		AddCheck(add_object);
+		
+
+		
 		
 
 
@@ -103,28 +124,25 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	
 
-	if (state == KOOPA_RED_STATE_WALKING && checkfall == NULL ) {
+	if (state == KOOPA_RED_STATE_WALKING_LEFT && checkfall == NULL ) {
 		//count_start = GetTickCount64();
 		
 
-			
-			
 			CreateCheckfall();
 			DebugOut(L">>> CHECK TAO OBJ >>> \n");
 
-			
-			
-		
-			
 	}
-
 	if (checkfall)
 	{
 		if (checkfall->GetIsOnPlatform())
-          DebugOut(L">>> Rua doi van toc >>> \n");
-		vx = -vx;
+		{
+			DebugOut(L">>> Rua doi van toc >>> \n");
+			SetState(KOOPA_RED_STATE_WALKING_RIGHT);
+		}
 
 	}
+
+	
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -160,9 +178,6 @@ void CRed_Koopa::Render()
 
 void CRed_Koopa::SetState(int state)
 {
-
-	
-
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -178,15 +193,18 @@ void CRed_Koopa::SetState(int state)
 		//isCollis = true;
 		vx = 0.05f * LeftOrRightMarrio();
 		break;
-	case KOOPA_RED_STATE_WALKING:
+	case KOOPA_RED_STATE_WALKING_LEFT:
 		vx = -KOOPA_RED_WALKING_SPEED;
 		
 		//vx = 0;
 		//isCollis = true;
 		break;
- 
 
+	case KOOPA_RED_STATE_WALKING_RIGHT:
+		vx = KOOPA_RED_WALKING_SPEED;
+
+		//vx = 0;
+		//isCollis = true;
+		break;
 	}
-	
-
 }

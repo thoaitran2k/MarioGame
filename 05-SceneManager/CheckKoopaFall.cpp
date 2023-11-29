@@ -9,6 +9,7 @@
 #include "Game.h"
 #include "Goomba.h"
 #include "Background.h"
+#include "Box.h"
 
 
 
@@ -19,9 +20,10 @@
 CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 {
 
-	this->ax = 0.0003f;
+	this->ax = 0;
 	this->ay = 0.003f;
 	isOnPlatformCheck = false;
+	SetState(STATE_LEFT_KOOPA);
 
 
 }
@@ -36,7 +38,7 @@ void CCheckFall::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CCheckFall::OnNoCollision(DWORD dt)
 {
-	//x += vx * dt;
+	x += vx * dt;
 	y += vy * dt;
 };
 
@@ -56,6 +58,9 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	if (dynamic_cast<CBackground*>(e->obj))
 		this->OnCollisionWithPlatForm(e);
+
+	if (dynamic_cast<CBox*>(e->obj))
+		this->OnCollisionWithBox(e);
 }
 
 void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
@@ -63,19 +68,27 @@ void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
 	
 		isOnPlatformCheck = true;
 	
-	
+}
+void CCheckFall::OnCollisionWithBox(LPCOLLISIONEVENT e) {
+	CBox* OntheBox = dynamic_cast<CBox*>(e->obj);
 
-	
-
+	vy = 0;
 
 }
 
 void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-	vx += -ax * dt;
+	
 
-	//if (isOnPlatformCheck) isDeleted = true;
+	vy += ay * dt;
+	vx += ax * dt;
+
+	/*if (vx < 0) {
+		SetState(STATE_LEFT_KOOPA);
+	}
+	else if(vx>0) SetState(STATE_RIGHT_KOOPA);*/
+
+	if (isOnPlatformCheck) isDeleted = true;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -87,12 +100,26 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 //}
 
 
-
-
-
 void CCheckFall::Render()
 {
 
 	RenderBoundingBox();
 }
 
+void CCheckFall::SetState(int state)
+{
+	CGameObject::SetState(state);
+	switch (state)
+	{
+	case STATE_LEFT_KOOPA:
+		vx = -0.005f;
+	
+		break;
+
+	case STATE_RIGHT_KOOPA:
+		
+		
+		vx = 0.005f;
+		break;
+	}
+}

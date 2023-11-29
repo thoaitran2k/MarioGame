@@ -16,6 +16,7 @@
 
 #define KOOPA_RED_STATE_WALKING 100
 #define KOOPA_RED_STATE_WALKING_LEFT 200
+#define KOOPA_RED_STATE_WALKING_RIGHT 600
 #define KOOPA_RED_STATE_ISDEFEND 300
 #define KOOPA_RED_STATE_ISKICKED 400
 
@@ -38,6 +39,7 @@ protected:
 	bool isTurtleShell;
 	//bool isCollis;
 	bool isOnPlatform;
+	bool HaveOrNotCheckFall;
 
 	ULONGLONG count_start;
 
@@ -73,6 +75,10 @@ public:
 			CCheckFall* cfall_obj = dynamic_cast<CCheckFall*>(obj);
 			checkfall = cfall_obj;
 			DebugOut(L">>> check >>> \n");
+			if (checkfall->GetIsOnPlatform()) {	
+				checkfall = NULL;
+				DebugOut(L">>> check obj co roi hay khong >>> \n");
+			}
 
 
 			//checkfall->isOnPlatformCheck = true;
