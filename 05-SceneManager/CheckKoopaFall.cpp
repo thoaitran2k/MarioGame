@@ -112,14 +112,14 @@ void CCheckFall::SetState(int state)
 	switch (state)
 	{
 	case STATE_LEFT_KOOPA:
-		vx = -0.005f;
+		vx = -0.01f;
 	
 		break;
 
 	case STATE_RIGHT_KOOPA:
 		
 		
-		vx = 0.005f;
+		vx = 0.01f;
 		break;
 	}
 }

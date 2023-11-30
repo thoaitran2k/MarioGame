@@ -15,12 +15,13 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = KOOPA_RED_GRAVITY;
 	count_start =GetTickCount64();
-	SetState(KOOPA_RED_STATE_WALKING_LEFT);
+	SetState(KOOPA_RED_STATE_WALKING);
 	isTurtleShell = false;
 	startX = x;
 	//isCollis = false;
 	isOnPlatform = false;
 	checkfall = NULL;
+	HaveOrNotCheckFall = true;
 	
 }
 
@@ -41,23 +42,21 @@ void CRed_Koopa::CreateCheckfall() {
 		
 
 	
-		if (vx < 0)
+		if (vx<0)
 		{
-			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()-20, y, 0.008f, 0);
+			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()-20, y, 0.01f, 0);
 			AddCheck(add_object_left);
 			DebugOut(L">>> check tao obj left >>> \n");
 			
 			
+			
+			
 		}
-		else if(vx > 0)
+		else if(vx>0)
 		{
-			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+20, y, 0.008f, 0);
+			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+20, y, 0.01f, 0);
 			AddCheck(add_object_right);
 			DebugOut(L">>> check tao obj right >>> \n");
-			if (checkfall->GetIsOnPlatform()) {
-				checkfall = NULL;
-				DebugOut(L">>> check roi >>> \n");
-			}
 			
 		}
 
@@ -124,23 +123,25 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	
 
-	if (state == KOOPA_RED_STATE_WALKING_LEFT && checkfall == NULL ) {
+	if (HaveOrNotCheckFall && checkfall == NULL) {
 		//count_start = GetTickCount64();
-		
 
-			CreateCheckfall();
-			DebugOut(L">>> CHECK TAO OBJ >>> \n");
+
+		CreateCheckfall();
+		DebugOut(L">>> CHECK TAO OBJ >>> \n");
 
 	}
-	if (checkfall)
+
+	if (checkfall->GetIsOnPlatform() && HaveOrNotCheckFall)
 	{
-		if (checkfall->GetIsOnPlatform())
-		{
-			DebugOut(L">>> Rua doi van toc >>> \n");
-			SetState(KOOPA_RED_STATE_WALKING_RIGHT);
-		}
-
+		ResetCheck();
+		vx = -vx;
+		DebugOut(L">>> chi xet con rua di bo >>> \n");
 	}
+	
+
+	
+	
 
 	
 
@@ -183,6 +184,7 @@ void CRed_Koopa::SetState(int state)
 	{
 	case KOOPA_RED_STATE_ISDEFEND:
 		isTurtleShell = true;
+		HaveOrNotCheckFall = false;
 		//isCollis = true; 
 		vx = 0;
 		vy = 0;
@@ -190,21 +192,17 @@ void CRed_Koopa::SetState(int state)
 		
 	case KOOPA_RED_STATE_ISKICKED:
 		isTurtleShell = true;
+		HaveOrNotCheckFall = false;
 		//isCollis = true;
 		vx = 0.05f * LeftOrRightMarrio();
 		break;
-	case KOOPA_RED_STATE_WALKING_LEFT:
-		vx = -KOOPA_RED_WALKING_SPEED;
+	case KOOPA_RED_STATE_WALKING:
+		vx = KOOPA_RED_WALKING_SPEED;
+		HaveOrNotCheckFall = true;
 		
 		//vx = 0;
 		//isCollis = true;
 		break;
 
-	case KOOPA_RED_STATE_WALKING_RIGHT:
-		vx = KOOPA_RED_WALKING_SPEED;
-
-		//vx = 0;
-		//isCollis = true;
-		break;
 	}
 }
