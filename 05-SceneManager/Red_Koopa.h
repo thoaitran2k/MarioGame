@@ -4,7 +4,7 @@
 #include "debug.h"
 
 #define KOOPA_RED_GRAVITY 0.002f
-#define KOOPA_RED_WALKING_SPEED 0.01f
+#define KOOPA_RED_WALKING_SPEED 0.015f
 
 
 #define KOOPA_RED_BBOX_WIDTH 16

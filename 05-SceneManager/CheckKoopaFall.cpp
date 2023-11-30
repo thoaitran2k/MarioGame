@@ -13,8 +13,8 @@
 
 
 
-#define OBJ_BBOX_WIDTH 16
-#define OBJ_BBOX_HEIGHT 16
+#define OBJ_BBOX_WIDTH 13
+#define OBJ_BBOX_HEIGHT 18
 
 
 CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
@@ -112,14 +112,14 @@ void CCheckFall::SetState(int state)
 	switch (state)
 	{
 	case STATE_LEFT_KOOPA:
-		vx = -0.01f;
+		vx = -0.015f;
 	
 		break;
 
 	case STATE_RIGHT_KOOPA:
 		
 		
-		vx = 0.01f;
+		vx = 0.015f;
 		break;
 	}
 }

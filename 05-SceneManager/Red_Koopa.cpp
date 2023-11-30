@@ -44,7 +44,7 @@ void CRed_Koopa::CreateCheckfall() {
 	
 		if (vx<0)
 		{
-			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()-20, y, 0.01f, 0);
+			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()-20, y, 0.015f, 0);
 			AddCheck(add_object_left);
 			DebugOut(L">>> check tao obj left >>> \n");
 			
@@ -54,7 +54,7 @@ void CRed_Koopa::CreateCheckfall() {
 		}
 		else if(vx>0)
 		{
-			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+20, y, 0.01f, 0);
+			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+20, y, 0.015f, 0);
 			AddCheck(add_object_right);
 			DebugOut(L">>> check tao obj right >>> \n");
 			
