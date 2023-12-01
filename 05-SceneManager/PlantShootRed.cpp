@@ -18,6 +18,18 @@ CPlantShootRed::CPlantShootRed(float x, float y):CGameObject(x, y)
 	
 }
 
+void CPlantShootRed::CreateBullet() {
+
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	//CGameObject* add_bullet = scene->CreateObjectAndReturn(OBJECT_TYPE_FIRE_BULLET_OF_PLANT, x-5 , y - PLANT_BBOX_HEIGHT / 2+8, 0, 0);
+	//addFIRE_BULLET(add_bullet);
+
+	//DebugOut(L">>> check tao ra vien dan >>> \n");
+
+
+}
+
 void CPlantShootRed::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	/*if ((distanceMario_PlantEnemies() < 50))
@@ -72,7 +84,9 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								isShoot = true;
 								bool theoX = true, theoY = true;
 							
+								CreateBullet(); 
 
+								
 
 								DebugOut(L">>> SINH RA VIEN DAN>>> \n");
 
@@ -84,8 +98,10 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 								else
 									if (mario->GetX() < x && mario->GetY() > y)
 									{
-										CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
-										scene->AddObject(bullet);
+										
+
+										//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
+										//scene->AddObject(bullet);
 									}
 
 								if (mario->GetX() > x && mario->GetY() > y)

@@ -23,6 +23,7 @@ CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = 0.003f;
 	isOnPlatformCheck = false;
+	OnTheBox = true;
 	//SetState(STATE_LEFT_KOOPA);
 
 
@@ -72,6 +73,7 @@ void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
 void CCheckFall::OnCollisionWithBox(LPCOLLISIONEVENT e) {
 	CBox* OntheBox = dynamic_cast<CBox*>(e->obj);
 
+	OnTheBox = true;
 	vy = 0;
 
 }

@@ -17,8 +17,8 @@
 #define BULLET_BLUE_BBOX_WIDTH 12
 #define BULLET_BLUE_BBOX_HEIGHT 12
 
-#define BULLET_SPEED_X 0.02f
-#define BULLET_SPEED_Y 0.01f
+#define BULLET_SPEED_X 0.009f
+#define BULLET_SPEED_Y 0.008f
 
 #define ADJUST_VECTOR_Y 30
 #define CHANGE_DIRECTION 30
@@ -42,6 +42,8 @@ protected:
 	public:
 
 		
+
+
 
 		CbulletPlant(float bx, float by, bool top_bottom, bool left_right);
 

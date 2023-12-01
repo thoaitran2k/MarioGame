@@ -19,6 +19,8 @@ protected:
 	float ax;
 	float ay;
 
+	bool OnTheBox;
+
 	
 
 
@@ -39,6 +41,8 @@ public:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
+
+	bool GetIsOntheBox() { return OnTheBox; }
 
 	bool GetIsOnPlatForm2() { return isOnPlatformCheck; };
 

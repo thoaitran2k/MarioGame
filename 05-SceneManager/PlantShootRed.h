@@ -1,5 +1,7 @@
 #pragma once
 #include "Gameobject.h"
+#include "bullet_plant.h"
+
 
 #define SPEED 0.025f
 
@@ -41,6 +43,8 @@ class CPlantShootRed : public CGameObject
 		bool isUpping, isDowning;
 		float range;
 		bool IsActive;
+		CbulletPlant* fire_bullet;
+
 		float distanceMario_PlantEnemies();
 		BOOLEAN isNotCollisMario = false;
 
@@ -54,6 +58,8 @@ class CPlantShootRed : public CGameObject
 		int LeftORightMario();
 		int TopOrBottomYMario();
 
+		void CreateBullet();
+
 	
 
 
@@ -63,6 +69,23 @@ class CPlantShootRed : public CGameObject
 
 	public:
 		CPlantShootRed(float x, float y);
+
+		void addFIRE_BULLET(CGameObject* obj) {
+			if (!dynamic_cast<CbulletPlant*>(obj)) return;
+			else if (!fire_bullet)
+			{
+				CbulletPlant* bullet = dynamic_cast<CbulletPlant*>(obj);
+				fire_bullet = bullet;
+				DebugOut(L">>> check tao bullet >>> \n");
+
+			}
+		}
+
+		void ResetBullet()
+		{
+			fire_bullet->Delete();
+			fire_bullet = NULL;
+		}
 
 		
 		virtual void SetState(int state);

@@ -23,6 +23,9 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	checkfall = NULL;
 	isKicked = false;
 	HaveOrNotCheckFall = true;
+	isComback = false;
+	wasKicked = false;
+	isDead = false;
 	
 }
 
@@ -49,18 +52,12 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 void CRed_Koopa::CreateCheckfall() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-		
-
-	
 		if (vx<0)
 		{
 			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()- KOOPA_RED_BBOX_WIDTH, y,0 /*KOOPA_RED_WALKING_SPEED*/, 0);
-			
-			AddCheck(add_object_left);
-			DebugOut(L">>> check tao obj left >>> \n");
-			checkfall->SetState(STATE_LEFT_KOOPA);
-			
-			
+				AddCheck(add_object_left);
+				DebugOut(L">>> check tao obj left >>> \n");
+				checkfall->SetState(STATE_LEFT_KOOPA);
 			
 			
 		}
@@ -135,33 +132,54 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	
 
-	if (HaveOrNotCheckFall && checkfall == NULL) {
-		//count_start = GetTickCount64();
+	if (!isOnPlatform) {
+		if (HaveOrNotCheckFall && checkfall == NULL) {
+			//count_start = GetTickCount64();
 
 
-		CreateCheckfall();
-		DebugOut(L">>> CHECK TAO OBJ >>> \n");
+			CreateCheckfall();
+			DebugOut(L">>> CHECK TAO OBJ >>> \n");
+
+		}
+
+		if (checkfall->GetIsOnPlatform() && HaveOrNotCheckFall)
+		{
+			ResetCheck();
+			vx = -vx;
+			DebugOut(L">>> chi xet con rua di bo >>> \n");
+		}
+
+		/*if (state != KOOPA_RED_STATE_WALKING)
+
+			if (GetTickCount64() - comback_time > 2000)
+			{
+				
+				SetState(KOOPA_RED_STATE_WALKING);
+				y = y - KOOPA_RED_BBOX_HEIGHT / 2;
+				
+				CreateCheckfall();
+				DeleteCheck();
+				ResetCheck();
+				
+			}*/
+		if (!HaveOrNotCheckFall)
+		{
+			DeleteCheck();
+			
+		}
+
+		/*if (state == KOOPA_RED_STATE_ISDEFEND && GetTickCount64() - comback_time > 2000)
+		{
+			SetState(KOOPA_RED_STATE_TO_RETURN);
+			if (!isDead && (GetTickCount64() - comback_time >1000))
+			{
+				SetState(KOOPA_RED_STATE_WALKING);
+				y = y - KOOPA_RED_BBOX_HEIGHT / 2;
+			}
+		}*/
 
 	}
-
-	if (checkfall->GetIsOnPlatform() && HaveOrNotCheckFall)
-	{
-		ResetCheck();
-		vx = -vx;
-		DebugOut(L">>> chi xet con rua di bo >>> \n");
-	}
-	
-	if (!HaveOrNotCheckFall)
-	{
-		DeleteCheck();
-	}
-
-	
-	
-
-	
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -187,14 +205,21 @@ void CRed_Koopa::Render()
 		}
 	}
 	else
-	 if (isTurtleShell && !isKicked)
+	 if (isTurtleShell && isKicked && !wasKicked)
 	{
-		aniId = ID_ANI_KOOPA_RED_DEFEND;
+		
+		 if (!isComback)
+			 aniId = ID_ANI_KOOPA_RED_DEFEND;
+
+		 else aniId = ID_ANI_RED_KOOPA_COMBACK;
+
 		DebugOut(L">>> Rua dang bien thanh mai >>> \n");
 	}
-	 else if(isTurtleShell && isKicked)
+	 else if(isTurtleShell && wasKicked)
 	 {
-		 aniId = ID_ANI_KOOPA_RED_ISKICKED;
+		 if (vx > 0)
+			 aniId = ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT;
+		 else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
 		 DebugOut(L">>> Rua bi da va dang chay >>> \n");
 	 }
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -207,28 +232,41 @@ void CRed_Koopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISDEFEND:
-		isKicked = false;
+		comback_time = GetTickCount64();
+		isDead = false;
+		isKicked = true;
+		wasKicked = false;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
-		//isCollis = true; 
+		isComback = false;
+		vx = 0;
+		vy = 0;
+		break;
+
+	case KOOPA_RED_STATE_TO_RETURN:
+		comback_time = GetTickCount64();
+		isKicked = true;
+		isDead = false;
+		wasKicked = false;
+		isTurtleShell = true;
+		HaveOrNotCheckFall = false;
+		isComback = true;
 		vx = 0;
 		vy = 0;
 		break;
 		
 	case KOOPA_RED_STATE_ISKICKED:
-		isKicked = true;
+		wasKicked = true;
+		isDead = true;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
-		//isCollis = true;
-		vx = 0.05f * LeftOrRightMarrio();
+		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
 		break;
 	case KOOPA_RED_STATE_WALKING:
 		vx = -KOOPA_RED_WALKING_SPEED;
+		isDead = false;
 		HaveOrNotCheckFall = true;
-		isKicked = false;
-		
 		//vx = 0;
-		//isCollis = true;
 		break;
 
 	}

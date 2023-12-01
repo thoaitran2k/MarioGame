@@ -155,6 +155,8 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 
 	case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;
 
+	case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x, y, 0, 0); break;
+
 		
 
 
@@ -184,91 +186,8 @@ void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy)
 		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
 
 		case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;
-	
-	/*case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x, y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-	case OBJECT_TYPE_BRICK_Q_COIN: obj = new CBrickQuestion(x, y, QUESTION_BRICK_COIN); break;
-	case OBJECT_TYPE_BRICK_Q_MUSHROOM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_MUSHROOM); break;
-	case OBJECT_TYPE_BRICK_Q_LEAF: obj = new CBrickQuestion(x, y, QUESTION_BRICK_LEAF); break;
-	case OBJECT_TYPE_LONG_PIPE: obj = new CPipePlantShoot(x, y, MODEL_L_PIPE); break;
-	case OBJECT_TYPE_PLANT_SHOOT_RED: obj = new CPlantShootRed(x, y); break;
-	case OBJECT_TYPE_PARA_GOOMBA: obj = new CPara_Goomba(x, y); break;
-	case OBJECT_TYPE_PIPE_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_PIPE); break;
-	case OBJECT_TYPE_KOOPA_GREEN_WALKING: obj = new CKoopa_Green_Not_Wing(x, y); break;
-	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
-
-	case OBJECT_TYPE_BOX:
-	{
-
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-
-		obj = new CBox(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
-		break;*/
-
-
-	//}
-	//case OBJECT_TYPE_BRICK_Q: obj = new CBrickQuestion(x, y); break;
-
-
-
-
-	/*case OBJECT_TYPE_PLATFORM:
-	{
-
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-
-		obj = new CPlatform(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
-
-		break;
-	}
-
-	case OBJECT_TYPE_PLATFORM1:
-	{
-
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-
-		obj = new CBackground(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
-
-		break;
-	}
-
-	case OBJECT_TYPE_PORTAL:
-	{
-		float r = (float)atof(tokens[3].c_str());
-		float b = (float)atof(tokens[4].c_str());
-		int scene_id = atoi(tokens[5].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
-	}
-	break;*/
-
+		
+		case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x, y, 0, 0); break;
 
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);

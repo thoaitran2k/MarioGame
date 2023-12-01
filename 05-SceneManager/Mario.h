@@ -32,9 +32,12 @@
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
+#define MARIO_STATE_KICK			650
 
 
 #pragma region ANIMATION_ID
+
+//BIG_MARIO////////////////
 
 #define ID_ANI_MARIO_IDLE_RIGHT 400
 #define ID_ANI_MARIO_IDLE_LEFT 401
@@ -57,6 +60,9 @@
 #define ID_ANI_MARIO_BRACE_RIGHT 1000
 #define ID_ANI_MARIO_BRACE_LEFT 1001
 
+#define ID_ANI_MARIO_KICK_RIGHT 1802
+#define ID_ANI_MARIO_KICK_LEFT 1801
+
 #define ID_ANI_MARIO_DIE 999
 
 // SMALL MARIO
@@ -77,6 +83,9 @@
 
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
+
+#define ID_ANI_MARIO_SMALL_KICK_RIGHT 1702
+#define ID_ANI_MARIO_SMALL_KICK_LEFT 1701
 
 // 
 
@@ -107,6 +116,8 @@ class CMario : public CGameObject
 {
 	int coin;
 	BOOLEAN isSitting;
+	BOOLEAN Kicking;
+
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -114,6 +125,7 @@ class CMario : public CGameObject
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start;
+	ULONGLONG timing;
 	BOOLEAN isOnPlatform;
 	
 
@@ -139,6 +151,7 @@ public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
+		Kicking = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;

@@ -73,6 +73,12 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(PARA_GOOMBA_STATE_WALKING);
 	}
+
+	if (state == GOOMBA_RED_STATE_DIE && GetTickCount64() - die_start_red >1000)
+	{
+		isDeleted = true;
+		return;
+	}
 	//if (!isFly)
 	//{
 	//	if (GetTickCount64() - walking_time > TIME_WALKING)
@@ -142,5 +148,10 @@ void CPara_Goomba::SetState(int state)
 		vy = 0;
 		count_start = GetTickCount64();
 		break;		
+	case GOOMBA_RED_STATE_DIE:
+		vx = 0;
+		vy = 0;
+		die_start_red = GetTickCount64();
+		break;
 	}
 }

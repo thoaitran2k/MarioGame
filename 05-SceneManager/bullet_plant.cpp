@@ -22,7 +22,7 @@ void CbulletPlant::GetBoundingBox(float& left, float& top, float& right, float& 
 CbulletPlant::CbulletPlant(float bx, float by, bool top_bottom, bool left_right)
 {
 
-	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	/*CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (top_bottom)
 	{
@@ -44,7 +44,7 @@ CbulletPlant::CbulletPlant(float bx, float by, bool top_bottom, bool left_right)
 	{
 		x = bx - PLANT_BBOX_WIDTH;
 		vx = -BULLET_SPEED_X*2;
-	}
+	}*/
 	start_deleted = GetTickCount64();
 	//SetState(BULLET_LEFT_BOT);
 	//this->x = x;
