@@ -24,6 +24,7 @@
 #define ID_ANI_KOOPA_RED_WALKING_RIGHT 6101
 #define ID_ANI_KOOPA_RED_WALKING_LEFT 6102
 #define ID_ANI_KOOPA_RED_DEFEND 6103
+#define ID_ANI_KOOPA_RED_ISKICKED 6104
 
 
 class CRed_Koopa : public CGameObject
@@ -37,6 +38,7 @@ protected:
 	CCheckFall* checkfall;
 
 	bool isTurtleShell;
+	bool isKicked;
 	//bool isCollis;
 	bool isOnPlatform;
 	bool HaveOrNotCheckFall;

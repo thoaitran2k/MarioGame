@@ -198,10 +198,13 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 {
 	CRed_Koopa* koopared = dynamic_cast<CRed_Koopa*>(e->obj);
+		/*if (koopared->GetState() == KOOPA_RED_STATE_WALKING) {
+		koopared->SetState(KOOPA_RED_STATE_ISDEFEND);
+		}*/
 
-	
-		if (koopared->GetState() == KOOPA_RED_STATE_ISDEFEND)
+	if (koopared->GetState() == KOOPA_RED_STATE_ISDEFEND)
 		{
+			
 			koopared->SetState(KOOPA_RED_STATE_ISKICKED);
 			DebugOut(L">>> TURTLESHELL is KICKED by MARIO >>> \n");
 		}
@@ -215,15 +218,15 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 
 			koopared->SetState(KOOPA_RED_STATE_ISKICKED);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			DebugOut(L">>> TURTLESHELL -> DI CHUYEN >>> \n");
+			DebugOut(L">>> TURTLESHELL MOVE -> CRASHED BY MARIO >>> \n");
 
 		}
 
-		else if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND && koopared->GetState() != KOOPA_RED_STATE_ISKICKED)
+		else if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND && koopared->GetState() != KOOPA_RED_STATE_ISKICKED) //STATE_WALKING
 		{
 			koopared->SetState(KOOPA_RED_STATE_ISDEFEND);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO >>> \n");
+			DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 		}
 	}
 	else

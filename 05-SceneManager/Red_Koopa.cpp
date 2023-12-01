@@ -21,6 +21,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	//isCollis = false;
 	isOnPlatform = false;
 	checkfall = NULL;
+	isKicked = false;
 	HaveOrNotCheckFall = true;
 	
 }
@@ -28,11 +29,20 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 
-
-	left = x - KOOPA_RED_BBOX_WIDTH / 2;
-	top = y - KOOPA_RED_BBOX_HEIGHT / 2;
-	right = left + KOOPA_RED_BBOX_WIDTH;
-	bottom = top + KOOPA_RED_BBOX_HEIGHT+3;
+	if (state == KOOPA_RED_STATE_WALKING)
+	{
+		left = x - KOOPA_RED_BBOX_WIDTH / 2;
+		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
+		right = left + KOOPA_RED_BBOX_WIDTH;
+		bottom = top + KOOPA_RED_BBOX_HEIGHT+4;
+	}
+	else
+	{
+		left = x - KOOPA_RED_BBOX_WIDTH / 2;
+		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
+		right = left + KOOPA_RED_BBOX_WIDTH;
+		bottom = top + KOOPA_RED_BBOX_HEIGHT-1;
+	}
 
 }
 
@@ -167,7 +177,7 @@ void CRed_Koopa::Render()
 {
 	int aniId;
 	
-
+	if(state == KOOPA_RED_STATE_WALKING){
 		if (vx > 0)
 		{
 			aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
@@ -175,12 +185,18 @@ void CRed_Koopa::Render()
 		else {
 			aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
 		}
-	
-	 if (isTurtleShell)
+	}
+	else
+	 if (isTurtleShell && !isKicked)
 	{
 		aniId = ID_ANI_KOOPA_RED_DEFEND;
+		DebugOut(L">>> Rua dang bien thanh mai >>> \n");
 	}
-
+	 else if(isTurtleShell && isKicked)
+	 {
+		 aniId = ID_ANI_KOOPA_RED_ISKICKED;
+		 DebugOut(L">>> Rua bi da va dang chay >>> \n");
+	 }
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
@@ -191,6 +207,7 @@ void CRed_Koopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISDEFEND:
+		isKicked = false;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
 		//isCollis = true; 
@@ -199,6 +216,7 @@ void CRed_Koopa::SetState(int state)
 		break;
 		
 	case KOOPA_RED_STATE_ISKICKED:
+		isKicked = true;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
 		//isCollis = true;
@@ -207,6 +225,7 @@ void CRed_Koopa::SetState(int state)
 	case KOOPA_RED_STATE_WALKING:
 		vx = -KOOPA_RED_WALKING_SPEED;
 		HaveOrNotCheckFall = true;
+		isKicked = false;
 		
 		//vx = 0;
 		//isCollis = true;
