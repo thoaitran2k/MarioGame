@@ -35,7 +35,7 @@ class CbulletPlant : public CGameObject {
 protected:
 
 
-		virtual int IsCollidable() { return 0; };
+		virtual int IsCollidable() { return 1; };
 		ULONGLONG start_deleted;
 		
 

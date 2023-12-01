@@ -8,6 +8,8 @@
 #define STATE_LEFT_KOOPA 100
 #define STATE_RIGHT_KOOPA 200
 
+#define SPEED_PREVIOUS_KOOPA 0.015f
+
 // 
 // The most popular type of object in Mario! 
 // 
@@ -44,6 +46,10 @@ public:
 	virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithBox(LPCOLLISIONEVENT e);
 	CCheckFall(float x, float y);
+
+	void GetDeleted() {
+		isDeleted = true;
+	}
 
 	bool isOnPlatformCheck;
 	BOOLEAN GetIsOnPlatform() { return isOnPlatformCheck; }

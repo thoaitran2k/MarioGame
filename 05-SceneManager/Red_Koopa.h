@@ -88,6 +88,10 @@ public:
 			checkfall = NULL;
 	}
 	
+	void DeleteCheck()
+	{
+		checkfall->GetDeleted();
+	}
 	
 	
 	

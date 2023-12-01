@@ -23,7 +23,7 @@ CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = 0.003f;
 	isOnPlatformCheck = false;
-	SetState(STATE_LEFT_KOOPA);
+	//SetState(STATE_LEFT_KOOPA);
 
 
 }
@@ -90,6 +90,7 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (isOnPlatformCheck) isDeleted = true;
 
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -112,14 +113,14 @@ void CCheckFall::SetState(int state)
 	switch (state)
 	{
 	case STATE_LEFT_KOOPA:
-		vx = -0.015f;
+		vx = -SPEED_PREVIOUS_KOOPA;
 	
 		break;
 
 	case STATE_RIGHT_KOOPA:
 		
 		
-		vx = 0.015f;
+		vx = SPEED_PREVIOUS_KOOPA;
 		break;
 	}
 }

@@ -44,9 +44,11 @@ void CRed_Koopa::CreateCheckfall() {
 	
 		if (vx<0)
 		{
-			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()-20, y, 0.015f, 0);
+			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()- KOOPA_RED_BBOX_WIDTH, y,0 /*KOOPA_RED_WALKING_SPEED*/, 0);
+			
 			AddCheck(add_object_left);
 			DebugOut(L">>> check tao obj left >>> \n");
+			checkfall->SetState(STATE_LEFT_KOOPA);
 			
 			
 			
@@ -54,9 +56,11 @@ void CRed_Koopa::CreateCheckfall() {
 		}
 		else if(vx>0)
 		{
-			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+20, y, 0.015f, 0);
+			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+ KOOPA_RED_BBOX_WIDTH, y,0/* KOOPA_RED_WALKING_SPEED*/, 0);
+			
 			AddCheck(add_object_right);
 			DebugOut(L">>> check tao obj right >>> \n");
+			checkfall->SetState(STATE_RIGHT_KOOPA);
 			
 		}
 
@@ -139,6 +143,10 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		DebugOut(L">>> chi xet con rua di bo >>> \n");
 	}
 	
+	if (!HaveOrNotCheckFall)
+	{
+		DeleteCheck();
+	}
 
 	
 	
@@ -197,7 +205,7 @@ void CRed_Koopa::SetState(int state)
 		vx = 0.05f * LeftOrRightMarrio();
 		break;
 	case KOOPA_RED_STATE_WALKING:
-		vx = KOOPA_RED_WALKING_SPEED;
+		vx = -KOOPA_RED_WALKING_SPEED;
 		HaveOrNotCheckFall = true;
 		
 		//vx = 0;
