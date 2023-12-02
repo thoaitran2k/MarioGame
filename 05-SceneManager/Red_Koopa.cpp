@@ -26,6 +26,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	wasKicked = false;
 	isDead = false;
 	
+	
 }
 
 void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -157,31 +158,35 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					SetState(KOOPA_RED_STATE_ISDEFEND);
 					DebugOut(L">>> DEFEND >>> \n");
 				}
-				else 
-				if (!isTurn && GetTickCount64() - count_start > 2000)
-				{
-					SetState(KOOPA_RED_STATE_TO_RETURN);
-					DebugOut(L">>> RETURN >>> \n");
-				
-				}
+				else
+					if (!isTurn && GetTickCount64() - count_start > 2000)
+					{
+						SetState(KOOPA_RED_STATE_TO_RETURN);
+						DebugOut(L">>> RETURN >>> \n");
+
+					}
 				if (isTurn && GetTickCount64() - comback_time > 1000)
 					//isTurtleShell = false;
 				{
-					
+
 					SetState(KOOPA_RED_STATE_WALKING);
-					vx = nx* KOOPA_RED_WALKING_SPEED;
+					vx = nx * KOOPA_RED_WALKING_SPEED;
 					y = y - KOOPA_RED_BBOX_HEIGHT / 2;
 					DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
 				}
-				
-				
-			}
 
+
+			}
 			else if (isKicked)
 			{
 				SetState(KOOPA_RED_STATE_ISKICKED);
-				DebugOut(L">>> KICKING >>> \n");
 			}
+			//else if (isKicked)
+			//{
+			//	SetState(KOOPA_RED_STATE_ISKICKED);
+			///*	if (GetTickCount64() - count_start > 4000)
+			//		isDeleted = true*/;
+			//}
 		}
 		
 		
@@ -226,6 +231,12 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 
+	if (state == KOOPA_RED_STATE_ISKICKED)
+
+	{
+		if (DistanceTurtleShellisKickedWithMario() >150 && GetTickCount64() - time_delete > 4000)
+			isDeleted = true;
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -234,6 +245,12 @@ int CRed_Koopa::LeftOrRightMarrio() {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	if (mario->GetX() < GetX()) return 1;
 	else return -1;
+}
+
+int CRed_Koopa::DistanceTurtleShellisKickedWithMario() {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	return abs(mario->GetX() - GetX());
 }
 
 void CRed_Koopa::Render()
@@ -323,17 +340,20 @@ void CRed_Koopa::SetState(int state)
 		HaveOrNotCheckFall = false;
 		isTurn = true;
 		vx = 0;
-		if (GetTickCount64() - comback_time > 2000)
-			nx = nx;
 		vy = 0;
 		break;
 		
 	case KOOPA_RED_STATE_ISKICKED:
-	
+		time_delete = GetTickCount64();
+		DebugOut(L">>> KICKING >>> \n");
 		wasKicked = true;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
+		
+		
+			
+		
 		break;
 	case KOOPA_RED_STATE_WALKING:
 		vx = nx*KOOPA_RED_WALKING_SPEED;
@@ -344,6 +364,7 @@ void CRed_Koopa::SetState(int state)
 		//vx = 0;
 		break;
 	case KOOPA_RED_WALKING_STATE_TURN:
+
 		isTurtleShell = false;
 		HaveOrNotCheckFall = true;
 			ResetCheck();

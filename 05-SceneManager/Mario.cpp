@@ -219,15 +219,16 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 		if (!koopared->GETwasKicked()) {
 			SetState(MARIO_STATE_KICK);
 			koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+			
 			DebugOut(L">>> TURTLESHELL is KICKED by MARIO >>> \n");
 		}
 		
 
 		/*if (e->ny <0 && koopared->GetState() == KOOPA_RED_STATE_ISDEFEND)
-		{
+		//{
 
 
-			koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+		//	koopared->SetState(KOOPA_RED_STATE_ISKICKED);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			DebugOut(L">>> TURTLESHELL MOVE -> CRASHED BY MARIO >>> \n");
 

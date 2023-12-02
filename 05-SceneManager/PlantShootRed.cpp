@@ -160,7 +160,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			vy = 0;
 			y = startY + 2;
 			if (GetTickCount64() - time_down_pipe > TIME_IN_PIPE) {
-				DebugOut(L">>> NGOAI PHAM VI CAY HOAT DONG >>> \n");
+				//DebugOut(L">>> NGOAI PHAM VI CAY HOAT DONG >>> \n");
 				SetState(PLANT_STATE_UP);
 			}
 		}

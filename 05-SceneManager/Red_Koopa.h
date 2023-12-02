@@ -5,7 +5,7 @@
 
 #define KOOPA_RED_GRAVITY 0.002f
 #define KOOPA_RED_WALKING_SPEED 0.015f
-#define SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED 0.025f
+#define SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED 0.25f
 
 
 
@@ -54,12 +54,15 @@ protected:
 
 	ULONGLONG count_start;
 	ULONGLONG comback_time;
+	ULONGLONG time_delete;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
 	int LeftOrRightMarrio();
+
+	
 
 	void CreateCheckfall();
 	
@@ -75,6 +78,9 @@ protected:
 public:
 	ULONGLONG GetTimeComback() { return comback_time; }
 
+	ULONGLONG GetTimeDelete() { return time_delete; }
+
+
 	bool GetIsKick() { return isKicked; }
 
 	bool GetIsTurtleShell() { return isTurtleShell; }
@@ -82,8 +88,11 @@ public:
 	bool GETwasKicked() { return wasKicked; }
 
 	bool GetIsComback() { return isComback; }
+	
+	bool GetisDeleted() { return isDeleted; }
 	//bool GetIsCollis() { return isCollis; }
 
+	int DistanceTurtleShellisKickedWithMario();
 	
 
 	void AddCheck(CGameObject* obj) {
