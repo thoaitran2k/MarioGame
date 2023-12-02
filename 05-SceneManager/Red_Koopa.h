@@ -22,6 +22,7 @@
 #define KOOPA_RED_STATE_ISDEFEND 300
 #define KOOPA_RED_STATE_ISKICKED 400
 #define KOOPA_RED_STATE_TO_RETURN 450
+#define KOOPA_RED_WALKING_STATE_TURN 460
 
 
 #define ID_ANI_KOOPA_RED_WALKING_RIGHT 6101
@@ -49,6 +50,7 @@ protected:
 	bool isComback;
 	bool wasKicked;
 	bool isDead;
+	bool isTurn;
 
 	ULONGLONG count_start;
 	ULONGLONG comback_time;
@@ -69,7 +71,6 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
-	void OnCollisionWithCheckFall(LPCOLLISIONEVENT e);
 
 public:
 	ULONGLONG GetTimeComback() { return comback_time; }

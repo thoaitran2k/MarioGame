@@ -18,7 +18,6 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	SetState(KOOPA_RED_STATE_WALKING);
 	isTurtleShell = false;
 	startX = x;
-	//isCollis = false;
 	isOnPlatform = false;
 	checkfall = NULL;
 	isKicked = false;
@@ -32,19 +31,33 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 
-	if (state == KOOPA_RED_STATE_WALKING)
+	if (state == KOOPA_RED_STATE_WALKING )
 	{
 		left = x - KOOPA_RED_BBOX_WIDTH / 2;
 		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
 		right = left + KOOPA_RED_BBOX_WIDTH;
 		bottom = top + KOOPA_RED_BBOX_HEIGHT+4;
 	}
-	else
+	else if(/*state == KOOPA_RED_STATE_ISDEFEND || */state == KOOPA_RED_WALKING_STATE_TURN)
+	{
+		left = x - KOOPA_RED_BBOX_WIDTH / 2;
+		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
+		right = left + KOOPA_RED_BBOX_WIDTH;
+		bottom = top + KOOPA_RED_BBOX_HEIGHT + 4;
+	}
+	else if(state == KOOPA_RED_STATE_ISDEFEND)
 	{
 		left = x - KOOPA_RED_BBOX_WIDTH / 2;
 		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
 		right = left + KOOPA_RED_BBOX_WIDTH;
 		bottom = top + KOOPA_RED_BBOX_HEIGHT-1;
+	}
+	else
+	{
+		left = x - KOOPA_RED_BBOX_WIDTH / 2;
+		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
+		right = left + KOOPA_RED_BBOX_WIDTH;
+		bottom = top + KOOPA_RED_BBOX_HEIGHT - 1;
 	}
 
 }
@@ -71,13 +84,6 @@ void CRed_Koopa::CreateCheckfall() {
 			
 		}
 
-		
-		
-
-		
-		
-
-
 }
 
 void CRed_Koopa::OnNoCollision(DWORD dt)
@@ -103,15 +109,10 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CBackground*>(e->obj))
 		this->OnCollisionWithPlatForm(e);
-	if (dynamic_cast<CCheckFall*>(e->obj))
-		this->OnCollisionWithCheckFall(e);
+	
 }
 
-void CRed_Koopa::OnCollisionWithCheckFall(LPCOLLISIONEVENT e)
-{
-	CCheckFall* checkfall = dynamic_cast<CCheckFall*>(e->obj);
-	//SetState(KOOPA_RED_STATE_ISDEFEND);
-}
+
 
 void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
@@ -134,21 +135,65 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 	if (!isOnPlatform) {
-		if (HaveOrNotCheckFall && checkfall == NULL) {
+		if (!isTurtleShell && HaveOrNotCheckFall) {
 			//count_start = GetTickCount64();
 
+			if (checkfall == NULL)
+			{
+				CreateCheckfall();
+				DebugOut(L">>> CHECK TAO OBJ >>> \n");
+			}
+			else if (checkfall->GetIsOnPlatform())
+			{
+				SetState(KOOPA_RED_WALKING_STATE_TURN);
+				DebugOut(L">>> MOVING >>> \n");
 
-			CreateCheckfall();
-			DebugOut(L">>> CHECK TAO OBJ >>> \n");
-
+			}
 		}
+		else if (state != KOOPA_RED_STATE_ISKICKED)
+		{
+			if (!wasKicked) {
+				if (!isComback && !isTurn) {
+					SetState(KOOPA_RED_STATE_ISDEFEND);
+					DebugOut(L">>> DEFEND >>> \n");
+				}
+				else 
+				if (!isTurn && GetTickCount64() - count_start > 2000)
+				{
+					SetState(KOOPA_RED_STATE_TO_RETURN);
+					DebugOut(L">>> RETURN >>> \n");
+				
+				}
+				if (isTurn && GetTickCount64() - comback_time > 1000)
+					//isTurtleShell = false;
+				{
+					
+					SetState(KOOPA_RED_STATE_WALKING);
+					vx = nx* KOOPA_RED_WALKING_SPEED;
+					y = y - KOOPA_RED_BBOX_HEIGHT / 2;
+					DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
+				}
+				
+				
+			}
 
-		if (checkfall->GetIsOnPlatform() && HaveOrNotCheckFall)
+			else if (isKicked)
+			{
+				SetState(KOOPA_RED_STATE_ISKICKED);
+				DebugOut(L">>> KICKING >>> \n");
+			}
+		}
+		
+		
+	
+		
+
+		/*if (checkfall->GetIsOnPlatform() && HaveOrNotCheckFall)
 		{
 			ResetCheck();
 			vx = -vx;
 			DebugOut(L">>> chi xet con rua di bo >>> \n");
-		}
+		}*/
 
 		/*if (state != KOOPA_RED_STATE_WALKING)
 
@@ -163,11 +208,11 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				ResetCheck();
 				
 			}*/
-		if (!HaveOrNotCheckFall)
+		/*if (!HaveOrNotCheckFall)
 		{
 			DeleteCheck();
 			
-		}
+		}*/
 
 		/*if (state == KOOPA_RED_STATE_ISDEFEND && GetTickCount64() - comback_time > 2000)
 		{
@@ -193,8 +238,29 @@ int CRed_Koopa::LeftOrRightMarrio() {
 
 void CRed_Koopa::Render()
 {
-	int aniId;
-	
+	int aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
+	if (isTurtleShell) {
+		switch (state)
+		{
+		case KOOPA_RED_STATE_ISDEFEND:
+			aniId = ID_ANI_KOOPA_RED_DEFEND;
+			break;
+
+
+		case KOOPA_RED_STATE_TO_RETURN:
+			aniId = ID_ANI_RED_KOOPA_COMBACK;
+			break;
+		default: if (vx > 0)
+			aniId = ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT;
+			   else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
+
+			break;
+		}
+	}
+	else if (vx < 0) aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
+
+
+	/*
 	if(state == KOOPA_RED_STATE_WALKING){
 		if (vx > 0)
 		{
@@ -203,8 +269,10 @@ void CRed_Koopa::Render()
 		else {
 			aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
 		}
-	}
-	else
+	}*/
+
+
+	/*else
 	 if (isTurtleShell && isKicked && !wasKicked)
 	{
 		
@@ -221,7 +289,7 @@ void CRed_Koopa::Render()
 			 aniId = ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT;
 		 else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
 		 DebugOut(L">>> Rua bi da va dang chay >>> \n");
-	 }
+	 }*/
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
@@ -232,21 +300,11 @@ void CRed_Koopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISDEFEND:
-		comback_time = GetTickCount64();
-		isDead = false;
+		
+		count_start = GetTickCount64();
+		ResetCheck();
+		isTurn = false;
 		isKicked = true;
-		wasKicked = false;
-		isTurtleShell = true;
-		HaveOrNotCheckFall = false;
-		isComback = false;
-		vx = 0;
-		vy = 0;
-		break;
-
-	case KOOPA_RED_STATE_TO_RETURN:
-		comback_time = GetTickCount64();
-		isKicked = true;
-		isDead = false;
 		wasKicked = false;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
@@ -254,19 +312,43 @@ void CRed_Koopa::SetState(int state)
 		vx = 0;
 		vy = 0;
 		break;
+
+	case KOOPA_RED_STATE_TO_RETURN:
+
+		comback_time = GetTickCount64();
+		isKicked = true;
+		isDead = false;
+		wasKicked = false;
+		isTurtleShell = true;
+		HaveOrNotCheckFall = false;
+		isTurn = true;
+		vx = 0;
+		if (GetTickCount64() - comback_time > 2000)
+			nx = nx;
+		vy = 0;
+		break;
 		
 	case KOOPA_RED_STATE_ISKICKED:
+	
 		wasKicked = true;
-		isDead = true;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
 		break;
 	case KOOPA_RED_STATE_WALKING:
-		vx = -KOOPA_RED_WALKING_SPEED;
-		isDead = false;
+		vx = nx*KOOPA_RED_WALKING_SPEED;
+		
+		
+		isTurtleShell = false;
 		HaveOrNotCheckFall = true;
 		//vx = 0;
+		break;
+	case KOOPA_RED_WALKING_STATE_TURN:
+		isTurtleShell = false;
+		HaveOrNotCheckFall = true;
+			ResetCheck();
+			vx = -vx;
+			DebugOut(L">>> chi xet con rua di bo >>> \n");
 		break;
 
 	}
