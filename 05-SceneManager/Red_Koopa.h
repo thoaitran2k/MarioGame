@@ -13,7 +13,7 @@
 //bbox
 #define KOOPA_RED_BBOX_WIDTH 16
 #define KOOPA_RED_BBOX_HEIGHT 16
-#define KOOPA_RED_BBOX_HEIGHT_DEFEND 7
+#define KOOPA_RED_BBOX_HEIGHT_TURTLESHELL 7
 
 //times
 #define KOOPA_RED_DIE_TIMEOUT 500
@@ -51,6 +51,7 @@ protected:
 	float startY;
 
 	CCheckFall* checkfall;
+	CRed_Koopa* newkoopa;
 
 	bool isTurtleShell;
 	bool isKicked;
@@ -75,6 +76,8 @@ protected:
 	
 
 	void CreateCheckfall();
+
+	void CreateNewKoopa();
 	
 	virtual int IsCollidable() { return 1;}
 	//virtual int IsColliswithMario() { return isCollis; }
@@ -109,6 +112,24 @@ public:
 
 	int DistanceTurtleShellisKickedWithMario();
 	
+
+	void Addnew_koopa(CGameObject* obj) {
+		if (!dynamic_cast<CRed_Koopa*>(obj)) return;
+		if (!newkoopa)
+		{
+			CRed_Koopa* newKP = dynamic_cast<CRed_Koopa*>(obj);
+			newkoopa = newKP;
+			DebugOut(L">>> check tao bullet >>> \n");
+
+		}
+	}
+
+	void ResetKP()
+	{
+		if(newkoopa) newkoopa->Delete();
+		newkoopa = NULL;
+	}
+
 
 
 	void AddCheck(CGameObject* obj) {

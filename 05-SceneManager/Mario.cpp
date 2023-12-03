@@ -174,10 +174,8 @@ void CMario::OnCollisionWithFire_Bullet(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 {
-	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CPara_Goomba* pr_goomba = dynamic_cast<CPara_Goomba*>(e->obj);
 	float xTemp, yTemp;
-	int model;
 	xTemp = pr_goomba->GetX();
 	yTemp = pr_goomba->GetY();
 
@@ -186,6 +184,7 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 	{
 		if (pr_goomba->IsFly()) {
 			pr_goomba->SetState(GOOMBA_RED_STATE_FALL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			if (x - pr_goomba->GetX() < 0) pr_goomba->SetVx(-SPEED_GOOMBA_RED_WALKING);
 			else if (x - pr_goomba->GetX() > 0) pr_goomba->SetVx(SPEED_GOOMBA_RED_WALKING);
 			
@@ -193,10 +192,9 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 		else
 		{
 			pr_goomba->SetState(GOOMBA_RED_STATE_DIE);
-			
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 
-		vy = -MARIO_JUMP_DEFLECT_SPEED;
 
 	}
 	else // hit by koopa not wing walking

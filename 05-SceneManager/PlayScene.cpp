@@ -154,6 +154,8 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 
 	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
 
+	case OBJECT_TYPE_PARA_GOOMBA: obj = new CPara_Goomba(x, y); break;
+
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
 
 	case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;

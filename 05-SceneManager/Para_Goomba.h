@@ -7,7 +7,7 @@
 //speed
 #define PARA_GOOMBA_GRAVITY 0.0005f
 #define PARA_GOOMBA_WALKING_SPEED 0.025f
-#define SPEED_PARA_GOOMBA_FLY 0.18f
+#define SPEED_PARA_GOOMBA_FLY 0.22f
 #define SPEED_GOOMBA_RED_WALKING 0.05f
 
 //bbox
@@ -15,6 +15,7 @@
 #define PARA_GOOMBA_BBOX_HEIGHT 16
 #define PARA_GOOMBA_BBOX_HEIGHT_DIE 10
 #define GOOMBA_RED_BBOX_HEIGHT 14
+#define GOOMBA_RED_BBOX_HEIGHT_DIE 7
 
 //states
 #define PARA_GOOMBA_STATE_WALKING 100
@@ -25,7 +26,7 @@
 
 //times
 #define TIME_WALKING 2000
-#define GOOMBA_RED_DIE_TIMEOUT 500
+#define GOOMBA_RED_DIE_TIMEOUT 200
 #define PARA_GOOMBA_WALKING_TIME 1500
 
 
@@ -40,12 +41,18 @@
 class CPara_Goomba : public CGameObject
 {
 protected:
+
+	float startX;
+	float startY;
+
 	float ax;
 	float ay;
 	float minY;
 
+	CPara_Goomba* para;
+
 	ULONGLONG count_start;
-	ULONGLONG die_start_red;
+	ULONGLONG die_start_red_goomba;
 	ULONGLONG time_appear;
 
 
@@ -64,10 +71,27 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
-
+	void Para_Goomba_Appear();
 
 public:
 
+
+	void AddPara_Goomba(CGameObject* obj) {
+		if (!dynamic_cast<CPara_Goomba*>(obj)) return;
+		if (!para)
+		{
+			CPara_Goomba* para_appaear = dynamic_cast<CPara_Goomba*>(obj);
+			para = para_appaear;
+			DebugOut(L">>> PARA GOOMBA XUAT HIEN >>> \n");
+
+		}
+	}
+
+	void ResetKP()
+	{
+		if (para) para->Delete();
+		para = NULL;
+	}
 
 	CPara_Goomba(float x, float y);
 	bool IsFly() { return isFly; }

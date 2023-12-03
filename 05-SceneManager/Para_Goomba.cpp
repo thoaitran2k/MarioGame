@@ -11,16 +11,36 @@
 CPara_Goomba::CPara_Goomba(float x, float y) :CGameObject(x, y)
 {
 
+		
+		startX = x;
+		startY = y;
+		this->ax = 0;
+		this->ay = PARA_GOOMBA_GRAVITY;
+		die_start_red_goomba = -1;
+		isFly = true;
+		vx = -PARA_GOOMBA_WALKING_SPEED;
+		SetState(PARA_GOOMBA_STATE_WALKING);
+		DebugOut(L">>> PARA xuat hien >>> \n");
+		
+
 	
+}
+
+void CPara_Goomba::Para_Goomba_Appear() {
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (abs(mario->GetX() - x) < 150) {
+		CGameObject* para_goomba = scene->CreateObjectAndReturn(OBJECT_TYPE_PARA_GOOMBA, startX, startY, 0, 0);
+		AddPara_Goomba(para_goomba);
+		DebugOut(L">>> koopa duoc rs >>> \n");
 		this->ax = 0;
 		this->ay = PARA_GOOMBA_GRAVITY;
 		isFly = true;
 		vx = -PARA_GOOMBA_WALKING_SPEED;
 		SetState(PARA_GOOMBA_STATE_WALKING);
-		DebugOut(L">>> PARA xuat hien >>> \n");
-
-	
+	}
 }
+
 
 void CPara_Goomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -30,6 +50,14 @@ void CPara_Goomba::GetBoundingBox(float& left, float& top, float& right, float& 
 		top = y - PARA_GOOMBA_BBOX_HEIGHT / 2;
 		right = left + PARA_GOOMBA_BBOX_WIDTH;
 		bottom = top + PARA_GOOMBA_BBOX_HEIGHT;
+	}
+
+	else if(state == GOOMBA_RED_STATE_DIE)
+	{
+		left = x - PARA_GOOMBA_BBOX_WIDTH / 2;
+		top = y - GOOMBA_RED_BBOX_HEIGHT_DIE / 2;
+		right = left + PARA_GOOMBA_BBOX_WIDTH;
+		bottom = top + GOOMBA_RED_BBOX_HEIGHT_DIE;
 	}
 	else {
 		left = x - PARA_GOOMBA_BBOX_WIDTH / 2;
@@ -79,6 +107,12 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	
+	/*if (abs(mario->GetX() - x) < 100)
+		Para_Goomba_Appear();*/
+
 	if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > PARA_GOOMBA_WALKING_TIME)
 	{
 		SetState(PARA_GOOMBA_STATE_FLY);
@@ -88,11 +122,12 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(PARA_GOOMBA_STATE_WALKING);
 	}
 
-	if (state == GOOMBA_RED_STATE_DIE && GetTickCount64() - die_start_red > GOOMBA_RED_DIE_TIMEOUT)
+	if ((state == GOOMBA_RED_STATE_DIE) && (GetTickCount64() - die_start_red_goomba > GOOMBA_RED_DIE_TIMEOUT))
 	{
 		isDeleted = true;
 		return;
 	}
+
 	//if (!isFly)
 	//{
 	//	if (GetTickCount64() - walking_time > TIME_WALKING)
@@ -165,9 +200,11 @@ void CPara_Goomba::SetState(int state)
 		count_start = GetTickCount64();
 		break;		
 	case GOOMBA_RED_STATE_DIE:
+		y += (GOOMBA_RED_BBOX_HEIGHT - GOOMBA_RED_BBOX_HEIGHT_DIE) / 2;
 		vx = 0;
 		vy = 0;
-		die_start_red = GetTickCount64();
+		ay = 0;
+		die_start_red_goomba = GetTickCount64();
 		break;
 	}
 }

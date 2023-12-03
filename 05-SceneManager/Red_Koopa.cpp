@@ -29,9 +29,12 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	isComback = false;
 	wasKicked = false;
 	isDead = false;
+	time_rs = -1;
 	
 	
 }
+
+
 
 void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
@@ -65,6 +68,18 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 		bottom = top + KOOPA_RED_BBOX_HEIGHT - 1;
 	}
 
+}
+
+void CRed_Koopa::CreateNewKoopa() {
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	if (isDead /*&& GetTickCount64() - time_rs > 4000*/) {
+		CGameObject* new_koopa = scene->CreateObjectAndReturn(OBJECT_TYPE_RED_KOOPA_WALKING, startX, startY, 0, 0);
+			Addnew_koopa(new_koopa);
+			DebugOut(L">>> koopa duoc rs >>> \n");
+			SetState(KOOPA_RED_STATE_WALKING);
+	}
+	
 }
 
 void CRed_Koopa::CreateCheckfall() {
@@ -289,23 +304,23 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 }
-	 if (state == KOOPA_RED_STATE_WAIT_RESET)
+
+CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	if(state == KOOPA_RED_STATE_WAIT_RESET)
 	{
 	
-		CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-		DebugOut(L">>> AAAAAAAAAAAA >>> \n");
-
-		if (GetTickCount64() - time_rs > 3000)
-		{
-			CGameObject* rs_koopa = scene->CreateObjectAndReturn(OBJECT_TYPE_RED_KOOPA_WALKING,startX, startY, 0, 0 /*KOOPA_RED_WALKING_SPEED*/);
+			time_rs = GetTickCount64();
+		    DebugOut(L">>> AAAAAAAAAAAA >>> \n");
+			
+			
+				CreateNewKoopa();
+				DebugOut(L">>> BBBBBBBBBBB >>> \n");
+			
+		
 			//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 			//CRed_Koopa* rs_koopa = new CRed_Koopa(startX, startY);
-
-			scene->AddObject(rs_koopa);
-			SetState(KOOPA_RED_STATE_WALKING);
-			
-		}
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -387,6 +402,7 @@ void CRed_Koopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISTURTLESHELL:
+		ResetKP();
 		count_start = GetTickCount64();
 		ResetCheck();
 		isTurn = false;
@@ -396,8 +412,10 @@ void CRed_Koopa::SetState(int state)
 		HaveOrNotCheckFall = false;
 		isComback = true;
 		isDead = false;
+		y += (KOOPA_RED_BBOX_HEIGHT - KOOPA_RED_BBOX_HEIGHT_TURTLESHELL) / 2;
 		vx = 0;
 		vy = 0;
+		//ay = 0;
 		break;
 
 	case KOOPA_RED_STATE_TO_RETURN:
@@ -441,7 +459,7 @@ void CRed_Koopa::SetState(int state)
 		break;
 
 	case KOOPA_RED_STATE_WAIT_RESET:
-		time_rs = GetTickCount64();
+		//time_rs = GetTickCount64();
 		isDead = true;
 		break;
 
