@@ -47,12 +47,17 @@ void CPara_Goomba::OnNoCollision(DWORD dt)
 
 void CPara_Goomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CPara_Goomba*>(e->obj)) return;
 	if (!e->obj->IsBlocking() && !e->obj->IsPlatform()) return;
+	if (dynamic_cast<CPara_Goomba*>(e->obj)) return;
+	
 	if (e->ny < 0)
 	{
 		isOnPlatForm = true;
 		vy = 0;
+	}
+	else if (e->nx != 0)
+	{
+		vx = -vx;
 	}
 	/*if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CPara_Goomba*>(e->obj)) return;
@@ -74,7 +79,7 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > PARA_GOOMBA_WALKING)
+	if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > PARA_GOOMBA_WALKING_TIME)
 	{
 		SetState(PARA_GOOMBA_STATE_FLY);
 	}
@@ -147,6 +152,8 @@ void CPara_Goomba::SetState(int state)
 		isOnPlatForm = false;
 		break;
 	case GOOMBA_RED_STATE_FALL:
+		//vx = SPEED_GOOMBA_RED_WALKING;
+		vy = PARA_GOOMBA_GRAVITY;
 		isFly = false;
 		break;
 	case PARA_GOOMBA_STATE_WALKING:

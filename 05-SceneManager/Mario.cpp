@@ -170,7 +170,12 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 	
 	if (e->ny < 0)
 	{
-		if (pr_goomba->IsFly()) pr_goomba->SetState(GOOMBA_RED_STATE_FALL);
+		if (pr_goomba->IsFly()) {
+			pr_goomba->SetState(GOOMBA_RED_STATE_FALL);
+			if (x - pr_goomba->GetX() < 0) pr_goomba->SetVx(-SPEED_GOOMBA_RED_WALKING);
+			else if (x - pr_goomba->GetX() > 0) pr_goomba->SetVx(SPEED_GOOMBA_RED_WALKING);
+			
+		}
 		else
 		{
 			pr_goomba->SetState(GOOMBA_RED_STATE_DIE);
