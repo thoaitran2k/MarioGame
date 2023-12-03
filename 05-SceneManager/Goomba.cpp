@@ -1,4 +1,8 @@
 #include "Goomba.h"
+#include "Mario.h"
+#include "Game.h"
+#include "PlayScene.h"
+
 
 CGoomba::CGoomba(float x, float y, int model):CGameObject(x, y)
 {
@@ -36,8 +40,10 @@ void CGoomba::OnNoCollision(DWORD dt)
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	
 	if (!e->obj->IsBlocking()) return; 
-	if (dynamic_cast<CGoomba*>(e->obj)) return; 
+
+	if (dynamic_cast<CGoomba*>(e->obj)) return;
 
 	if (e->ny != 0 )
 	{

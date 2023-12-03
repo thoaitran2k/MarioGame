@@ -18,7 +18,7 @@
 //times
 #define KOOPA_RED_DIE_TIMEOUT 500
 #define DISTANCE_MIN_SHELL_EXIST 150
-#define TURTLE_SHELL_TIMEOUT 5000
+#define TURTLE_SHELL_TIMEOUT 4000
 #define TURTLE_SHELL_TOTURN_KOOPA 4000
 #define TIME_COMBACK_KOOPA 1500
 
@@ -30,6 +30,7 @@
 #define KOOPA_RED_STATE_ISKICKED 400
 #define KOOPA_RED_STATE_TO_RETURN 450
 #define KOOPA_RED_WALKING_STATE_TURN 460
+#define KOOPA_RED_STATE_WAIT_RESET 470
 
 //Ani_id
 #define ID_ANI_KOOPA_RED_WALKING_RIGHT 6101
@@ -47,6 +48,7 @@ protected:
 	float ay;
 
 	float startX;
+	float startY;
 
 	CCheckFall* checkfall;
 
@@ -62,6 +64,7 @@ protected:
 	ULONGLONG count_start;
 	ULONGLONG comback_time;
 	ULONGLONG time_delete;
+	ULONGLONG time_rs;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -75,12 +78,17 @@ protected:
 	
 	virtual int IsCollidable() { return 1;}
 	//virtual int IsColliswithMario() { return isCollis; }
-	//virtual int IsBlocking() { return 0; }
+	virtual int IsBlocking() { return 0; }
 	
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick_Question(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+
+
 
 public:
 	ULONGLONG GetTimeComback() { return comback_time; }
@@ -101,6 +109,7 @@ public:
 
 	int DistanceTurtleShellisKickedWithMario();
 	
+
 
 	void AddCheck(CGameObject* obj) {
 		if (!dynamic_cast<CCheckFall*>(obj)) return;

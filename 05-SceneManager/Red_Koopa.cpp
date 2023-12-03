@@ -6,6 +6,9 @@
 #include "Background.h"
 #include "MushRoom.h"
 #include "CheckKoopaFall.h"
+#include "BrickQuestion.h"
+#include "Goomba.h"
+#include "Leaf.h"
 
 
 
@@ -18,6 +21,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	SetState(KOOPA_RED_STATE_WALKING);
 	isTurtleShell = false;
 	startX = x;
+	startY = y;
 	isOnPlatform = false;
 	checkfall = NULL;
 	isKicked = false;
@@ -110,10 +114,54 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CBackground*>(e->obj))
 		this->OnCollisionWithPlatForm(e);
+	else if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CBrickQuestion*>(e->obj))
+		OnCollisionWithBrick_Question(e);
 	
 }
 
+void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
+	
+	if (wasKicked) {
+		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		{
+			goomba->SetState(GOOMBA_STATE_DIE);
+			goomba->SetVy(-0.01f);
+			vx = vx;
+		}
+	}
+
+}
+
+void CRed_Koopa::OnCollisionWithBrick_Question(LPCOLLISIONEVENT e) {
+
+	if (wasKicked) {
+		CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
+		CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		BOOLEAN isUnBox, isEmpty;
+		isUnBox = questionBrick->GetIsUnbox();
+		isEmpty = questionBrick->GetIsEmpty();
+		float xTemp, yTemp, minY;
+		xTemp = questionBrick->GetX();
+		yTemp = questionBrick->GetY();
+
+		if (e->nx != 0 && !isUnBox && !isEmpty) {
+
+			if (questionBrick->GetModel() == QUESTION_BRICK_LEAF)
+			{
+				CLeaf* leaf = new CLeaf(xTemp, yTemp);
+				leaf->SetState(LEAF_SUMMON_STATE);
+				scene->AddObject(leaf);
+				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+				questionBrick->SetIsEmpty(true);
+				questionBrick->SetIsUnbox(true);
+			}
+		}
+	}
+}
 
 void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 {
@@ -134,108 +182,130 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-
-	if (!isOnPlatform) {
-		if (!isTurtleShell && HaveOrNotCheckFall) {
-			//count_start = GetTickCount64();
-
-			if (checkfall == NULL)
-			{
-				CreateCheckfall();
-				DebugOut(L">>> CHECK TAO OBJ >>> \n");
-			}
-			else if (checkfall->GetIsOnPlatform())
-			{
-				SetState(KOOPA_RED_WALKING_STATE_TURN);
-				DebugOut(L">>> MOVING >>> \n");
-
-			}
-		}
-		else if (state != KOOPA_RED_STATE_ISKICKED)
+	if (!isDead) {
+		if (!isOnPlatform)
 		{
-			if (!wasKicked) {
-				if (!isComback && !isTurn) {
-					SetState(KOOPA_RED_STATE_ISTURTLESHELL);
-					DebugOut(L">>> DEFEND >>> \n");
-				}
-				else
-					if (!isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
-					{
-						SetState(KOOPA_RED_STATE_TO_RETURN);
-						DebugOut(L">>> RETURN >>> \n");
+			if (!isTurtleShell && HaveOrNotCheckFall) {
+				//count_start = GetTickCount64();
 
+				if (checkfall == NULL)
+				{
+					CreateCheckfall();
+					DebugOut(L">>> CHECK TAO OBJ >>> \n");
+				}
+				else if (checkfall->GetIsOnPlatform())
+				{
+					SetState(KOOPA_RED_WALKING_STATE_TURN);
+					DebugOut(L">>> MOVING >>> \n");
+
+				}
+			}
+			else if (state != KOOPA_RED_STATE_ISKICKED)
+			{
+				if (!wasKicked) {
+					if (!isComback && !isTurn) {
+						SetState(KOOPA_RED_STATE_ISTURTLESHELL);
+						DebugOut(L">>> DEFEND >>> \n");
 					}
-				if (isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
-					//isTurtleShell = false;
+					else
+						if (!isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
+						{
+							SetState(KOOPA_RED_STATE_TO_RETURN);
+							DebugOut(L">>> RETURN >>> \n");
+
+						}
+					if (isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
+						//isTurtleShell = false;
+					{
+
+						SetState(KOOPA_RED_STATE_WALKING);
+						vx = nx * KOOPA_RED_WALKING_SPEED;
+						y = y - KOOPA_RED_BBOX_HEIGHT / 2;
+						DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
+					}
+
+
+				}
+				else if (isKicked)
+				{
+					SetState(KOOPA_RED_STATE_ISKICKED);
+				}
+				//else if (isKicked)
+				//{
+				//	SetState(KOOPA_RED_STATE_ISKICKED);
+				///*	if (GetTickCount64() - count_start > 4000)
+				//		isDeleted = true*/;
+				//}
+			}
+			/*if (checkfall->GetIsOnPlatform() && HaveOrNotCheckFall)
+			{
+				ResetCheck();
+				vx = -vx;
+				DebugOut(L">>> chi xet con rua di bo >>> \n");
+			}*/
+
+			/*if (state != KOOPA_RED_STATE_WALKING)
+
+				if (GetTickCount64() - comback_time > 2000)
 				{
 
 					SetState(KOOPA_RED_STATE_WALKING);
-					vx = nx * KOOPA_RED_WALKING_SPEED;
 					y = y - KOOPA_RED_BBOX_HEIGHT / 2;
-					DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
-				}
 
+					CreateCheckfall();
+					DeleteCheck();
+					ResetCheck();
 
-			}
-			else if (isKicked)
-			{
-				SetState(KOOPA_RED_STATE_ISKICKED);
-			}
-			//else if (isKicked)
-			//{
-			//	SetState(KOOPA_RED_STATE_ISKICKED);
-			///*	if (GetTickCount64() - count_start > 4000)
-			//		isDeleted = true*/;
-			//}
-		}
-		
-		
-	
-		
+				}*/
+				/*if (!HaveOrNotCheckFall)
+				{
+					DeleteCheck();
 
-		/*if (checkfall->GetIsOnPlatform() && HaveOrNotCheckFall)
-		{
-			ResetCheck();
-			vx = -vx;
-			DebugOut(L">>> chi xet con rua di bo >>> \n");
-		}*/
+				}*/
 
-		/*if (state != KOOPA_RED_STATE_WALKING)
-
-			if (GetTickCount64() - comback_time > 2000)
-			{
-				
-				SetState(KOOPA_RED_STATE_WALKING);
-				y = y - KOOPA_RED_BBOX_HEIGHT / 2;
-				
-				CreateCheckfall();
-				DeleteCheck();
-				ResetCheck();
-				
-			}*/
-		/*if (!HaveOrNotCheckFall)
-		{
-			DeleteCheck();
-			
-		}*/
-
-		/*if (state == KOOPA_RED_STATE_ISDEFEND && GetTickCount64() - comback_time > 2000)
-		{
-			SetState(KOOPA_RED_STATE_TO_RETURN);
-			if (!isDead && (GetTickCount64() - comback_time >1000))
-			{
-				SetState(KOOPA_RED_STATE_WALKING);
-				y = y - KOOPA_RED_BBOX_HEIGHT / 2;
-			}
-		}*/
-
+				/*if (state == KOOPA_RED_STATE_ISDEFEND && GetTickCount64() - comback_time > 2000)
+				{
+					SetState(KOOPA_RED_STATE_TO_RETURN);
+					if (!isDead && (GetTickCount64() - comback_time >1000))
+					{
+						SetState(KOOPA_RED_STATE_WALKING);
+						y = y - KOOPA_RED_BBOX_HEIGHT / 2;
+					}
+				}*/
 	}
-
 	if (state == KOOPA_RED_STATE_ISKICKED)
-
 	{
 		if (DistanceTurtleShellisKickedWithMario() > DISTANCE_MIN_SHELL_EXIST && GetTickCount64() - time_delete > TURTLE_SHELL_TIMEOUT)
+		{
 			isDeleted = true;
+		}
+		if (isDeleted)
+		{
+			
+			
+			SetState(KOOPA_RED_STATE_WAIT_RESET);
+			DebugOut(L">>> WAIT RESET >>> \n");
+		}
+
+	}
+}
+	 if (state == KOOPA_RED_STATE_WAIT_RESET)
+	{
+	
+		CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		DebugOut(L">>> AAAAAAAAAAAA >>> \n");
+
+		if (GetTickCount64() - time_rs > 3000)
+		{
+			CGameObject* rs_koopa = scene->CreateObjectAndReturn(OBJECT_TYPE_RED_KOOPA_WALKING,startX, startY, 0, 0 /*KOOPA_RED_WALKING_SPEED*/);
+			//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+			//CRed_Koopa* rs_koopa = new CRed_Koopa(startX, startY);
+
+			scene->AddObject(rs_koopa);
+			SetState(KOOPA_RED_STATE_WALKING);
+			
+		}
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -317,7 +387,6 @@ void CRed_Koopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISTURTLESHELL:
-		
 		count_start = GetTickCount64();
 		ResetCheck();
 		isTurn = false;
@@ -326,6 +395,7 @@ void CRed_Koopa::SetState(int state)
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
 		isComback = true;
+		isDead = false;
 		vx = 0;
 		vy = 0;
 		break;
@@ -349,27 +419,30 @@ void CRed_Koopa::SetState(int state)
 		wasKicked = true;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
+		isDead = false;
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
-		
-		
-			
 		
 		break;
 	case KOOPA_RED_STATE_WALKING:
-		vx = nx*KOOPA_RED_WALKING_SPEED;
-		
-		
+		vx = KOOPA_RED_WALKING_SPEED;
 		isTurtleShell = false;
+		isDead = false;
 		HaveOrNotCheckFall = true;
 		//vx = 0;
 		break;
-	case KOOPA_RED_WALKING_STATE_TURN:
 
+	case KOOPA_RED_WALKING_STATE_TURN:
+		isDead = false;
 		isTurtleShell = false;
 		HaveOrNotCheckFall = true;
 			ResetCheck();
 			vx = -vx;
 			DebugOut(L">>> chi xet con rua di bo >>> \n");
+		break;
+
+	case KOOPA_RED_STATE_WAIT_RESET:
+		time_rs = GetTickCount64();
+		isDead = true;
 		break;
 
 	}

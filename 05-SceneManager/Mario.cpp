@@ -385,30 +385,6 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 
 		}
 	}
-	if (e->nx != 0 && !isUnBox && !isEmpty) {
-
-		float xTemp, yTemp, minY;
-		xTemp = questionBrick->GetX();
-		yTemp = questionBrick->GetY();
-		minY = questionBrick->GetMinY();
-
-
-		if (questionBrick->GetModel() == QUESTION_BRICK_LEAF)
-		{
-			CLeaf* leaf = new CLeaf(xTemp, yTemp);
-
-			//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
-			//CBrick* newbullet = new CBrick(367, 320);
-			leaf->SetState(LEAF_SUMMON_STATE);
-			scene->AddObject(leaf);
-			//scene->AddObject(bullet);
-
-			//scene->AddObject(newbullet);
-			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
-			questionBrick->SetState(BRICK_Q_STATE_UP);
-			questionBrick->SetIsEmpty(true);
-		}
-	}
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

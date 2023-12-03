@@ -75,7 +75,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		IsActive = true;
 
 	if (IsActive && GetTickCount64() - time_wait_plant_return >2000) {
-		DebugOut(L">>> CAY DANG HOAT DONG >>> \n");
+		//DebugOut(L">>> CAY DANG HOAT DONG >>> \n");
 		if (isUpping) {
 			if (y > minY)
 			{
@@ -90,7 +90,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				{
 
 
-					DebugOut(L">>> CAY LAN XUONG lan thu n >>> \n");
+					//DebugOut(L">>> CAY LAN XUONG lan thu n >>> \n");
 
 					SetState(PLANT_STATE_DOWN);
 
@@ -108,7 +108,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 
 
-						DebugOut(L">>> SINH RA VIEN DAN>>> \n");
+						//DebugOut(L">>> SINH RA VIEN DAN>>> \n");
 
 						if (mario->GetX() < x && mario->GetY() < y)
 						{
@@ -157,11 +157,11 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if ((distanceMario_PlantEnemies() > DISTANCE_MIN_MARIO_PLANT))
 					{
 
-						DebugOut(L">>> CAY SE TROI LEN >>> \n");
+						//DebugOut(L">>> CAY SE TROI LEN >>> \n");
 						SetState(PLANT_STATE_UP);
 					}
 					else {
-						DebugOut(L">>> MARIO CO THE DI TREN MIENG CONG DUNG NAM TRONG PHAM VI CAY KHONG HOAT DONG >>> \n");
+						//DebugOut(L">>> MARIO CO THE DI TREN MIENG CONG DUNG NAM TRONG PHAM VI CAY KHONG HOAT DONG >>> \n");
 						SetState(PLANT_STATE_NOT_TOUCH);
 					}
 
@@ -183,14 +183,14 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				y = startY;
 				//IsActive = false;
 				if (GetTickCount64() - time_down_pipe > TIME_IN_PIPE_START) {
-					DebugOut(L">>> NGOAI PHAM VI CAY HOAT DONG >>> \n");
+					//DebugOut(L">>> NGOAI PHAM VI CAY HOAT DONG >>> \n");
 					SetState(PLANT_STATE_UP);
 				}
 			}
 		}
 	}
 	else {
-		DebugOut(L">>> CAY DANG NGUNG HOAT DONG >>> \n");
+		//DebugOut(L">>> CAY DANG NGUNG HOAT DONG >>> \n");
 		return;
 	}
 	//TEST CAY KHONG VA CHAM VOI MARIO

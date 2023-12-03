@@ -16,6 +16,7 @@
 
 #define GOOMBA_BASIC 1
 #define GOOMBA_RED 2
+#define GOOMBA_UNDER_KOOPA 3
 
 
 
@@ -46,7 +47,9 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public: 	
-	
+
+
+	void SetIsBlocking(int b) { b; }
 	CGoomba(float x, float y, int model);
 
 	void SetModel(int model) { this->model = model; }
