@@ -12,7 +12,7 @@ CPlantShootRed::CPlantShootRed(float x, float y):CGameObject(x, y)
 	startY = y;
 	loacationX = x;
 	minY = startY - PLANT_BBOX_HEIGHT;
-	SetState(PLANT_STATE_DOWN);
+	SetState(PLANT_STATE_UP);
 	IsActive = true;
 	
 	
@@ -37,10 +37,12 @@ void CPlantShootRed::GetBoundingBox(float& l, float& t, float& r, float& b)
 		DebugOut(L">>> CAY O DUOI CONG MARIO KHONG BI DUNG >>>endl>>CAY KHONG TROI LEN VI MARIO DUNG KE BEN>>> \n");
 		return;
 	}*/
-	if ((distanceMario_PlantEnemies() < 50) && isDowning && state == PLANT_STATE_NOT_TOUCH)
+	if (!IsActive)
 	{
-		DebugOut(L">>> MARIO WIN >>> \n");
+		DebugOut(L">>> die or not die >>> \n");
 		return;
+		
+	
 	}
 	else {
 
@@ -56,114 +58,140 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (isUpping) /*&& (distanceMario_PlantEnemies() > 50) && (distanceMario_PlantEnemies() < DISTANCE_PLANT_ENEMIS_SHOW_UP))*/ {
-		if (y >minY)
-		{
-			vy = -SPEED;
-		}
-		else {
-			
-			vy = 0;
-			y = minY;
-			time_shoot = GetTickCount64();
-			if (GetTickCount64() - time_out_pipe > TIME_OUT_PIPE)
-			{
-				
-				
-				DebugOut(L">>> CAY LAN XUONG lan thu n >>> \n");
-				
-				SetState(PLANT_STATE_DOWN);
 
+	
+
+	
+	if (abs(mario->GetX() - x) < 25)
+	{
+		if ( y == startY)  {
+			IsActive = false;
+			time_wait_plant_return = GetTickCount64();
+		}
+
+
+	}
+	else
+		IsActive = true;
+
+	if (IsActive && GetTickCount64() - time_wait_plant_return >2000) {
+		DebugOut(L">>> CAY DANG HOAT DONG >>> \n");
+		if (isUpping) {
+			if (y > minY)
+			{
+				vy = -SPEED;
 			}
 			else {
+
+				vy = 0;
+				y = minY;
+				time_shoot = GetTickCount64();
+				if (GetTickCount64() - time_out_pipe > TIME_OUT_PIPE)
+				{
+
+
+					DebugOut(L">>> CAY LAN XUONG lan thu n >>> \n");
+
+					SetState(PLANT_STATE_DOWN);
+
+				}
+				else {
 					if (!isShoot) {
-						
+
 						//if (GetTickCount64() - time_shoot < TIME_CONDITION_TO_SHOOT) 
 						//{
 
-								isShoot = true;
-								bool theoX = true, theoY = true;
-							
-								CreateBullet(); 
+						isShoot = true;
+						bool theoX = true, theoY = true;
 
-								
+						CreateBullet();
 
-								DebugOut(L">>> SINH RA VIEN DAN>>> \n");
 
-								if (mario->GetX() < x && mario->GetY() < y)
-								{
-									CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
-									scene->AddObject(bullet);
-								}
-								else
-									if (mario->GetX() < x && mario->GetY() > y)
-									{
-										
 
-										//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
-										//scene->AddObject(bullet);
-									}
+						DebugOut(L">>> SINH RA VIEN DAN>>> \n");
 
-								if (mario->GetX() > x && mario->GetY() > y)
-								{
-									CbulletPlant* bullet = new CbulletPlant(x, y, theoY, theoX);
-									scene->AddObject(bullet);
-								}
-								else
-									if (mario->GetX() > x && mario->GetY() < y)
-									{
-										CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, theoX);
-										scene->AddObject(bullet);
-									}
-							
-						
+						if (mario->GetX() < x && mario->GetY() < y)
+						{
+							CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
+							scene->AddObject(bullet);
+						}
+						else
+							if (mario->GetX() < x && mario->GetY() > y)
+							{
+
+
+								//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
+								//scene->AddObject(bullet);
+							}
+
+						if (mario->GetX() > x && mario->GetY() > y)
+						{
+							CbulletPlant* bullet = new CbulletPlant(x, y, theoY, theoX);
+							scene->AddObject(bullet);
+						}
+						else
+							if (mario->GetX() > x && mario->GetY() < y)
+							{
+								CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, theoX);
+								scene->AddObject(bullet);
+							}
+
+
 						//}
 					}
+				}
 			}
 		}
-	}
-	else if (isDowning) {
-		
-		if(y < startY +2)
-		{
-			vy = SPEED;
+		else if (isDowning) {
+
+			if (y < startY)
+			{
+				vy = SPEED;
+			}
+			else {
+				//IsActive = false;
+				vy = 0;
+				y = startY;
+				if (GetTickCount64() - time_down_pipe > TIME_IN_PIPE) {
+
+					if ((distanceMario_PlantEnemies() > DISTANCE_MIN_MARIO_PLANT))
+					{
+
+						DebugOut(L">>> CAY SE TROI LEN >>> \n");
+						SetState(PLANT_STATE_UP);
+					}
+					else {
+						DebugOut(L">>> MARIO CO THE DI TREN MIENG CONG DUNG NAM TRONG PHAM VI CAY KHONG HOAT DONG >>> \n");
+						SetState(PLANT_STATE_NOT_TOUCH);
+					}
+
+					//else IsActive = true;
+				}
+			}
 		}
 		else {
-			vy = 0;
-			y = startY + 2;
-			if (GetTickCount64() - time_down_pipe > TIME_IN_PIPE) {
-				
-				if ((distanceMario_PlantEnemies() > 50))
-				{
-					
-					DebugOut(L">>> CAY SE TROI LEN >>> \n");
+			/*{
+				DebugOut(L">>> KIEM TRA SETSTATE>>> \n");
+				SetState(PLANT_STATE_NOT_TOUCH);
+			}*/
+			if (y < startY)
+			{
+				vy = SPEED;
+			}
+			else {
+				vy = 0;
+				y = startY;
+				//IsActive = false;
+				if (GetTickCount64() - time_down_pipe > TIME_IN_PIPE_START) {
+					DebugOut(L">>> NGOAI PHAM VI CAY HOAT DONG >>> \n");
 					SetState(PLANT_STATE_UP);
 				}
-				else { 
-					DebugOut(L">>> MARIO CO THE DI TREN MIENG CONG DUNG NAM TRONG PHAM VI CAY KHONG HOAT DONG >>> \n");
-					SetState(PLANT_STATE_NOT_TOUCH); }
-				
-				//else IsActive = true;
 			}
 		}
 	}
 	else {
-		/*{
-			DebugOut(L">>> KIEM TRA SETSTATE>>> \n");
-			SetState(PLANT_STATE_NOT_TOUCH);
-		}*/
-		if (y < startY + 2 )
-		{
-			vy = SPEED;
-		}
-		else {
-			vy = 0;
-			y = startY + 2;
-			if (GetTickCount64() - time_down_pipe > TIME_IN_PIPE) {
-				//DebugOut(L">>> NGOAI PHAM VI CAY HOAT DONG >>> \n");
-				SetState(PLANT_STATE_UP);
-			}
-		}
+		DebugOut(L">>> CAY DANG NGUNG HOAT DONG >>> \n");
+		return;
 	}
 	//TEST CAY KHONG VA CHAM VOI MARIO
 		/*if (state != PLANT_STATE_UP && state != PLANT_STATE_DOWN)
@@ -241,8 +269,7 @@ void CPlantShootRed::SetState(int state)
 	switch (state)
 	{
 	case PLANT_STATE_UP:
-
-		if (distanceMario_PlantEnemies() < DISTANCE_PLANT_ENEMIS_SHOW_UP)
+		if (distanceMario_PlantEnemies() < DISTANCE_PLANT_ENEMIS_MAYBE_SHOW_UP)
 		{
 			isUpping = true;
 
@@ -258,6 +285,8 @@ void CPlantShootRed::SetState(int state)
 		break;
 
 	case PLANT_STATE_DOWN:
+
+		
 		isShoot = false;
 		isUpping = false;
 		isDowning = true;
@@ -265,7 +294,7 @@ void CPlantShootRed::SetState(int state)
 		time_out_pipe = 0;
 		break;
 	case PLANT_STATE_NOT_TOUCH:
-		y = startY + 2;
+		y = startY;
 		vy = 0;
 		break;
 	}

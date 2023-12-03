@@ -1,5 +1,6 @@
 #pragma once
 #include"GameObject.h"
+#include"PlantShootRed.h"
 
 #define ID_ANI_LONG_PIPE 202
 #define ID_ANI_MEDIUM_PIPE 201
@@ -22,6 +23,8 @@ class CPipePlantShoot : public CGameObject {
 		void Render();
 		void Update(DWORD dt) {}
 
+		//CPlantShootRed* plantshoot;
+
 	public:
 		CPipePlantShoot(float x, float y, int model);
 		
@@ -30,5 +33,8 @@ class CPipePlantShoot : public CGameObject {
 		void SetModel(int model) { this->model = model; }
 		int GetModel() { return model; }
 
+		
+
+	
 };
 

@@ -174,7 +174,7 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	
 }
 
-void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy)
+void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy, float nx, float ny)
 {
 	
 	int object_type = id;
@@ -183,11 +183,6 @@ void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy)
 
 	switch (object_type)
 	{
-		case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
-
-		case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;
-		
-		case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x, y, 0, 0); break;
 
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);

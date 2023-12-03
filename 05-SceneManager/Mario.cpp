@@ -19,6 +19,7 @@
 #include "Red_Koopa.h"
 #include "leaf.h"
 #include "Para_Goomba.h"
+#include "PipePlantShoot.h"
 
 
 
@@ -84,6 +85,12 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFire_Bullet(e);
 	else if (dynamic_cast<CPlantShootRed*>(e->obj))
 		OnCollisionWithPlantShootRed(e);
+	else if (dynamic_cast<CPipePlantShoot*>(e->obj))
+		OnCollisionWithPipe(e);
+}
+
+void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e) {
+
 }
 
 void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
@@ -124,22 +131,27 @@ void CMario::OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e)
 {
 	CPlantShootRed* pshootred = dynamic_cast<CPlantShootRed*>(e->obj);
 
-	if (untouchable == 0) {
-		if (pshootred->GetState() != PLANT_STATE_NOT_TOUCH) {
-			if (level > MARIO_LEVEL_SMALL)
-			{
-				level = MARIO_LEVEL_SMALL;
-				StartUntouchable();
-			}
-			else
-			{
-				DebugOut(L">>> Mario DIE by Plant Enemies >>> \n");
-				SetState(MARIO_STATE_DIE);
-				//isDeleted = true; sai
+	
+
+	if (pshootred->StateActive()) {
+
+		if (untouchable == 0) {
+			if (pshootred->GetState() != PLANT_STATE_NOT_TOUCH) {
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE by Plant Enemies >>> \n");
+					SetState(MARIO_STATE_DIE);
+					//isDeleted = true; sai
+				}
 			}
 		}
 	}
-	
+	else return;
 }
 
 void CMario::OnCollisionWithFire_Bullet(LPCOLLISIONEVENT e)

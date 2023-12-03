@@ -5,11 +5,13 @@
 
 #define SPEED 0.025f
 
-#define TIME_OUT_PIPE 4000
+#define TIME_OUT_PIPE 5000
 #define TIME_CONDITION_TO_SHOOT 1500
-#define TIME_IN_PIPE 3000
+#define TIME_IN_PIPE 4000
+#define TIME_IN_PIPE_START 4500
 
-#define DISTANCE_PLANT_ENEMIS_SHOW_UP 150
+#define DISTANCE_PLANT_ENEMIS_MAYBE_SHOW_UP 130
+#define DISTANCE_MIN_MARIO_PLANT 24
 
 
 #define PLANT_BBOX_WIDTH 12
@@ -19,6 +21,7 @@
 #define PLANT_STATE_UP 100
 #define PLANT_STATE_DOWN 200
 #define PLANT_STATE_NOT_TOUCH 300
+#define PLANT_STATE_NOT_UP 400
 
 #define ID_ANI_PLANT_LEFT_UNDER_NOT_SHOOT	301
 #define ID_ANI_PLANT_LEFT_UNDER_SHOOT 302
@@ -43,12 +46,15 @@ class CPlantShootRed : public CGameObject
 		bool isUpping, isDowning;
 		float range;
 		bool IsActive;
+		
+
 		CbulletPlant* fire_bullet;
 
 		float distanceMario_PlantEnemies();
 		BOOLEAN isNotCollisMario = false;
 
 		ULONGLONG time_out_pipe;
+		ULONGLONG time_wait_plant_return;
 		ULONGLONG time_shoot;
 		ULONGLONG time_down_pipe;
 
@@ -69,7 +75,12 @@ class CPlantShootRed : public CGameObject
 
 	public:
 		CPlantShootRed(float x, float y);
+		
+		bool GETUp() { return isUpping; }
+		bool GETDown() { return isDowning; }
+		bool StateActive() { return IsActive; }
 
+		
 		void addFIRE_BULLET(CGameObject* obj) {
 			if (!dynamic_cast<CbulletPlant*>(obj)) return;
 			else if (!fire_bullet)

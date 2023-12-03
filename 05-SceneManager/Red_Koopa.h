@@ -110,9 +110,6 @@ public:
 			checkfall = cfall_obj;
 			DebugOut(L">>> check >>> \n");
 			
-
-
-			//checkfall->isOnPlatformCheck = true;
 		}
 	}
 

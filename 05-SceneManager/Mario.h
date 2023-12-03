@@ -140,6 +140,7 @@ class CMario : public CGameObject
 	void OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithFire_Bullet(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e);
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 
 
 	int GetAniIdBig();

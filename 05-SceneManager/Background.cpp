@@ -50,7 +50,7 @@ void CBackground::RenderBoundingBox()
 
 void CBackground::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CBackground::GetBoundingBox(float& l, float& t, float& r, float& b)
