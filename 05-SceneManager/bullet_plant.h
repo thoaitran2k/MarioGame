@@ -17,8 +17,8 @@
 #define BULLET_BLUE_BBOX_WIDTH 12
 #define BULLET_BLUE_BBOX_HEIGHT 12
 
-#define BULLET_SPEED_X 0.009f
-#define BULLET_SPEED_Y 0.008f
+#define BULLET_SPEED_X 0.04f
+#define BULLET_SPEED_Y 0.03f
 
 #define ADJUST_VECTOR_Y 30
 #define CHANGE_DIRECTION 30
@@ -35,7 +35,8 @@ class CbulletPlant : public CGameObject {
 protected:
 
 
-		virtual int IsCollidable() { return 1; };
+		virtual int IsCollidable() { return 0; };
+		virtual int IsBlocking() { return 1; };
 		ULONGLONG start_deleted;
 		
 
@@ -45,7 +46,7 @@ protected:
 
 
 
-		CbulletPlant(float bx, float by, bool top_bottom, bool left_right);
+		CbulletPlant(float bx, float by,float nx, float ny);
 
 
 		void Render();

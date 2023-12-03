@@ -87,7 +87,7 @@ void CRed_Koopa::CreateCheckfall() {
 
 		if (vx<0)
 		{
-			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()- KOOPA_RED_BBOX_WIDTH, y,0 /*KOOPA_RED_WALKING_SPEED*/, 0);
+			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()- KOOPA_RED_BBOX_WIDTH, y, SPEED_PREVIOUS_KOOPA, 0);
 				AddCheck(add_object_left);
 				DebugOut(L">>> check tao obj left >>> \n");
 				checkfall->SetState(STATE_LEFT_KOOPA);

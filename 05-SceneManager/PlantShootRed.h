@@ -48,7 +48,7 @@ class CPlantShootRed : public CGameObject
 		bool IsActive;
 		
 
-		CbulletPlant* fire_bullet;
+		CbulletPlant* bullet;
 
 		float distanceMario_PlantEnemies();
 		BOOLEAN isNotCollisMario = false;
@@ -81,22 +81,22 @@ class CPlantShootRed : public CGameObject
 		bool StateActive() { return IsActive; }
 
 		
-		void addFIRE_BULLET(CGameObject* obj) {
+		void create_bullet(CGameObject* obj) {
 			if (!dynamic_cast<CbulletPlant*>(obj)) return;
-			else if (!fire_bullet)
+			else if (!bullet)
 			{
-				CbulletPlant* bullet = dynamic_cast<CbulletPlant*>(obj);
-				fire_bullet = bullet;
+				CbulletPlant* new_bullet = dynamic_cast<CbulletPlant*>(obj);
+				bullet = new_bullet;
 				DebugOut(L">>> check tao bullet >>> \n");
 
 			}
 		}
 
-		void ResetBullet()
-		{
-			fire_bullet->Delete();
-			fire_bullet = NULL;
+		void Reset() {
+			if (bullet) bullet->Delete();
+			bullet = NULL;
 		}
+
 
 		
 		virtual void SetState(int state);

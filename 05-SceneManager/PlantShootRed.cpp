@@ -22,8 +22,8 @@ void CPlantShootRed::CreateBullet() {
 
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	//CGameObject* add_bullet = scene->CreateObjectAndReturn(OBJECT_TYPE_FIRE_BULLET_OF_PLANT, x-5 , y - PLANT_BBOX_HEIGHT / 2+8, 0, 0);
-	//addFIRE_BULLET(add_bullet);
+	CGameObject* bullet = scene->CreateObjectAndReturn(OBJECT_TYPE_FIRE_BULLET_OF_PLANT, x , y - 4, BULLET_SPEED_X, BULLET_SPEED_Y);
+	create_bullet(bullet);
 
 	//DebugOut(L">>> check tao ra vien dan >>> \n");
 
@@ -98,46 +98,103 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else {
 					if (!isShoot) {
 
-						//if (GetTickCount64() - time_shoot < TIME_CONDITION_TO_SHOOT) 
-						//{
+					
 
 						isShoot = true;
 						bool theoX = true, theoY = true;
 
-						CreateBullet();
+						
+							CreateBullet();
+						
+						/*if (mario->GetX() < x)
+						{
+							CreateBullet();
+							bullet->SetVx(-BULLET_SPEED_X);
+
+						}
+						else
+						{
+							CreateBullet();
+							bullet->SetVx(BULLET_SPEED_X);
+
+						}
+
+
+						if (mario->GetY() < y)
+						{
+							CreateBullet();
+							bullet->SetVy(BULLET_SPEED_Y);
+
+						}
+						else
+						{
+							CreateBullet();
+							bullet->SetVy(-BULLET_SPEED_Y);
+
+						}*/
 
 
 
 						//DebugOut(L">>> SINH RA VIEN DAN>>> \n");
 
-						if (mario->GetX() < x && mario->GetY() < y)
-						{
-							CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
-							scene->AddObject(bullet);
-						}
-						else
-							if (mario->GetX() < x && mario->GetY() > y)
-							{
+						//if (mario->GetX() < x && mario->GetY() < y)
+						//{
+						//	CreateBullet();
+						//	bullet->SetVx(-BULLET_SPEED_X);
+						//	bullet->SetVy(-BULLET_SPEED_Y);
+
+						//	//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
+						//	//scene->AddObject(bullet);
+						//	
+						//}
+						//else if (mario->GetX() < x && mario->GetY() > y)
+						//	{
+						//		CreateBullet();
+						//		bullet->SetVx(-BULLET_SPEED_X);
+						//		bullet->SetVy(BULLET_SPEED_Y);
+
+						//		//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
+						//		//scene->AddObject(bullet);
+						//	}
 
 
-								//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
-								//scene->AddObject(bullet);
-							}
+						//if (mario->GetX() > x && mario->GetY() > y)
+						//{
+						//	CreateBullet();
+						//	bullet->SetVx(BULLET_SPEED_X);
+						//	bullet->SetVy(BULLET_SPEED_Y);
 
-						if (mario->GetX() > x && mario->GetY() > y)
-						{
-							CbulletPlant* bullet = new CbulletPlant(x, y, theoY, theoX);
-							scene->AddObject(bullet);
-						}
-						else
-							if (mario->GetX() > x && mario->GetY() < y)
-							{
-								CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, theoX);
-								scene->AddObject(bullet);
-							}
-
+						//	//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
+						//	//scene->AddObject(bullet);
 
 						//}
+						//else if (mario->GetX() > x && mario->GetY() < y)
+						//{
+						//	CreateBullet();
+						//	bullet->SetVx(-BULLET_SPEED_X);
+						//	bullet->SetVy(BULLET_SPEED_Y);
+
+						//	//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
+						//	//scene->AddObject(bullet);
+						//}
+						
+
+						//if (mario->GetX() < x && mario->GetY() < y)
+						//{
+						//	CreateBullet();
+						//	bullet->SetVx(-BULLET_SPEED_X);
+						//	bullet->SetVy(BULLET_SPEED_Y);
+						//	//CbulletPlant* bullet = new CbulletPlant(x, y, theoY, theoX);
+						//	//scene->AddObject(bullet);
+						//}
+						//else if(mario->GetX() < x && mario->GetY() < y)
+						//	{
+						//		CreateBullet();
+						//		bullet->SetVx(BULLET_SPEED_X);
+						//		bullet->SetVy(-BULLET_SPEED_Y);
+						//		//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, theoX);
+						//		//scene->AddObject(bullet);
+						//	}
 					}
 				}
 			}
@@ -193,12 +250,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		//DebugOut(L">>> CAY DANG NGUNG HOAT DONG >>> \n");
 		return;
 	}
-	//TEST CAY KHONG VA CHAM VOI MARIO
-		/*if (state != PLANT_STATE_UP && state != PLANT_STATE_DOWN)
-		{
-			DebugOut(L">>> CAY KHONG LAM MARIO CHET KHI O DUOI ONG >>> \n");
-			SetState(PLANT_STATE_NOT_TOUNCH);
-		}*/
+	
 	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

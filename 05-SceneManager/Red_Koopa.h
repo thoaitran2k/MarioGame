@@ -6,7 +6,7 @@
 
 //speeds
 #define KOOPA_RED_GRAVITY 0.002f
-#define KOOPA_RED_WALKING_SPEED 0.015f
+#define KOOPA_RED_WALKING_SPEED 0.0155f
 #define SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED 0.25f
 
 
@@ -115,7 +115,7 @@ public:
 
 	void Addnew_koopa(CGameObject* obj) {
 		if (!dynamic_cast<CRed_Koopa*>(obj)) return;
-		if (!newkoopa)
+		else if (!newkoopa)
 		{
 			CRed_Koopa* newKP = dynamic_cast<CRed_Koopa*>(obj);
 			newkoopa = newKP;

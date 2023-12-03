@@ -162,6 +162,7 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 
 	case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x, y, 0, 0); break;
 
+
 		
 
 
@@ -179,7 +180,7 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	
 }
 
-void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy, float nx, float ny)
+CGameObject* CPlayScene::AddObj (int id, float x, float y, float vx, float vy)
 {
 	
 	int object_type = id;
@@ -188,10 +189,11 @@ void CPlayScene::CreateObject (int id, float x, float y, float vx, float vy, flo
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x,y,0,0); break;
 
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
-		return;
+		return NULL;
 	}
 
 	// General object setup

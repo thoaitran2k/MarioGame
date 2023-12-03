@@ -18,9 +18,63 @@ void CbulletPlant::GetBoundingBox(float& left, float& top, float& right, float& 
 	bottom = top + BULLET_BBOX_HEIGHT;
 }
 
+//CbulletPlant::CbulletPlant(float x, float y, float vx, float vy) {
+//	
+//	vx = BULLET_SPEED_X;
+//	vy = BULLET_SPEED_Y;
+//}
 
-CbulletPlant::CbulletPlant(float bx, float by, bool top_bottom, bool left_right)
+
+CbulletPlant::CbulletPlant(float x, float y,float nx,float ny) 
 {
+
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+
+	if (mario->GetX() < x && mario->GetY() < y)
+	{
+		
+		SetVx(-BULLET_SPEED_X);
+		SetVy(-BULLET_SPEED_Y);
+
+		//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
+		//scene->AddObject(bullet);
+
+	}
+	else if (mario->GetX() < x && mario->GetY() > y)
+	{
+		
+		SetVx(-BULLET_SPEED_X);
+		SetVy(BULLET_SPEED_Y);
+
+		//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
+		//scene->AddObject(bullet);
+	}
+
+
+	if (mario->GetX() > x && mario->GetY() > y)
+	{
+		
+		SetVx(BULLET_SPEED_X);
+		SetVy(BULLET_SPEED_Y);
+
+		//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
+		//scene->AddObject(bullet);
+
+	}
+	else if (mario->GetX() > x && mario->GetY() < y)
+	{
+		
+		SetVx(BULLET_SPEED_X);
+		SetVy(-BULLET_SPEED_Y);
+
+		//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
+		//scene->AddObject(bullet);
+	}
+
+
+	///vx = BULLET_SPEED_X;
+	///vy = BULLET_SPEED_Y;
 
 	/*CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
