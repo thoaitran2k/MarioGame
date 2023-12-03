@@ -124,19 +124,21 @@ void CMario::OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e)
 {
 	CPlantShootRed* pshootred = dynamic_cast<CPlantShootRed*>(e->obj);
 
-
-	 
-		if (level > MARIO_LEVEL_SMALL)
-		{
-			level = MARIO_LEVEL_SMALL;
-			StartUntouchable();
+	if (untouchable == 0) {
+		if (pshootred->GetState() != PLANT_STATE_NOT_TOUCH) {
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level = MARIO_LEVEL_SMALL;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE by Plant Enemies >>> \n");
+				SetState(MARIO_STATE_DIE);
+				//isDeleted = true; sai
+			}
 		}
-		else
-		{
-			DebugOut(L">>> Mario DIE by Plant Enemies >>> \n");
-			SetState(MARIO_STATE_DIE);
-			//isDeleted = true; sai
-		}
+	}
 	
 }
 

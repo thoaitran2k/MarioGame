@@ -29,7 +29,7 @@
 //	CGame::GetInstance()->Draw(xx - cx, y - cy, bbox, nullptr, BBOX_ALPHA, rect.right - 1, rect.bottom - 1);
 //}
 
-void CBackground::Render()
+void CBackground::RenderBoundingBox()
 {
 	if (this->length <= 0) return;
 	float xx = x;
@@ -45,6 +45,11 @@ void CBackground::Render()
 	if (length > 1)
 		s->Get(this->spriteIdEnd)->Draw(xx, y);
 
+	
+}
+
+void CBackground::Render()
+{
 	RenderBoundingBox();
 }
 
