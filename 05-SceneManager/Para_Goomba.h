@@ -3,27 +3,29 @@
 #include "AssetIDs.h"
 #include "debug.h"
 
+
+//speed
 #define PARA_GOOMBA_GRAVITY 0.0005f
-#define PARA_GOOMBA_WALKING_SPEED 0.03f
+#define PARA_GOOMBA_WALKING_SPEED 0.025f
+#define SPEED_PARA_GOOMBA_FLY 0.18f
 
-
+//bbox
 #define PARA_GOOMBA_BBOX_WIDTH 16
 #define PARA_GOOMBA_BBOX_HEIGHT 16
 #define PARA_GOOMBA_BBOX_HEIGHT_DIE 10
 #define GOOMBA_RED_BBOX_HEIGHT 14
 
-
+//states
 #define PARA_GOOMBA_STATE_WALKING 100
 #define PARA_GOOMBA_STATE_FLY 200
 #define GOOMBA_RED_STATE_DIE 300
 #define GOOMBA_RED_STATE_WALKING 400
 #define GOOMBA_RED_STATE_FALL 500
 
+//times
 #define TIME_WALKING 2000
-
-
-
 #define GOOMBA_RED_DIE_TIMEOUT 500
+#define PARA_GOOMBA_WALKING 2000
 
 
 #define ID_ANI_GOOMBA_RED_FLY_WALKING 5005
@@ -43,6 +45,7 @@ protected:
 
 	ULONGLONG count_start;
 	ULONGLONG die_start_red;
+	ULONGLONG time_appear;
 
 
 	bool isOnPlatForm;
@@ -59,6 +62,8 @@ protected:
 
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+
+
 
 public:
 

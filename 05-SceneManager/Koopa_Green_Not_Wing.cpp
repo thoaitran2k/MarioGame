@@ -46,7 +46,7 @@ void CKoopa_Green_Not_Wing::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == KOOPA_GREEN_NOT_WING_STATE_ISDEFEND) && (GetTickCount64() - die_start > KOOPA_GREEN_NOT_WING_DIE_TIMEOUT))
+	if ((state == KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL) && (GetTickCount64() - die_start > KOOPA_GREEN_NOT_WING_DIE_TIMEOUT))
 	{
 		return;
 	}
@@ -67,7 +67,7 @@ void CKoopa_Green_Not_Wing::Render()
 		aniId = ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_LEFT;
 	}
 	else
-		aniId = ID_ANI_KOOPA_GREEN_NOT_WING_DEFEND;
+		aniId = ID_ANI_KOOPA_GREEN_NOT_WING_TURTLESHELL;
 
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -79,7 +79,7 @@ void CKoopa_Green_Not_Wing::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case KOOPA_GREEN_NOT_WING_STATE_ISDEFEND:
+	case KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL:
 		vx = 0;
 
 		

@@ -46,7 +46,7 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 		right = left + KOOPA_RED_BBOX_WIDTH;
 		bottom = top + KOOPA_RED_BBOX_HEIGHT + 4;
 	}
-	else if(state == KOOPA_RED_STATE_ISDEFEND)
+	else if(state == KOOPA_RED_STATE_ISTURTLESHELL)
 	{
 		left = x - KOOPA_RED_BBOX_WIDTH / 2;
 		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
@@ -155,17 +155,17 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (!wasKicked) {
 				if (!isComback && !isTurn) {
-					SetState(KOOPA_RED_STATE_ISDEFEND);
+					SetState(KOOPA_RED_STATE_ISTURTLESHELL);
 					DebugOut(L">>> DEFEND >>> \n");
 				}
 				else
-					if (!isTurn && GetTickCount64() - count_start > 2000)
+					if (!isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
 					{
 						SetState(KOOPA_RED_STATE_TO_RETURN);
 						DebugOut(L">>> RETURN >>> \n");
 
 					}
-				if (isTurn && GetTickCount64() - comback_time > 1000)
+				if (isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
 					//isTurtleShell = false;
 				{
 
@@ -234,7 +234,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == KOOPA_RED_STATE_ISKICKED)
 
 	{
-		if (DistanceTurtleShellisKickedWithMario() >150 && GetTickCount64() - time_delete > 4000)
+		if (DistanceTurtleShellisKickedWithMario() > DISTANCE_MIN_SHELL_EXIST && GetTickCount64() - time_delete > TURTLE_SHELL_TIMEOUT)
 			isDeleted = true;
 	}
 	CGameObject::Update(dt, coObjects);
@@ -259,8 +259,8 @@ void CRed_Koopa::Render()
 	if (isTurtleShell) {
 		switch (state)
 		{
-		case KOOPA_RED_STATE_ISDEFEND:
-			aniId = ID_ANI_KOOPA_RED_DEFEND;
+		case KOOPA_RED_STATE_ISTURTLESHELL:
+			aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
 			break;
 
 
@@ -294,7 +294,7 @@ void CRed_Koopa::Render()
 	{
 		
 		 if (!isComback)
-			 aniId = ID_ANI_KOOPA_RED_DEFEND;
+			 aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
 
 		 else aniId = ID_ANI_RED_KOOPA_COMBACK;
 
@@ -316,7 +316,7 @@ void CRed_Koopa::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
-	case KOOPA_RED_STATE_ISDEFEND:
+	case KOOPA_RED_STATE_ISTURTLESHELL:
 		
 		count_start = GetTickCount64();
 		ResetCheck();

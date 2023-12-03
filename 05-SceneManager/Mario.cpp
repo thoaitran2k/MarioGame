@@ -93,9 +93,9 @@ void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISDEFEND)
+		if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL)
 		{
-			koopa->SetState(KOOPA_GREEN_NOT_WING_STATE_ISDEFEND);
+			koopa->SetState(KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -103,7 +103,7 @@ void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISDEFEND)
+			if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -203,7 +203,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 {
 	CRed_Koopa* koopared = dynamic_cast<CRed_Koopa*>(e->obj);
 		/*if (koopared->GetState() == KOOPA_RED_STATE_WALKING) {
-		koopared->SetState(KOOPA_RED_STATE_ISDEFEND);
+		koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
 		}*/
 	ULONGLONG red_koopa_comback;
 	red_koopa_comback = koopared->GetTimeComback();
@@ -211,7 +211,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 	wasKicked = koopared->GETwasKicked();
 
 
-	if (koopared->GetState() == KOOPA_RED_STATE_ISDEFEND || koopared->GetState() == KOOPA_RED_STATE_TO_RETURN)
+	if (koopared->GetState() == KOOPA_RED_STATE_ISTURTLESHELL || koopared->GetState() == KOOPA_RED_STATE_TO_RETURN)
 	{
 		//if (GetTickCount64() - koopared->GetTimeComback() > 4000)
 			//koopared->SetState(KOOPA_RED_STATE_TO_RETURN);
@@ -224,7 +224,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 		}
 		
 
-		/*if (e->ny <0 && koopared->GetState() == KOOPA_RED_STATE_ISDEFEND)
+		/*if (e->ny <0 && koopared->GetState() == KOOPA_RED_STATE_ISTURTLESHELL)
 		//{
 
 
@@ -240,9 +240,9 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 		bool isCombackRedKoopa;
 		isCombackRedKoopa = koopared->GetIsComback();
 
-	 if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND && koopared->GetState() != KOOPA_RED_STATE_ISKICKED && koopared ->GetState() != KOOPA_RED_STATE_TO_RETURN) //STATE_WALKING
+	 if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_ISKICKED && koopared ->GetState() != KOOPA_RED_STATE_TO_RETURN) //STATE_WALKING
 		{
-		    koopared->SetState(KOOPA_RED_STATE_ISDEFEND);
+		    koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 		
@@ -253,7 +253,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 		{// hit by red koopa (walking or turtleshell is kicked)
 		if (untouchable == 0)
 		{
-			if (koopared->GetState() != KOOPA_RED_STATE_ISDEFEND && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN)
+			if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{

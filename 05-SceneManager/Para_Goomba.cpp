@@ -4,13 +4,22 @@
 #include "PlayScene.h"
 #include "GameObject.h"
 
+
+
+
+
 CPara_Goomba::CPara_Goomba(float x, float y) :CGameObject(x, y)
 {
-	this->ax = 0;
-	this->ay = PARA_GOOMBA_GRAVITY;
-	isFly = true;
-	vx = -PARA_GOOMBA_WALKING_SPEED;
-	SetState(PARA_GOOMBA_STATE_WALKING);
+
+	
+		this->ax = 0;
+		this->ay = PARA_GOOMBA_GRAVITY;
+		isFly = true;
+		vx = -PARA_GOOMBA_WALKING_SPEED;
+		SetState(PARA_GOOMBA_STATE_WALKING);
+		DebugOut(L">>> PARA xuat hien >>> \n");
+
+	
 }
 
 void CPara_Goomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -65,7 +74,7 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > 1000)
+	if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > PARA_GOOMBA_WALKING)
 	{
 		SetState(PARA_GOOMBA_STATE_FLY);
 	}
@@ -74,7 +83,7 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(PARA_GOOMBA_STATE_WALKING);
 	}
 
-	if (state == GOOMBA_RED_STATE_DIE && GetTickCount64() - die_start_red >1000)
+	if (state == GOOMBA_RED_STATE_DIE && GetTickCount64() - die_start_red > GOOMBA_RED_DIE_TIMEOUT)
 	{
 		isDeleted = true;
 		return;
@@ -133,7 +142,7 @@ void CPara_Goomba::SetState(int state)
 		if(mario->GetX() > x)
 			vx = PARA_GOOMBA_WALKING_SPEED;
 		else vx = -PARA_GOOMBA_WALKING_SPEED;
-		vy = -0.2f;
+		vy = -SPEED_PARA_GOOMBA_FLY;
 		
 		isOnPlatForm = false;
 		break;
