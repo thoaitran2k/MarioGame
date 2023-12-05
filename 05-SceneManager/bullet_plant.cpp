@@ -43,7 +43,7 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 		if (abs(mario->GetY() - y) < 20)
 			SetVy(-0.01f);
 
-
+		if (abs(mario->GetX() - x) > 150) isDeleted = true;
 		
 		//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
 		//scene->AddObject(bullet);
@@ -59,6 +59,8 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 		}
 		 if (abs(mario->GetY() - y) < 40)
 			 SetVy(-0.01f);
+
+		 if (abs(mario->GetX() - x) > 150) isDeleted = true;
 		//SetVx(-BULLET_SPEED_X);
 		//SetVy(BULLET_SPEED_Y);
 
@@ -78,7 +80,11 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 			SetState(8);
 		}
 		if (abs(mario->GetY() - y) < 40)
-			SetVy(-0.01f);
+			SetVy(0.01f);
+
+		if (abs(mario->GetX() - x) > 150) isDeleted = true;
+
+
 		//SetVx(BULLET_SPEED_X);
 		//SetVy(BULLET_SPEED_Y);
 
@@ -98,7 +104,9 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 		}
 
 		if (abs(mario->GetY() - y) < 20)
-			SetVy(0.01f);
+			SetVy(-0.01f);
+
+		if (abs(mario->GetX() - x) > 150) isDeleted = true;
 		//SetVx(BULLET_SPEED_X);
 		//SetVy(-BULLET_SPEED_Y);
 

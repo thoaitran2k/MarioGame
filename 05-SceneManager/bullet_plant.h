@@ -36,7 +36,7 @@ protected:
 
 
 		virtual int IsCollidable() { return 0; };
-		virtual int IsBlocking() { return 1; };
+		virtual int IsBlocking() { return 0; };
 		ULONGLONG start_deleted;
 		
 

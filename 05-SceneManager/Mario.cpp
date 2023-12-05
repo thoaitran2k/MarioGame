@@ -435,10 +435,13 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 			leaf->Delete();
 			return;
 		}
-			
+
 		else SetLevel(MARIO_LEVEL_RACOON);
 		y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
 	}
+	else
+		
+		SetLevel(MARIO_LEVEL_BIG);
 	leaf->Delete();
 }
 //
