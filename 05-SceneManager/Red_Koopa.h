@@ -31,6 +31,7 @@
 #define KOOPA_RED_STATE_TO_RETURN 450
 #define KOOPA_RED_WALKING_STATE_TURN 460
 #define KOOPA_RED_STATE_WAIT_RESET 470
+#define KOOPA_RED_STATE_BE_HELD 478
 
 //Ani_id
 #define ID_ANI_KOOPA_RED_WALKING_RIGHT 6101
@@ -109,6 +110,8 @@ public:
 	bool GetIsComback() { return isComback; }
 	
 	bool GetisDeleted() { return isDeleted; }
+
+	bool GetwasHeld() { return wasHeld; }
 	//bool GetIsCollis() { return isCollis; }
 
 	int DistanceTurtleShellisKickedWithMario();

@@ -30,7 +30,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	isComback = false;
 	wasKicked = false;
 	isDead = false;
-	//wasHeld = false;
+	wasHeld = false;
 	time_rs = -1;
 	
 	
@@ -205,6 +205,8 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
 	if (!isDead) {
 		if (!isOnPlatform)
 		{
@@ -227,18 +229,18 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (state != KOOPA_RED_STATE_ISKICKED)
 			{
 				if (!wasKicked) {
-					if (!isComback && !isTurn) {
+					if (!isComback && !isTurn && !wasHeld) {
 						SetState(KOOPA_RED_STATE_ISTURTLESHELL);
 						DebugOut(L">>> DEFEND >>> \n");
 					}
 					else
-						if (!isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
+						if (!wasHeld && !isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
 						{
 							SetState(KOOPA_RED_STATE_TO_RETURN);
 							DebugOut(L">>> RETURN >>> \n");
 
 						}
-					if (isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
+					if (!wasHeld && isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
 						//isTurtleShell = false;
 					{
 
@@ -248,6 +250,10 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
 					}
 
+					if (mario->GetIsHolding() && !wasHeld)
+					{
+
+					}
 
 				}
 				else if (isKicked)
@@ -314,7 +320,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 }
 
-CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if(state == KOOPA_RED_STATE_WAIT_RESET)
 	{
@@ -408,6 +414,7 @@ void CRed_Koopa::Render()
 
 void CRed_Koopa::SetState(int state)
 {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -444,6 +451,7 @@ void CRed_Koopa::SetState(int state)
 	case KOOPA_RED_STATE_ISKICKED:
 		time_delete = GetTickCount64();
 		DebugOut(L">>> KICKING >>> \n");
+		wasHeld = false;
 		wasKicked = true;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
@@ -472,6 +480,15 @@ void CRed_Koopa::SetState(int state)
 		time_rs = GetTickCount64();
 		//time_rs = GetTickCount64();
 		isDead = true;
+		break;
+
+	case KOOPA_RED_STATE_BE_HELD:
+		//vx = mario->GetVx();
+		//vy = mario->GetVy();
+		y = y - 30;
+		wasHeld = true;
+		isKicked = false;
+		wasKicked = false;
 		break;
 
 	}

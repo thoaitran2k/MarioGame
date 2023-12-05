@@ -33,7 +33,7 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 #define MARIO_STATE_KICK			650
-#define MARIO_STATE_HOLD			660
+#define MARIO_STATE_HOLDING			660
 
 
 #pragma region ANIMATION_ID
@@ -63,6 +63,12 @@
 
 #define ID_ANI_MARIO_BIG_HOLD_RUNNING_RIGHT 1011
 #define ID_ANI_MARIO_BIG_HOLD_RUNNING_LEFT 1010
+
+#define ID_ANI_MARIO_BIG_HOLD_IDLE_RIGHT 1041
+#define ID_ANI_MARIO_BIG_HOLD_IDLE_LEFT 1040
+
+#define ID_ANI_MARIO_BIG_HOLD_JUMP_RIGHT 1051
+#define ID_ANI_MARIO_BIG_HOLD_JUMP_LEFT 1050
 
 #define ID_ANI_MARIO_KICK_RIGHT 1802
 #define ID_ANI_MARIO_KICK_LEFT 1801
@@ -94,6 +100,11 @@
 #define ID_ANI_MARIO_SMALL_KICK_RIGHT 1702
 #define ID_ANI_MARIO_SMALL_KICK_LEFT 1701
 
+#define ID_ANI_MARIO_SMALL_HOLD_IDLE_RIGHT 1641
+#define ID_ANI_MARIO_SMALL_HOLD_IDLE_LEFT 1640
+
+#define ID_ANI_MARIO_SMALL_HOLD_JUMP_RIGHT 1651
+#define ID_ANI_MARIO_SMALL_HOLD_JUMP_LEFT 1650
 // 
 
 //////MARIO RACOON/////////////
@@ -253,4 +264,11 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	//get
+	bool GetIsHolding() { return Holding; }
+
+
+	//set
+	void SetHolding(bool b) { Holding = b; }
 };
