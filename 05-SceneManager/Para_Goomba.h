@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "AssetIDs.h"
 #include "debug.h"
+#include "Mario.h"
+#include "PlayScene.h"
+#include "Game.h"
 
 
 //speed
@@ -58,6 +61,7 @@ protected:
 
 	bool isOnPlatForm;
 	bool isFly;
+	bool isActive;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -72,7 +76,17 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void Para_Goomba_Appear();
+	
+	void Para_Goomba_Active() {
+		CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
+		if (abs(mario->GetX() - x) < 150)
+			isActive = true;
+		
+
+
+	}
+ 
 public:
 
 
@@ -92,6 +106,9 @@ public:
 		if (para) para->Delete();
 		para = NULL;
 	}
+
+
+
 
 	CPara_Goomba(float x, float y);
 	bool IsFly() { return isFly; }

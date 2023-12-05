@@ -234,7 +234,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					{
 
 						SetState(KOOPA_RED_STATE_WALKING);
-						vx = nx * KOOPA_RED_WALKING_SPEED;
+						vx = KOOPA_RED_WALKING_SPEED;
 						y = y - KOOPA_RED_BBOX_HEIGHT / 2;
 						DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
 					}
@@ -310,10 +310,11 @@ CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())-
 	if(state == KOOPA_RED_STATE_WAIT_RESET)
 	{
 	
-			time_rs = GetTickCount64();
+			
 		    DebugOut(L">>> AAAAAAAAAAAA >>> \n");
 			
-			
+			if(GetTickCount64() - time_rs >4000 )
+
 				CreateNewKoopa();
 				DebugOut(L">>> BBBBBBBBBBB >>> \n");
 			
@@ -459,6 +460,7 @@ void CRed_Koopa::SetState(int state)
 		break;
 
 	case KOOPA_RED_STATE_WAIT_RESET:
+		time_rs = GetTickCount64();
 		//time_rs = GetTickCount64();
 		isDead = true;
 		break;

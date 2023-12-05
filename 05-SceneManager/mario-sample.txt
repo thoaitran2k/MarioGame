@@ -24,3 +24,4 @@ height	240
 70	textures\tiles.png
 80	textures\misc_left.png
 90	textures\misc_right.png
+100	textures\mario2.png

@@ -21,6 +21,7 @@ CPara_Goomba::CPara_Goomba(float x, float y) :CGameObject(x, y)
 		vx = -PARA_GOOMBA_WALKING_SPEED;
 		SetState(PARA_GOOMBA_STATE_WALKING);
 		DebugOut(L">>> PARA xuat hien >>> \n");
+		isActive = false;
 		
 
 	
@@ -69,8 +70,12 @@ void CPara_Goomba::GetBoundingBox(float& left, float& top, float& right, float& 
 
 void CPara_Goomba::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+	Para_Goomba_Active();
+	if (isActive)
+	{
+		x += vx * dt;
+		y += vy * dt;
+	}
 };
 
 void CPara_Goomba::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -98,12 +103,17 @@ void CPara_Goomba::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}*/
+
 	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatForm(e);
 }
 
 void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	Para_Goomba_Active();
+
+	if (isActive)
+	{
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -112,22 +122,22 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	/*if (abs(mario->GetX() - x) < 100)
 		Para_Goomba_Appear();*/
+	
+		if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > PARA_GOOMBA_WALKING_TIME)
+		{
+			SetState(PARA_GOOMBA_STATE_FLY);
+		}
+		else if (state == PARA_GOOMBA_STATE_FLY && isOnPlatForm)
+		{
+			SetState(PARA_GOOMBA_STATE_WALKING);
+		}
 
-	if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > PARA_GOOMBA_WALKING_TIME)
-	{
-		SetState(PARA_GOOMBA_STATE_FLY);
+		if ((state == GOOMBA_RED_STATE_DIE) && (GetTickCount64() - die_start_red_goomba > GOOMBA_RED_DIE_TIMEOUT))
+		{
+			isDeleted = true;
+			return;
+		}
 	}
-	else if (state == PARA_GOOMBA_STATE_FLY && isOnPlatForm)
-	{
-		SetState(PARA_GOOMBA_STATE_WALKING);
-	}
-
-	if ((state == GOOMBA_RED_STATE_DIE) && (GetTickCount64() - die_start_red_goomba > GOOMBA_RED_DIE_TIMEOUT))
-	{
-		isDeleted = true;
-		return;
-	}
-
 	//if (!isFly)
 	//{
 	//	if (GetTickCount64() - walking_time > TIME_WALKING)

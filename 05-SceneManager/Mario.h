@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "GameObject.h"
 
 #include "Animation.h"
@@ -89,18 +89,64 @@
 
 // 
 
+// MARIO RACOON/////////////
+#define ID_ANI_RACOON_IDLE_RIGHT 2401
+#define ID_ANI_RACOON_IDLE_LEFT 2400
+
+#define ID_ANI_RACOON_WALKING_RIGHT 2501
+#define ID_ANI_RACOON_WALKING_LEFT 2500
+
+#define ID_ANI_RACOON_RUNNING_RIGHT 2601
+#define ID_ANI_RACOON_RUNNING_LEFT 2600
+
+#define ID_ANI_RACOON_RUNNING_PREPARE_RIGHT 2603
+#define ID_ANI_RACOON_RUNNING_PREPARE_LEFT 2602
+
+#define ID_ANI_RACOON_JUMP_WALK_RIGHT 2701
+#define ID_ANI_RACOON_JUMP_WALK_LEFT 2700
+
+#define ID_ANI_RACOON_JUMP_RUN_RIGHT 2801
+#define ID_ANI_RACOON_JUMP_RUN_LEFT 2800
+
+#define ID_ANI_RACOON_SIT_RIGHT 2901
+#define ID_ANI_RACOON_SIT_LEFT 2900
+
+#define ID_ANI_RACOON_BRACE_RIGHT 3001
+#define ID_ANI_RACOON_BRACE_LEFT 3000
+
+#define ID_ANI_RACOON_HOLD_RUNNING_RIGHT 3011
+#define ID_ANI_RACOON_HOLD_RUNNING_LEFT 3010
+
+#define ID_ANI_RACOON_KICK_RIGHT 3021
+#define ID_ANI_RACOON_KICK_LEFT 3020
+
+#define ID_ANI_RACOON_HOLD_IDLE_RIGHT 3041
+#define ID_ANI_RACOON_HOLD_IDLE_LEFT 3040
+
+#define ID_ANI_RACOON_HOLD_JUMP_RIGHT 3051
+#define ID_ANI_RACOON_HOLD_JUMP_LEFT 3050
+
+#define ID_ANI_RACOON_ATTACK 3100
+
+#define ID_ANI_RACOON_FLY_RIGHT 3300
+#define ID_ANI_RACOON_FLY_LEFT 3200
+
+
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
 
 
 
-
+////LEVEL////////
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
+#define MARIO_LEVEL_RACOON	3
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
+#define RACOON_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
@@ -110,7 +156,7 @@
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
 
-#define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_UNTOUCHABLE_TIME 2000
 
 class CMario : public CGameObject
 {
@@ -145,6 +191,7 @@ class CMario : public CGameObject
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIdRacoon();
 
 public:
 	
@@ -166,6 +213,18 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
+	void SetMario() {
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			if (level > MARIO_LEVEL_BIG)
+
+				level = MARIO_LEVEL_BIG;
+
+			else level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+			DebugOut(L">>> Mario biến nhỏ >>> \n");
+		}
+	}
 
 	void SetCoin(int coin) { this->coin = coin; }
 

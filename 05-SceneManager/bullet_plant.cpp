@@ -72,33 +72,6 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 		//scene->AddObject(bullet);
 	}
 
-
-	///vx = BULLET_SPEED_X;
-	///vy = BULLET_SPEED_Y;
-
-	/*CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-
-	if (top_bottom)
-	{
-		y = by + PLANT_BBOX_HEIGHT / 2;
-		vy = BULLET_SPEED_Y;
-	}
-	else
-	{
-		y = by - PLANT_BBOX_HEIGHT / 2;
-		vy = -BULLET_SPEED_Y;
-	}
-
-	if (left_right)
-	{
-		x = bx + PLANT_BBOX_WIDTH;
-		vx = BULLET_SPEED_X*2;
-	}
-	else
-	{
-		x = bx - PLANT_BBOX_WIDTH;
-		vx = -BULLET_SPEED_X*2;
-	}*/
 	start_deleted = GetTickCount64();
 	//SetState(BULLET_LEFT_BOT);
 	//this->x = x;
@@ -125,7 +98,7 @@ void CbulletPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 void CbulletPlant::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
+	//x += vx * dt;
 	y += vy * dt;
 };
 
