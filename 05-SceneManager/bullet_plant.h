@@ -24,8 +24,8 @@
 #define CHANGE_DIRECTION 30
 #define TIME_BULLET_DELETE 5000
 
-#define BULLET_LEFT_BOT 1
-#define BULLET_LEFT_TOP 2
+#define BULLET_LEFT_BOT 2
+#define BULLET_LEFT_TOP 1
 #define BULLET_RIGHT_BOT 3
 #define BULLET_RIGHT_TOP 4
 
@@ -55,7 +55,7 @@ protected:
 
 		virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 		virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-		//virtual void SetState(int state);
+		virtual void SetState(int state);
 
 };
 

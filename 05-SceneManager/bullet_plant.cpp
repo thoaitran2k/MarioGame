@@ -33,19 +33,34 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 
 	if (mario->GetX() < x && mario->GetY() < y)
 	{
-		
-		SetVx(-BULLET_SPEED_X);
-		SetVy(-BULLET_SPEED_Y);
+		if (abs(mario->GetX() - x) <= 60)
+			SetState(1);
 
+		if (abs(mario->GetX() - x) <= 150 && abs(mario->GetX() - x) >= 60) {
+			SetState(6);
+		}
+		
+		if (abs(mario->GetY() - y) < 20)
+			SetVy(-0.01f);
+
+
+		
 		//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
 		//scene->AddObject(bullet);
 
 	}
 	else if (mario->GetX() < x && mario->GetY() > y)
 	{
-		
-		SetVx(-BULLET_SPEED_X);
-		SetVy(BULLET_SPEED_Y);
+		if (abs(mario->GetX() - x) <= 60)
+			SetState(2);
+
+		 if (abs(mario->GetX() - x) <= 150 && abs(mario->GetX() - x) >= 60) {
+			 SetState(5);
+		}
+		 if (abs(mario->GetY() - y) < 40)
+			 SetVy(-0.01f);
+		//SetVx(-BULLET_SPEED_X);
+		//SetVy(BULLET_SPEED_Y);
 
 		//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
 		//scene->AddObject(bullet);
@@ -54,9 +69,18 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 
 	if (mario->GetX() > x && mario->GetY() > y)
 	{
-		
-		SetVx(BULLET_SPEED_X);
-		SetVy(BULLET_SPEED_Y);
+		SetState(3);
+
+		if (abs(mario->GetX() - x) <= 70)
+			SetState(3);
+
+		if (abs(mario->GetX() - x) <= 150 && abs(mario->GetX() - x) >= 70) {
+			SetState(8);
+		}
+		if (abs(mario->GetY() - y) < 40)
+			SetVy(-0.01f);
+		//SetVx(BULLET_SPEED_X);
+		//SetVy(BULLET_SPEED_Y);
 
 		//CbulletPlant* bullet = new CbulletPlant(x, y, !theoY, !theoX);
 		//scene->AddObject(bullet);
@@ -64,9 +88,19 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 	}
 	else if (mario->GetX() > x && mario->GetY() < y)
 	{
-		
-		SetVx(BULLET_SPEED_X);
-		SetVy(-BULLET_SPEED_Y);
+		//SetState(4);
+
+		if (abs(mario->GetX() - x) <= 70)
+			SetState(4);
+
+		if (abs(mario->GetX() - x) <= 150 && abs(mario->GetX() - x) >= 70) {
+			SetState(7);
+		}
+
+		if (abs(mario->GetY() - y) < 20)
+			SetVy(0.01f);
+		//SetVx(BULLET_SPEED_X);
+		//SetVy(-BULLET_SPEED_Y);
 
 		//CbulletPlant* bullet = new CbulletPlant(x + 2, y - PLANT_BBOX_HEIGHT / 2, theoY, !theoX);
 		//scene->AddObject(bullet);
@@ -85,6 +119,7 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 
 void CbulletPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
+
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (GetTickCount64() - start_deleted > TIME_BULLET_DELETE) {
@@ -98,8 +133,10 @@ void CbulletPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 void CbulletPlant::OnNoCollision(DWORD dt)
 {
-	//x += vx * dt;
-	y += vy * dt;
+	
+		x += vx * dt;
+		y += vy * dt;
+	
 };
 
 
@@ -163,3 +200,54 @@ void CbulletPlant::Render() {
 //	}
 //	CGameObject::SetState(state);
 //}
+
+void CbulletPlant::SetState(int b) {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	//huong 1
+	switch (b)
+	{
+	case BULLET_LEFT_TOP: //1
+		SetVx(-BULLET_SPEED_X);
+		SetVy(-BULLET_SPEED_Y);
+		break;
+
+	case 6:
+		SetVx(-0.06f);
+		SetVy(-0.03f);
+		break;
+
+	case BULLET_LEFT_BOT: //2
+		SetVx(-BULLET_SPEED_X);
+		SetVy(BULLET_SPEED_Y);
+		break;
+
+	case 5:
+		SetVx(-0.06f);
+		SetVy(0.035);
+		break;
+
+	case BULLET_RIGHT_BOT:
+		SetVx(BULLET_SPEED_X);
+		SetVy(BULLET_SPEED_Y);
+		break;
+
+	case 8:
+		SetVx(0.06f);
+		SetVy(0.03f);
+		break;
+	case 7:
+		SetVx(0.06f);
+		SetVy(-0.02f);
+		break;
+
+	case BULLET_RIGHT_TOP:
+		SetVx(BULLET_SPEED_X);
+		SetVy(-BULLET_SPEED_Y);
+		break;
+
+	
+	}
+	
+	CGameObject::SetState(state);
+}
