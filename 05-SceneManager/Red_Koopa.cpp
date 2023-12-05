@@ -9,6 +9,7 @@
 #include "BrickQuestion.h"
 #include "Goomba.h"
 #include "Leaf.h"
+#include "bullet_plant.h"
 
 
 
@@ -29,6 +30,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	isComback = false;
 	wasKicked = false;
 	isDead = false;
+	//wasHeld = false;
 	time_rs = -1;
 	
 	
@@ -115,8 +117,9 @@ void CRed_Koopa::OnNoCollision(DWORD dt)
 
 void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
+	//if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CRed_Koopa*>(e->obj)) return;
+	if (dynamic_cast<CbulletPlant*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -140,15 +143,20 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
 	
+
 	if (wasKicked) {
+		if (goomba->GetState() == GOOMBA_STATE_DIE) return;
+			
+		else
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
-			goomba->SetVy(-0.01f);
-			vx = vx;
+			goomba->SetVy(-0.02f);
+			goomba->SetY(y + 2);
+			//x += KOOPA_RED_BBOX_WIDTH / 2;
 		}
 	}
-
+	
 }
 
 void CRed_Koopa::OnCollisionWithBrick_Question(LPCOLLISIONEVENT e) {
@@ -208,7 +216,8 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					CreateCheckfall();
 					DebugOut(L">>> CHECK TAO OBJ >>> \n");
 				}
-				else if (checkfall->GetIsOnPlatform())
+				else 
+					if (checkfall->GetIsOnPlatform())
 				{
 					SetState(KOOPA_RED_WALKING_STATE_TURN);
 					DebugOut(L">>> MOVING >>> \n");
@@ -313,7 +322,7 @@ CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())-
 			
 		    DebugOut(L">>> AAAAAAAAAAAA >>> \n");
 			
-			if(GetTickCount64() - time_rs >4000 )
+			//if(GetTickCount64() - time_rs >4000 )
 
 				CreateNewKoopa();
 				DebugOut(L">>> BBBBBBBBBBB >>> \n");
@@ -451,12 +460,12 @@ void CRed_Koopa::SetState(int state)
 		break;
 
 	case KOOPA_RED_WALKING_STATE_TURN:
+		ResetCheck();
 		isDead = false;
 		isTurtleShell = false;
 		HaveOrNotCheckFall = true;
-			ResetCheck();
-			vx = -vx;
-			DebugOut(L">>> chi xet con rua di bo >>> \n");
+		vx = -vx;
+		DebugOut(L">>> chi xet con rua di bo >>> \n");
 		break;
 
 	case KOOPA_RED_STATE_WAIT_RESET:

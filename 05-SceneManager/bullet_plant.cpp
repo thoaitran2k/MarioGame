@@ -79,7 +79,7 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 		if (abs(mario->GetX() - x) <= 150 && abs(mario->GetX() - x) >= 70) {
 			SetState(8);
 		}
-		if (abs(mario->GetY() - y) < 40)
+		//if (abs(mario->GetY() - y) < 40)
 			SetVy(0.01f);
 
 		if (abs(mario->GetX() - x) > 150) isDeleted = true;
@@ -122,6 +122,10 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 
 }
 
+void CbulletPlant::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (!e->obj->IsBlocking()) return;
+}
 
 ///////////////////////////////////////////////////////////////////////
 
@@ -148,11 +152,7 @@ void CbulletPlant::OnNoCollision(DWORD dt)
 };
 
 
-void CbulletPlant::OnCollisionWith(LPCOLLISIONEVENT e)
-{
 
-	if (e->obj->IsPlatform() && e->obj->IsBlocking()) isDeleted = true;
-}
 
 
 void CbulletPlant::Render() {
@@ -212,7 +212,7 @@ void CbulletPlant::Render() {
 void CbulletPlant::SetState(int b) {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	//huong 1
+	
 	switch (b)
 	{
 	case BULLET_LEFT_TOP: //1

@@ -481,6 +481,8 @@ int CMario::GetAniIdSmall()
 			if (nx > 0) aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
 			else aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
 		}
+			/*else if (Holding)
+				if(nx>0) aniId =  */
 		else
 			if (vx == 0)
 			{
@@ -653,7 +655,7 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
-	if (level == MARIO_LEVEL_BIG)
+	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
@@ -740,6 +742,10 @@ void CMario::SetState(int state)
 	case MARIO_STATE_KICK:
 		timing = GetTickCount64();
 		Kicking = true;
+		break;
+
+	case MARIO_STATE_HOLD:
+		Holding = true;
 		break;
 
 	case MARIO_STATE_IDLE:

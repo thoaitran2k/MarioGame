@@ -33,6 +33,7 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 #define MARIO_STATE_KICK			650
+#define MARIO_STATE_HOLD			660
 
 
 #pragma region ANIMATION_ID
@@ -60,6 +61,9 @@
 #define ID_ANI_MARIO_BRACE_RIGHT 1000
 #define ID_ANI_MARIO_BRACE_LEFT 1001
 
+#define ID_ANI_MARIO_BIG_HOLD_RUNNING_RIGHT 1011
+#define ID_ANI_MARIO_BIG_HOLD_RUNNING_LEFT 1010
+
 #define ID_ANI_MARIO_KICK_RIGHT 1802
 #define ID_ANI_MARIO_KICK_LEFT 1801
 
@@ -84,12 +88,15 @@
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
 
+#define ID_ANI_MARIO_SMALL_HOLD_RUNNING_RIGHT 1611
+#define ID_ANI_MARIO_SMALL_HOLD_RUNNING_LEFT 1610
+
 #define ID_ANI_MARIO_SMALL_KICK_RIGHT 1702
 #define ID_ANI_MARIO_SMALL_KICK_LEFT 1701
 
 // 
 
-// MARIO RACOON/////////////
+//////MARIO RACOON/////////////
 #define ID_ANI_RACOON_IDLE_RIGHT 2401
 #define ID_ANI_RACOON_IDLE_LEFT 2400
 
@@ -163,6 +170,8 @@ class CMario : public CGameObject
 	int coin;
 	BOOLEAN isSitting;
 	BOOLEAN Kicking;
+	bool Holding;
+
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -200,6 +209,7 @@ public:
 	{
 		isSitting = false;
 		Kicking = false;
+		Holding = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;

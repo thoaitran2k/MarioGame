@@ -6,7 +6,7 @@
 
 //speeds
 #define KOOPA_RED_GRAVITY 0.002f
-#define KOOPA_RED_WALKING_SPEED 0.0155f
+#define KOOPA_RED_WALKING_SPEED 0.015f
 #define SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED 0.25f
 
 
@@ -61,6 +61,7 @@ protected:
 	bool wasKicked;
 	bool isDead;
 	bool isTurn;
+	bool wasHeld;
 
 	ULONGLONG count_start;
 	ULONGLONG comback_time;

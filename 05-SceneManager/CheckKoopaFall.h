@@ -20,6 +20,7 @@ protected:
 	float ay;
 
 	bool OnTheBox;
+	bool isOnPlatformCheck;
 
 	
 
@@ -36,7 +37,7 @@ public:
 
 	virtual void SetState(int state);
 
-	void SetIsOnPlatform(bool b) { isOnPlatformCheck = b; }
+	//void SetIsOnPlatform(bool b) { isOnPlatformCheck = b; }
 
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
@@ -44,19 +45,20 @@ public:
 
 	bool GetIsOntheBox() { return OnTheBox; }
 
-	bool GetIsOnPlatForm2() { return isOnPlatformCheck; };
+	//bool GetIsOnPlatForm2() { return isOnPlatformCheck; };
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
-	virtual void OnCollisionWithBox(LPCOLLISIONEVENT e);
+	//virtual void OnCollisionWithBox(LPCOLLISIONEVENT e);
 	CCheckFall(float x, float y);
 
 	void GetDeleted() {
 		isDeleted = true;
 	}
 
-	bool isOnPlatformCheck;
-	BOOLEAN GetIsOnPlatform() { return isOnPlatformCheck; }
+	
+	bool GetIntheBox() { return OnTheBox; }
+	bool GetIsOnPlatform() { return isOnPlatformCheck; }
 
 	
 };

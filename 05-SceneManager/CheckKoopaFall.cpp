@@ -59,9 +59,8 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	if (dynamic_cast<CBackground*>(e->obj))
 		this->OnCollisionWithPlatForm(e);
-
-	if (dynamic_cast<CBox*>(e->obj))
-		this->OnCollisionWithBox(e);
+	//if (dynamic_cast<CBox*>(e->obj))
+		//this->OnCollisionWithBox(e);
 }
 
 void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
@@ -70,13 +69,16 @@ void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
 		isOnPlatformCheck = true;
 	
 }
-void CCheckFall::OnCollisionWithBox(LPCOLLISIONEVENT e) {
-	CBox* OntheBox = dynamic_cast<CBox*>(e->obj);
-
-	OnTheBox = true;
-	vy = 0;
-
-}
+//void CCheckFall::OnCollisionWithBox(LPCOLLISIONEVENT e) {
+//	CBox* OntheBox = dynamic_cast<CBox*>(e->obj);
+//
+//	if (e->ny == 0)
+//		OnTheBox = true;
+//
+//	else OntheBox = false;
+//	vy = 0;
+//
+//}
 
 void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -91,6 +93,7 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else if(vx>0) SetState(STATE_RIGHT_KOOPA);*/
 
 	if (isOnPlatformCheck) isDeleted = true;
+	//if (!OnTheBox) isDeleted = true;
 
 
 	CGameObject::Update(dt, coObjects);
@@ -106,7 +109,7 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CCheckFall::Render()
 {
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CCheckFall::SetState(int state)
