@@ -134,6 +134,7 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CRed_Koopa*>(e->obj)) return;
 	if (dynamic_cast<CbulletPlant*>(e->obj)) return;
 
+	
 	if (e->ny != 0)
 	{
 		vy = 0;
@@ -155,7 +156,16 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
-	
+	if (x > goomba->GetX())
+	{
+		vx = -vx;
+		x = x - 16;
+	}
+	else { 
+		vx = -vx;
+		x = x + 16;
+	}
+
 
 	if (wasKicked) {
 		if (goomba->GetState() == GOOMBA_STATE_DIE) return;
@@ -165,6 +175,7 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			goomba->SetVy(-0.02f);
+			goomba->SetVx(-0.01f);
 			goomba->SetY(y + 2);
 			//x += KOOPA_RED_BBOX_WIDTH / 2;
 		}
@@ -338,14 +349,14 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if(state == KOOPA_RED_STATE_WAIT_RESET)
 	{
 	
-			
-		    DebugOut(L">>> AAAAAAAAAAAA >>> \n");
-			
+		
+
+	
 			//if(GetTickCount64() - time_rs >4000 )
 
-				CreateNewKoopa();
-				DebugOut(L">>> BBBBBBBBBBB >>> \n");
-			
+			CreateNewKoopa();
+			DebugOut(L">>> BBBBBBBBBBB >>> \n");
+		
 		
 			//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
@@ -490,7 +501,7 @@ void CRed_Koopa::SetState(int state)
 		break;
 
 	case KOOPA_RED_STATE_WAIT_RESET:
-		time_rs = GetTickCount64();
+		count_start = GetTickCount64();
 		//time_rs = GetTickCount64();
 		isDead = true;
 		break;
