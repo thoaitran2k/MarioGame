@@ -244,7 +244,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 
 	if (koopared->GetIsTurtleShell())
 	{
-		if (!koopared->GETwasKicked() && !Holding)
+		if (!koopared->GETwasKicked())
 		{
 			if (e->ny < 0) {
 				if (koopared->GetIsKick()) {
@@ -262,47 +262,27 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 					}
 			
 		}
-
-		else  
-			if(Holding)
-		{
-			if (e->nx != 0)
+		else {
+			if (untouchable == 0)
 			{
-				if (!koopared->GetwasHeld())
-					//koopared->SetState(KOOPA_RED_STATE_BE_HELD);
-				koopared->SetVx(vx);
-				koopared->SetVy(vy);
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					if (level > MARIO_LEVEL_BIG)
+
+						level = MARIO_LEVEL_BIG;
+
+					else level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+					DebugOut(L">>> Mario biến nhỏ >>> \n");
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
 			}
+
 		}
-
-		//if (!koopared->GetwasHeld() && Holding)
-		//{
-		//	koopared->SetState(KOOPA_RED_STATE_BE_HELD);
-		//}
-
-		/*if (!Holding && !koopared->GetwasHeld()) {
-			if (!koopared->GETwasKicked()) {
-				SetState(MARIO_STATE_KICK);
-				koopared->SetState(KOOPA_RED_STATE_ISKICKED);
-			}
-		}
-		else{
-			koopared->SetState(KOOPA_RED_STATE_BE_HELD);
-
-			DebugOut(L">>> TURTLESHELL is KICKED by MARIO >>> \n");
-		}*/
-		
-
-		/*if (e->ny <0 && koopared->GetState() == KOOPA_RED_STATE_ISTURTLESHELL)
-		//{
-
-
-		//	koopared->SetState(KOOPA_RED_STATE_ISKICKED);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			DebugOut(L">>> TURTLESHELL MOVE -> CRASHED BY MARIO >>> \n");
-
-		}*/
-
 	}
 	else
 	{
@@ -734,14 +714,14 @@ void CMario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
-		if (Holding) break;
+		//if (Holding) break;
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
-		if (Holding) break;
+		//if (Holding) break;
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;

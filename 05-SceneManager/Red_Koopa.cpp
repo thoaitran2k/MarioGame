@@ -24,6 +24,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	startX = x;
 	startY = y;
 	isOnPlatform = false;
+	goomba_under_koopa = NULL;
 	checkfall = NULL;
 	isKicked = false;
 	HaveOrNotCheckFall = true;
@@ -32,7 +33,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	isDead = false;
 	wasHeld = false;
 	time_rs = -1;
-	
+	CreateGoomba();
 	
 }
 
@@ -70,6 +71,18 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 		bottom = top + KOOPA_RED_BBOX_HEIGHT - 1;
 	}
 
+}
+
+void CRed_Koopa::CreateGoomba() {
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	
+		CGameObject* goomba = scene->CreateObjectAndReturn(OBJECT_TYPE_GOOMBA_UNDER_KOOPA, startX, startY + 20, 0, 0);
+		AddGoomba(goomba);
+		DebugOut(L">>> TAO RA GOOMBA >>> \n");
+		goomba_under_koopa->SetState(GOOMBA_STATE_WALKING);
+	
+	
 }
 
 void CRed_Koopa::CreateNewKoopa() {

@@ -156,11 +156,13 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 
 	case OBJECT_TYPE_PARA_GOOMBA: obj = new CPara_Goomba(x, y); break;
 
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
+	//case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
 
 	case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;
 
 	case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x, y, 0, 0); break;
+
+	case OBJECT_TYPE_GOOMBA_UNDER_KOOPA: obj = new CGoomba(x, y,GOOMBA_BASIC); break;
 
 
 		

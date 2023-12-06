@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "CheckKoopaFall.h"
 #include "debug.h"
+#include "Goomba.h"
 
 
 //speeds
@@ -53,6 +54,8 @@ protected:
 
 	CCheckFall* checkfall;
 	CRed_Koopa* newkoopa;
+	CGoomba* goomba_under_koopa;
+	
 
 	bool isTurtleShell;
 	bool isKicked;
@@ -80,6 +83,8 @@ protected:
 	void CreateCheckfall();
 
 	void CreateNewKoopa();
+
+	void CreateGoomba();
 	
 	virtual int IsCollidable() { return 1;}
 	//virtual int IsColliswithMario() { return isCollis; }
@@ -136,6 +141,7 @@ public:
 
 
 
+
 	void AddCheck(CGameObject* obj) {
 		if (!dynamic_cast<CCheckFall*>(obj)) return;
 		else if (!checkfall )
@@ -156,6 +162,22 @@ public:
 	void DeleteCheck()
 	{
 		checkfall->GetDeleted();
+	}
+
+	void AddGoomba(CGameObject* obj) {
+		if (!dynamic_cast<CGoomba*>(obj)) return;
+		else if (!goomba_under_koopa)
+		{
+			CGoomba* under_goomba = dynamic_cast<CGoomba*>(obj);
+			goomba_under_koopa = under_goomba;
+			DebugOut(L">>> Create Goomba phia duoi con koopa >>> \n");
+		}
+	}
+
+	void checknullGB()
+	{
+		if (goomba_under_koopa) goomba_under_koopa->Delete();
+		goomba_under_koopa = NULL;
 	}
 	
 	

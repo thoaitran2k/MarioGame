@@ -104,7 +104,7 @@ void CPlantShootRed::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						bool theoX = true, theoY = true;
 
 						
-							//CreateBullet();
+						CreateBullet();
 						
 						/*if (mario->GetX() < x)
 						{
