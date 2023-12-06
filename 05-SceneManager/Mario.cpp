@@ -226,6 +226,10 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 	
 }
 
+
+
+
+//#######-06/12/2023////// bug mario hold turtleshell  
 void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 {
 	CRed_Koopa* koopared = dynamic_cast<CRed_Koopa*>(e->obj);
