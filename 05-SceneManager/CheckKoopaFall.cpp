@@ -109,7 +109,7 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CCheckFall::Render()
 {
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CCheckFall::SetState(int state)

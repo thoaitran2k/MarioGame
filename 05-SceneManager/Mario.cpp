@@ -242,17 +242,55 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 	wasKicked = koopared->GETwasKicked();
 
 
-	if (koopared->GetState() == KOOPA_RED_STATE_ISTURTLESHELL || koopared->GetState() == KOOPA_RED_STATE_TO_RETURN)
+	if (koopared->GetIsTurtleShell())
 	{
-		//if (GetTickCount64() - koopared->GetTimeComback() > 4000)
-			//koopared->SetState(KOOPA_RED_STATE_TO_RETURN);
-		
-		if (!koopared->GETwasKicked()) {
-			SetState(MARIO_STATE_KICK);
-			koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+		if (!koopared->GETwasKicked() && !Holding)
+		{
+			if (e->ny < 0) {
+				if (koopared->GetIsKick()) {
+					//SetState(MARIO_STATE_KICK);
+					koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+				}
+				}
+				else
+					if (e->nx != 0)
+					{
+						if (koopared->GetIsKick()) {
+							SetState(MARIO_STATE_KICK);
+							koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+						}
+					}
 			
-			DebugOut(L">>> TURTLESHELL is KICKED by MARIO >>> \n");
 		}
+
+		else  
+			if(Holding)
+		{
+			if (e->nx != 0)
+			{
+				if (!koopared->GetwasHeld())
+					//koopared->SetState(KOOPA_RED_STATE_BE_HELD);
+				koopared->SetVx(vx);
+				koopared->SetVy(vy);
+			}
+		}
+
+		//if (!koopared->GetwasHeld() && Holding)
+		//{
+		//	koopared->SetState(KOOPA_RED_STATE_BE_HELD);
+		//}
+
+		/*if (!Holding && !koopared->GetwasHeld()) {
+			if (!koopared->GETwasKicked()) {
+				SetState(MARIO_STATE_KICK);
+				koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+			}
+		}
+		else{
+			koopared->SetState(KOOPA_RED_STATE_BE_HELD);
+
+			DebugOut(L">>> TURTLESHELL is KICKED by MARIO >>> \n");
+		}*/
 		
 
 		/*if (e->ny <0 && koopared->GetState() == KOOPA_RED_STATE_ISTURTLESHELL)
@@ -266,40 +304,43 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 		}*/
 
 	}
-	else if (e->ny < 0)
-	{
-		bool isCombackRedKoopa;
-		isCombackRedKoopa = koopared->GetIsComback();
-
-	 if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_ISKICKED && koopared ->GetState() != KOOPA_RED_STATE_TO_RETURN) //STATE_WALKING
-		{
-		    koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
-		
-
-		}
-	}
 	else
-		{// hit by red koopa (walking or turtleshell is kicked)
-		if (untouchable == 0)
+	{
+		if (e->ny < 0)
 		{
-			if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN)
+			bool isCombackRedKoopa;
+			isCombackRedKoopa = koopared->GetIsComback();
+
+			if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_ISKICKED && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN) //STATE_WALKING
 			{
-				if (level > MARIO_LEVEL_SMALL)
-				{
-					if (level > MARIO_LEVEL_BIG)
+				koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 
-						level = MARIO_LEVEL_BIG;
 
-					else level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-					DebugOut(L">>> Mario biến nhỏ >>> \n");
-				}
-				else
+			}
+		}
+		else
+		{// hit by red koopa (walking or turtleshell is kicked)
+			if (untouchable == 0)
+			{
+				if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN)
 				{
-					DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
-					SetState(MARIO_STATE_DIE);
+					if (level > MARIO_LEVEL_SMALL)
+					{
+						if (level > MARIO_LEVEL_BIG)
+
+							level = MARIO_LEVEL_BIG;
+
+						else level = MARIO_LEVEL_SMALL;
+						StartUntouchable();
+						DebugOut(L">>> Mario biến nhỏ >>> \n");
+					}
+					else
+					{
+						DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
+						SetState(MARIO_STATE_DIE);
+					}
 				}
 			}
 		}
@@ -479,14 +520,15 @@ int CMario::GetAniIdSmall()
 			else
 				aniId = ID_ANI_MARIO_SIT_LEFT;
 		}
-		else 
+		else
 			if (Kicking)
-		{
-			if (nx > 0) aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
-			else aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
-		}
-			/*else if (Holding)
-				if(nx>0) aniId =  */
+			{
+				if (nx > 0) aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
+				else aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
+			}
+			else if (Holding)
+				if (nx > 0) aniId = ID_ANI_MARIO_SMALL_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_SMALL_HOLD_IDLE_LEFT;
 		else
 			if (vx == 0)
 			{
@@ -555,6 +597,9 @@ int CMario::GetAniIdBig()
 			if (nx > 0) aniId = ID_ANI_MARIO_KICK_RIGHT;
 			else aniId = ID_ANI_MARIO_KICK_LEFT;
 		}
+			else if (Holding)
+				if (nx > 0) aniId = ID_ANI_MARIO_BIG_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_MARIO_BIG_HOLD_IDLE_LEFT;
 		else
 			if (vx == 0)
 			{
@@ -622,6 +667,9 @@ int CMario::GetAniIdRacoon(){
 				if (nx > 0) aniId = ID_ANI_RACOON_KICK_RIGHT;
 				else aniId = ID_ANI_RACOON_KICK_LEFT;
 			}
+			else if (Holding)
+				if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
 			else
 				if (vx == 0)
 				{
@@ -686,12 +734,14 @@ void CMario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
+		if (Holding) break;
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
 		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
+		if (Holding) break;
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
@@ -748,7 +798,7 @@ void CMario::SetState(int state)
 		Kicking = true;
 		break;
 
-	case MARIO_STATE_HOLD:
+	case MARIO_STATE_HOLDING:
 		Holding = true;
 		break;
 
