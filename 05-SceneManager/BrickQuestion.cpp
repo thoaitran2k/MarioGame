@@ -17,10 +17,18 @@ CBrickQuestion::CBrickQuestion(float x, float y, int model) :CGameObject(x, y)
 
 void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - BRICK_Q_BBOX_WIDTH/2 ;
-	t = y - BRICK_Q_BBOX_HEIGHT/2 ;
-	r = l + BRICK_Q_BBOX_WIDTH;
-	b = t + BRICK_Q_BBOX_HEIGHT;
+	if (!isUnbox) {
+		l = x - BRICK_Q_BBOX_WIDTH / 2;
+		t = y - BRICK_Q_BBOX_HEIGHT / 2;
+		r = l + BRICK_Q_BBOX_WIDTH;
+		b = t + BRICK_Q_BBOX_HEIGHT;
+	}
+	else {
+		l = x - BRICK_Q_BBOX_WIDTH / 2;
+		t = y - BRICK_Q_BBOX_HEIGHT / 2;
+		r = l + BRICK_Q_BBOX_WIDTH-3;
+		b = t + BRICK_Q_BBOX_HEIGHT;
+	}
 }
 
 void CBrickQuestion::OnNoCollision(DWORD dt)
