@@ -2,6 +2,7 @@
 #include "GameObject.h"
 
 
+
 #define BOX_BBOX_WIDTH 16
 #define BOX_BBOX_HEIGHT 16
 
@@ -24,6 +25,10 @@ protected:
 
 	
 
+	
+
+	
+
 
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -43,13 +48,13 @@ public:
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
-	bool GetIsOntheBox() { return OnTheBox; }
+	bool GetNoOntheBox() { return OnTheBox; }
 
 	//bool GetIsOnPlatForm2() { return isOnPlatformCheck; };
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
-	//virtual void OnCollisionWithBox(LPCOLLISIONEVENT e);
+	void OnCollisionWithBox(LPCOLLISIONEVENT e);
 	CCheckFall(float x, float y);
 
 	void GetDeleted() {
@@ -61,6 +66,12 @@ public:
 	bool GetIsOnPlatform() { return isOnPlatformCheck; }
 
 	
+	void SetIsOnPlatform(bool b) { b = isOnPlatformCheck; }
+
+	/*bool checkfalling()
+	{
+		if (vy > 0.0004f) return true;
+	}*/
 };
 
 

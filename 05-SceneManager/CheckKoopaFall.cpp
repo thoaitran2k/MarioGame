@@ -21,9 +21,9 @@ CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 {
 
 	this->ax = 0;
-	this->ay = 0.003f;
+	this->ay = 0.00009f;
 	isOnPlatformCheck = false;
-	OnTheBox = true;
+	//OnTheBox = true;
 	//SetState(STATE_LEFT_KOOPA);
 
 
@@ -48,37 +48,41 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (!e->obj->IsBlocking()) return;
 	//if (dynamic_cast<CCheckFall*>(e->obj)) return;
 
+	//if (e->nx != 0)
+		//isDeleted = true;
 
-	if (e->ny != 0)
-	{
-		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
-	}
+
+	
 	if (dynamic_cast<CBackground*>(e->obj))
 		this->OnCollisionWithPlatForm(e);
-	//if (dynamic_cast<CBox*>(e->obj))
-		//this->OnCollisionWithBox(e);
+	if (dynamic_cast<CBox*>(e->obj))
+		this->OnCollisionWithBox(e);
 }
 
 void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
 	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
 	
 		isOnPlatformCheck = true;
+		vy = 0;
 	
 }
-//void CCheckFall::OnCollisionWithBox(LPCOLLISIONEVENT e) {
-//	CBox* OntheBox = dynamic_cast<CBox*>(e->obj);
-//
-//	if (e->ny == 0)
-//		OnTheBox = true;
-//
-//	else OntheBox = false;
-//	vy = 0;
-//
-//}
+void CCheckFall::OnCollisionWithBox(LPCOLLISIONEVENT e) {
+	CBox* OntheBox = dynamic_cast<CBox*>(e->obj);
+
+	
+	if (e->obj)
+	{
+		OnTheBox = true;
+		vy = 0;
+		ay = 0.0006f;
+	}
+
+	
+	
+	//if (GetX() < (x-10)) isDeleted = true;
+
+	//if (GetX() > OntheBox->endBox) isDeleted = true;
+}
 
 void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -87,14 +91,20 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+
+
+	//if (GetX() < (x - 10)) isDeleted = true;
 	/*if (vx < 0) {
 		SetState(STATE_LEFT_KOOPA);
 	}
 	else if(vx>0) SetState(STATE_RIGHT_KOOPA);*/
 
-	if (isOnPlatformCheck) isDeleted = true;
+	//if (isOnPlatformCheck) isDeleted = true;
+
+	
 	//if (!OnTheBox) isDeleted = true;
 
+	//if (!OnTheBox) isDeleted = true;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -119,6 +129,7 @@ void CCheckFall::SetState(int state)
 	{
 	case STATE_LEFT_KOOPA:
 		vx = -SPEED_PREVIOUS_KOOPA;
+		vy = 0;
 	
 		break;
 
@@ -126,6 +137,7 @@ void CCheckFall::SetState(int state)
 		
 		
 		vx = SPEED_PREVIOUS_KOOPA;
+		vy = 0;
 		break;
 	}
 }

@@ -18,6 +18,12 @@ protected:
 	int spriteIdBegin, spriteIdMiddle, spriteIdEnd;
 
 public:
+	float startBox;
+	float endBox;
+
+	CBox(float startBox, float endBox);
+
+
 	CBox(float x, float y,
 		float cell_width, float cell_height, int length,
 		int sprite_id_begin, int sprite_id_middle, int sprite_id_end) :CGameObject(x, y)

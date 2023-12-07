@@ -78,7 +78,7 @@ void CRed_Koopa::CreateGoomba() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	
-		CGameObject* goomba = scene->CreateObjectAndReturn(OBJECT_TYPE_GOOMBA_UNDER_KOOPA, startX, startY + 20, 0, 0);
+		CGameObject* goomba = scene->CreateObjectAndReturn(OBJECT_TYPE_GOOMBA_UNDER_KOOPA, startX-30, startY + 25, 0, 0);
 		AddGoomba(goomba);
 		DebugOut(L">>> TAO RA GOOMBA >>> \n");
 		goomba_under_koopa->SetState(GOOMBA_STATE_WALKING);
@@ -157,7 +157,9 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CRed_Koopa::OnCollisionWithOntheBox(LPCOLLISIONEVENT e) {
 
-	if (e->ny < 0)
+
+	
+		if (e->ny < 0)
 		isOntheBox = true;
 
 }
@@ -168,11 +170,11 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	if (x > goomba->GetX())
 	{
 		vx = -vx;
-		x = x - GOOMBA_BBOX_HEIGHT/2;
+		x = x - GOOMBA_BBOX_HEIGHT/2 - 2;
 	}
 	else { 
 		vx = -vx;
-		x = x + GOOMBA_BBOX_HEIGHT/2;
+		x = x + GOOMBA_BBOX_HEIGHT/2 +2;
 	}
 
 
@@ -226,10 +228,12 @@ void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 		isOnPlatform = true;
 	}
 
-	if (isOnPlatform && state != KOOPA_RED_STATE_WALKING)
+	
+
+	if (isOnPlatform && state != KOOPA_RED_STATE_WALKING )
 	{
 		isTurtleShell = true;
-
+		
 	}
 }
 
@@ -279,6 +283,31 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				}
 		}
 
+		if (isOnPlatform) {
+			if (!isTurtleShell && HaveOrNotCheckFall) {
+				//count_start = GetTickCount64();
+
+				if (checkfall == NULL)
+				{
+					CreateCheckfall();
+					DebugOut(L">>> CHECK TAO OBJ >>> \n");
+					//ResetCheck();
+					
+				}
+				else if (checkfall->GetVy() > 0.05f) {
+					vx = -vx;
+					ResetCheck();
+					
+					
+				}
+
+				
+			}
+
+		}
+
+
+		//////////////////////////////////////////////
 		if (state == KOOPA_RED_STATE_ISKICKED)
 		{
 			if (DistanceTurtleShellisKickedWithMario() > DISTANCE_MIN_SHELL_EXIST && GetTickCount64() - time_delete > TURTLE_SHELL_TIMEOUT)
@@ -296,7 +325,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if(state == KOOPA_RED_STATE_WAIT_RESET)
 	{
 	
-			CreateNewKoopa();
+			//CreateNewKoopa();
 			DebugOut(L">>> BBBBBBBBBBB >>> \n");	
 			//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 

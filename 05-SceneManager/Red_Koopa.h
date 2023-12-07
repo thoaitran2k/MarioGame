@@ -188,7 +188,7 @@ public:
 	
 	
 	
-	
+
 	
 
 	CRed_Koopa(float x, float y);

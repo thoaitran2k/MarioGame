@@ -30,7 +30,7 @@ void CBox::RenderBoundingBox()
 
 void CBox::Render()
 {	
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CBox::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -40,4 +40,10 @@ void CBox::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - this->cellHeight / 2;
 	r = l + this->cellWidth * this->length;
 	b = t + this->cellHeight;
+}
+
+CBox::CBox(float x, float y) : CGameObject(x, y)
+{
+	startBox = x - cellWidth / 2;
+	endBox = x + cellWidth / 2;
 }
