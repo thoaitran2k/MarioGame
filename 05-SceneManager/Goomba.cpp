@@ -66,6 +66,12 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return;
 	}
 
+	if ((state == GOOMBA_STATE_THROWN_BY_KOOPA) && GetTickCount64() - die_start > 900)
+	{
+		isDeleted = true;
+		return;
+	}
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -86,6 +92,10 @@ void CGoomba::Render()
 	else if (model == GOOMBA_RED) {
 		aniId = ID_ANI_GOOMBA_RED;
 	}
+	else if (state == GOOMBA_STATE_THROWN_BY_KOOPA && model == GOOMBA_BASIC)
+	{
+		aniId = ID_ANI_GOOMBA_DIE;
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
 	RenderBoundingBox();
@@ -103,12 +113,21 @@ void CGoomba::SetState(int state)
 			vy = 0;
 			ay = 0; 
 			break;
+
+		case GOOMBA_STATE_THROWN_BY_KOOPA:
+			die_start = GetTickCount64();
+			y -= 5;
+			vx = -0.004f;
+			vy = -0.025f;
+			ay = 0.00004f;
+			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
 			break;
 		case GOOMBA_RED:
 			model = GOOMBA_RED;
 			vx = -GOOMBA_WALKING_SPEED;
+
 
 	}
 }

@@ -168,15 +168,15 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 
 
 	if (wasKicked) {
-		if (goomba->GetState() == GOOMBA_STATE_DIE) return;
+		if (goomba->GetState() == GOOMBA_STATE_THROWN_BY_KOOPA) return;
 			
 		else
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		if (goomba->GetState() != GOOMBA_STATE_THROWN_BY_KOOPA)
 		{
-			goomba->SetState(GOOMBA_STATE_DIE);
-			goomba->SetVy(-0.02f);
-			goomba->SetVx(-0.01f);
-			goomba->SetY(y + 2);
+			goomba->SetState(GOOMBA_STATE_THROWN_BY_KOOPA);
+			//goomba->SetVy(-0.02f);
+			//goomba->SetVx(-0.01f);
+			//goomba->SetY(y + 2);
 			//x += KOOPA_RED_BBOX_WIDTH / 2;
 		}
 	}
