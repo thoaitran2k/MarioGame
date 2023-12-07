@@ -57,8 +57,11 @@ protected:
 	CGoomba* goomba_under_koopa;
 	
 
+
+	
 	bool isTurtleShell;
 	bool isKicked;
+	bool isOntheBox;
 	bool isOnPlatform;
 	bool HaveOrNotCheckFall;
 	bool isComback;
@@ -97,6 +100,7 @@ protected:
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick_Question(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithOntheBox(LPCOLLISIONEVENT e);
 
 
 
@@ -117,6 +121,8 @@ public:
 	bool GetisDeleted() { return isDeleted; }
 
 	bool GetwasHeld() { return wasHeld; }
+
+	bool GetisOntheBox() { return isOntheBox; }
 	//bool GetIsCollis() { return isCollis; }
 
 	int DistanceTurtleShellisKickedWithMario();
