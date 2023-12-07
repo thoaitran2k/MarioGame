@@ -6,7 +6,7 @@
 
 
 #define KOOPA_GREEN_NOT_WING_BBOX_WIDTH 16
-#define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT 16
+#define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT 20
 #define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT_DEFEND 7
 
 
@@ -23,7 +23,7 @@
 #define ID_ANI_KOOPA_GREEN_NOT_WING_TURTLESHELL 6003
 
 
-class CKoopa_Green_Not_Wing : public CGameObject
+class CGreen_Koopa : public CGameObject
 {
 protected:
 	float ax;
@@ -42,7 +42,7 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 public:
-	CKoopa_Green_Not_Wing(float x, float y);
+	CGreen_Koopa(float x, float y);
 	virtual void SetState(int state);
 };
 

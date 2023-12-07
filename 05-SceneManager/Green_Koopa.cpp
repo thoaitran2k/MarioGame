@@ -1,7 +1,7 @@
-#include "Koopa_Green_Not_Wing.h"
+#include "Green_Koopa.h"
 #include "Platform.h"
 
-CKoopa_Green_Not_Wing::CKoopa_Green_Not_Wing(float x, float y) :CGameObject(x, y)
+CGreen_Koopa::CGreen_Koopa(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
 	this->ay = KOOPA_GREEN_NOT_WING_GRAVITY;
@@ -9,7 +9,7 @@ CKoopa_Green_Not_Wing::CKoopa_Green_Not_Wing(float x, float y) :CGameObject(x, y
 	SetState(KOOPA_GREEN_NOT_WING_STATE_WALKING);
 }
 
-void CKoopa_Green_Not_Wing::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+void CGreen_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 
 	
@@ -20,16 +20,16 @@ void CKoopa_Green_Not_Wing::GetBoundingBox(float& left, float& top, float& right
 	
 }
 
-void CKoopa_Green_Not_Wing::OnNoCollision(DWORD dt)
+void CGreen_Koopa::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
 };
 
-void CKoopa_Green_Not_Wing::OnCollisionWith(LPCOLLISIONEVENT e)
+void CGreen_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj)) return;
+	if (dynamic_cast<CGreen_Koopa*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -41,7 +41,7 @@ void CKoopa_Green_Not_Wing::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 }
 
-void CKoopa_Green_Not_Wing::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+void CGreen_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
@@ -56,7 +56,7 @@ void CKoopa_Green_Not_Wing::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 }
 
 
-void CKoopa_Green_Not_Wing::Render()
+void CGreen_Koopa::Render()
 {
 	int aniId;
 	if (vx>0) 
@@ -71,10 +71,10 @@ void CKoopa_Green_Not_Wing::Render()
 
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
-void CKoopa_Green_Not_Wing::SetState(int state)
+void CGreen_Koopa::SetState(int state)
 {
 	CGameObject::SetState(state);
 	switch (state)

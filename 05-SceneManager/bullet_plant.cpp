@@ -125,6 +125,7 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 void CbulletPlant::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
+	
 }
 
 ///////////////////////////////////////////////////////////////////////

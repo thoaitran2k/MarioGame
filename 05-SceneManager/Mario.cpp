@@ -15,7 +15,7 @@
 #include "MushRoom.h"
 #include "bullet_plant.h"
 #include "PlantShootRed.h"
-#include "Koopa_Green_Not_Wing.h"
+#include "Green_Koopa.h"
 #include "Red_Koopa.h"
 #include "leaf.h"
 #include "Para_Goomba.h"
@@ -67,7 +67,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CPara_Goomba*>(e->obj))
 		OnCollisionWithPara_Goomba(e);
-	else if (dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj))
+	else if (dynamic_cast<CGreen_Koopa*>(e->obj))
 		OnCollisionWithKoopa_Green_notWing(e);
 	else if (dynamic_cast<CRed_Koopa*>(e->obj))
 		OnCollisionWithRed_Koopa(e);
@@ -95,7 +95,7 @@ void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
 {
-	CKoopa_Green_Not_Wing* koopa = dynamic_cast<CKoopa_Green_Not_Wing*>(e->obj);
+	CGreen_Koopa* koopa = dynamic_cast<CGreen_Koopa*>(e->obj);
 
 
 	if (e->ny < 0)
@@ -799,7 +799,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	if (level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_RACOON)
+	if (level != MARIO_LEVEL_SMALL)
 	{
 		if (isSitting)
 		{
@@ -816,6 +816,8 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
+	
+
 	else
 	{
 		left = x - MARIO_SMALL_BBOX_WIDTH/2;
@@ -831,12 +833,14 @@ void CMario::SetLevel(int l)
 	if (this->level == MARIO_LEVEL_SMALL)
 	{
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+
+		//y -= 9;
 	}
-	/*if (this->level == MARIO_LEVEL_RACOON)
-	{
-		y = y - 15;
-		isOnPlatform = true;
-	}*/
+	//if (this->level == MARIO_LEVEL_RACOON)
+	//{
+	//	y = y - 9;
+	//	//isOnPlatform = true;
+	//}
 	level = l;
 }
 

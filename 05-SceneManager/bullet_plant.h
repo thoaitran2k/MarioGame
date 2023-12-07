@@ -43,7 +43,7 @@ protected:
 
 		
 
-		virtual int IsCollidable() { return 1; };
+		virtual int IsCollidable() { return 0; };
 		virtual int IsBlocking() { return 0; };
 
 		CbulletPlant(float bx, float by,float nx, float ny);
