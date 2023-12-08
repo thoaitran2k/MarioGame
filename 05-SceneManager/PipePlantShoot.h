@@ -5,14 +5,16 @@
 #define ID_ANI_LONG_PIPE 202
 #define ID_ANI_MEDIUM_PIPE 201
 #define ID_ANI_EMPTY_PIPE 203
+#define ID_ANI_EMPTY_M_PIPE 204
 
-#define PIPE_BBOX_WIDTH 36
+#define PIPE_BBOX_WIDTH 32
 #define PIPE_BBOX_L_HEIGHT 50
 #define PIPE_BBOX_M_HEIGHT 32
 
 #define MODEL_L_PIPE 1	//L:LONG
 #define MODEL_M_PIPE 2
 #define MODEL_EMPTY_PIPE 3	//M:MEDIUM
+#define MODEL_EMPTY_M_PIPE 4	//M:MEDIUM
 
 
 class CPipePlantShoot : public CGameObject {

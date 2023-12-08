@@ -34,7 +34,8 @@ void CPipePlantShoot::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	int aniId;
 	if (model == MODEL_L_PIPE) aniId = ID_ANI_LONG_PIPE;
-	if (model == MODEL_M_PIPE) aniId = ID_ANI_MEDIUM_PIPE;
+	else if (model == MODEL_M_PIPE) aniId = ID_ANI_MEDIUM_PIPE;
+	else if (model == MODEL_EMPTY_M_PIPE) aniId = ID_ANI_EMPTY_M_PIPE;
 	else aniId = ID_ANI_EMPTY_PIPE;
 
 	animations->Get(aniId)->Render(x, y);

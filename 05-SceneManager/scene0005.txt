@@ -16,6 +16,7 @@ pipe_plant_shoot.txt
 koopa.txt
 Boxs.txt
 leaf.txt
+green_plant.txt
 [MAP]
 #MAP
 99	1408	216
@@ -26,7 +27,7 @@ leaf.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	1480	300
+0	1780	300
 #COIN
 #4	450	370
 #4	470	370
@@ -113,11 +114,24 @@ leaf.txt
 
 #LONG_PIPE
 55	367	393
+55	1872	393
 
+
+#RED_PLANT
 88	367	383
+
+#GREEN_PLANT
+#shoot
+177	1872	385
+
+#not_shoot
+178	1807	402
+
 #PIPE COVER
 89	367	393
+89	1872	393
 
+98	1807	400
 
 9	184	360
 #Portal

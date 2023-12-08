@@ -80,7 +80,7 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 			SetState(8);
 		}
 		//if (abs(mario->GetY() - y) < 40)
-			SetVy(0.01f);
+			SetVy(0.02f);
 
 		if (abs(mario->GetX() - x) > 150) isDeleted = true;
 
@@ -104,7 +104,7 @@ CbulletPlant::CbulletPlant(float x, float y,float nx,float ny)
 		}
 
 		if (abs(mario->GetY() - y) < 20)
-			SetVy(-0.01f);
+			SetVy(-0.02f);
 
 		if (abs(mario->GetX() - x) > 150) isDeleted = true;
 		//SetVx(BULLET_SPEED_X);
@@ -228,7 +228,7 @@ void CbulletPlant::SetState(int b) {
 
 	case BULLET_LEFT_BOT: //2
 		SetVx(-BULLET_SPEED_X);
-		SetVy(BULLET_SPEED_Y);
+		SetVy(0.025f);
 		break;
 
 	case 5:
@@ -238,7 +238,7 @@ void CbulletPlant::SetState(int b) {
 
 	case BULLET_RIGHT_BOT:
 		SetVx(BULLET_SPEED_X);
-		SetVy(BULLET_SPEED_Y);
+		SetVy(0.05f);
 		break;
 
 	case 8:
