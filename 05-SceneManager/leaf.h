@@ -37,7 +37,7 @@ public:
 		ax = 0;
 		this->startY = y;
 		limitY = y - 50;
-		limitL = x - 25;
+		limitL = x;
 		limitR = x + 25;
 
 	};

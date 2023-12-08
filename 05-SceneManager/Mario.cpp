@@ -483,6 +483,19 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			coin++;
 
 		}
+		  else if (questionBrick->GetModel() == QUESTION_BRICK_LEAF)
+		{
+			CLeaf* leaf = new CLeaf(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+
+
+			scene->AddObject(leaf);
+			leaf->SetState(LEAF_SUMMON_STATE);
+			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+			questionBrick->SetState(BRICK_Q_STATE_UP);
+			questionBrick->SetIsEmpty(true);
+			questionBrick->SetIsUnbox(true);
+
+		}
 	}
 }
 
