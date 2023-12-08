@@ -261,23 +261,46 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 
 	if (koopared->GetIsTurtleShell())
 	{
+		// K nhan A isHold = false , nhan phim A isHold = true; isHold = true -> holding;
 		if (!koopared->GETwasKicked())
 		{
 			if (e->ny < 0) {
 				if (koopared->GetIsKick()) {
 					//SetState(MARIO_STATE_KICK);
 					koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+					//isHold = false;
 				}
-				}
-				else
-					if (e->nx != 0)
+			}
+			else
+				if (e->nx != 0){
+						//if(abs(x-koopared->GetX())<100)
+					if (!Holding)
 					{
-						if (koopared->GetIsKick()) {
-							SetState(MARIO_STATE_KICK);
-							koopared->SetState(KOOPA_RED_STATE_ISKICKED);
-						}
+						
+							if (koopared->GetIsKick())
+							{
+								SetState(MARIO_STATE_KICK);
+								koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+								//isHold = false;
+							}
+						
 					}
-			
+					else{
+						koopared->SetState(KOOPA_RED_STATE_BE_HELD);
+							
+
+						
+							//koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+							//koopared->SetIsKick(false);
+							//koopared->SetShell(true);
+							/*koopared->SetY(y-20);
+							koopared->SetVx(0);
+							koopared->SETay(0);
+							koopared->SetVy(0);*/
+							
+						}
+				}
+
 		}
 		else {
 			if (untouchable == 0)
@@ -300,17 +323,28 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 			}
 
 		}
+
+		/*if (koopared->GetState() == KOOPA_RED_STATE_BE_HELD)
+		{
+			if (!koopared->GETwasKicked() && !isHold)
+				koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+		}*/
+
+
 	}
 	else
 	{
 		if (e->ny < 0)
 		{
+			
 			bool isCombackRedKoopa;
 			isCombackRedKoopa = koopared->GetIsComback();
 
 			if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_ISKICKED && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN) //STATE_WALKING
 			{
+				
 				koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
+				isHold = true;
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
 				DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 
@@ -321,6 +355,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 		{// hit by red koopa (walking or turtleshell is kicked)
 			if (untouchable == 0)
 			{
+				
 				if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN)
 				{
 					if (level > MARIO_LEVEL_SMALL)
@@ -800,8 +835,20 @@ void CMario::SetState(int state)
 		Kicking = true;
 		break;
 
-	case MARIO_STATE_HOLDING:
-		Holding = true;
+	case MARIO_STATE_HOLDING_RIGHT:
+		if (isSitting) break;
+		maxVx = MARIO_WALKING_SPEED;
+		ax = MARIO_ACCEL_WALK_X;
+		nx = 1;
+		//Holding = true;
+		break;
+
+	case MARIO_STATE_HOLDING_LEFT:
+		if (isSitting) break;
+		maxVx = -MARIO_WALKING_SPEED;
+		ax = -MARIO_ACCEL_RUN_X;
+		nx = -1;
+		//Holding = true;
 		break;
 
 	case MARIO_STATE_IDLE:

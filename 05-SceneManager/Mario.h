@@ -33,7 +33,8 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 #define MARIO_STATE_KICK			650
-#define MARIO_STATE_HOLDING			660
+#define MARIO_STATE_HOLDING_RIGHT	660
+#define MARIO_STATE_HOLDING_LEFT	670
 
 
 #pragma region ANIMATION_ID
@@ -185,6 +186,7 @@ class CMario : public CGameObject
 	BOOLEAN isSitting;
 	BOOLEAN Kicking;
 	bool Holding;
+	bool isHold;
 
 
 	float maxVx;
@@ -224,6 +226,7 @@ public:
 		isSitting = false;
 		Kicking = false;
 		Holding = false;
+		isHold = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
@@ -271,7 +274,11 @@ public:
 	//get
 	bool GetIsHolding() { return Holding; }
 
+	bool GetIsHold() { return isHold; }
+
 
 	//set
 	void SetHolding(bool b) { Holding = b; }
+
+	void SetIsHold(bool b) { isHold = b; }
 };

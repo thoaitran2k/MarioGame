@@ -69,6 +69,7 @@ protected:
 	bool isDead;
 	bool isTurn;
 	bool wasHeld;
+	//int collis;
 
 	ULONGLONG count_start;
 	ULONGLONG comback_time;
@@ -90,6 +91,9 @@ protected:
 	void CreateGoomba();
 	
 	virtual int IsCollidable() { return 1;}
+
+
+	
 	//virtual int IsColliswithMario() { return isCollis; }
 	virtual int IsBlocking() { return 0; }
 	
@@ -109,12 +113,24 @@ public:
 
 	ULONGLONG GetTimeDelete() { return time_delete; }
 
+	ULONGLONG GetCount_time() { return count_start; }
+
+	void SetisTurn(bool b) { b = isTurn; }
+
+	void SetDead(bool b) { b = isDead; }
+
+	void SetShell(bool b) { b = isTurtleShell; }
+
+	void SETay(float b) { b = ay; }
 
 	bool GetIsKick() { return isKicked; }
+
+	void SetIsKick(bool b) { isKicked = b; }
 
 	bool GetIsTurtleShell() { return isTurtleShell; }
 
 	bool GETwasKicked() { return wasKicked; }
+
 
 	bool GetIsComback() { return isComback; }
 	
@@ -123,6 +139,8 @@ public:
 	bool GetwasHeld() { return wasHeld; }
 
 	bool GetisOntheBox() { return isOntheBox; }
+
+	void SetIsDelete(bool b) { isDeleted = b; }
 	//bool GetIsCollis() { return isCollis; }
 
 	int DistanceTurtleShellisKickedWithMario();

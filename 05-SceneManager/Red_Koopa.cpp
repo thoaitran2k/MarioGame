@@ -34,6 +34,7 @@ CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 	isDead = false;
 	wasHeld = false;
 	time_rs = -1;
+	//collis = 1;
 	CreateGoomba();
 	
 }
@@ -134,7 +135,7 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	//if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CRed_Koopa*>(e->obj)) return;
 	if (dynamic_cast<CbulletPlant*>(e->obj)) return;
-
+	//if (state == KOOPA_RED_STATE_BE_HELD) return;
 	
 	if (e->ny != 0)
 	{
@@ -281,6 +282,20 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
 						}
 				}
+
+			if (state == KOOPA_RED_STATE_BE_HELD)
+			{
+				vx = mario->GetVx();
+				vy = mario->GetVy();
+				this->x = mario->GetX() + mario->GetNx() * (MARIO_BIG_BBOX_WIDTH - 3);
+				this->y = mario->GetY() - 3;
+				
+				if (!mario->GetIsHold())
+				{
+					SetState(KOOPA_RED_STATE_ISKICKED);
+				}
+			}
+			
 		}
 
 		if (isOnPlatform) {
@@ -373,6 +388,9 @@ void CRed_Koopa::Render()
 			aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
 			break;
 
+		case KOOPA_RED_STATE_BE_HELD:
+			aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
+			break;
 
 		case KOOPA_RED_STATE_TO_RETURN:
 			aniId = ID_ANI_RED_KOOPA_COMBACK;
@@ -428,6 +446,7 @@ void CRed_Koopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_RED_STATE_ISTURTLESHELL:
+		
 		ResetKP();
 		count_start = GetTickCount64();
 		ResetCheck();
@@ -466,6 +485,7 @@ void CRed_Koopa::SetState(int state)
 		HaveOrNotCheckFall = false;
 		isDead = false;
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
+		ay = KOOPA_RED_GRAVITY;
 		
 		break;
 	case KOOPA_RED_STATE_WALKING:
@@ -494,10 +514,19 @@ void CRed_Koopa::SetState(int state)
 	case KOOPA_RED_STATE_BE_HELD:
 		//vx = mario->GetVx();
 		//vy = mario->GetVy();
-		y = y - 30;
+		y = mario->GetY()-3;
+		
+		/*if (nx > 0)
+			x = mario->GetX() + 14;
+		else x = GetX() - 32;*/
+
+		count_start = GetTickCount64();
+		//collis = 0;
 		wasHeld = true;
-		isKicked = false;
+		isKicked = true;
 		wasKicked = false;
+		isComback = false;
+		ay = 0;
 		break;
 
 	}
