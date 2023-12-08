@@ -20,6 +20,7 @@
 #include "leaf.h"
 #include "Para_Goomba.h"
 #include "PipePlantShoot.h"
+#include "Green_Plant.h"
 
 
 
@@ -85,11 +86,46 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithFire_Bullet(e);
 	else if (dynamic_cast<CPlantShootRed*>(e->obj))
 		OnCollisionWithPlantShootRed(e);
-	else if (dynamic_cast<CPipePlantShoot*>(e->obj))
-		OnCollisionWithPipe(e);
+	else if (dynamic_cast<CGreen_Plant*>(e->obj))
+		OnCollisionWithGreenPlant(e);
+	
 }
 
-void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e) {
+void CMario::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
+	CGreen_Plant* green_plant = dynamic_cast<CGreen_Plant*>(e->obj);
+
+
+
+	if (green_plant->StateActive()) {
+
+		if (untouchable == 0) {
+			if (green_plant->GetState() != PLANT_STATE_NOT_TOUCH) {
+				if (level > MARIO_LEVEL_SMALL)
+				{
+
+					if (level > MARIO_LEVEL_BIG)
+					{
+						level = MARIO_LEVEL_BIG;
+						StartUntouchable();
+					}
+					else
+					{
+						level = MARIO_LEVEL_SMALL;
+
+
+						StartUntouchable();
+					}
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE by Plant Enemies >>> \n");
+					SetState(MARIO_STATE_DIE);
+					//isDeleted = true; sai
+				}
+			}
+		}
+	}
+	else return;
 
 }
 
