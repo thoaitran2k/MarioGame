@@ -2,8 +2,14 @@
 
 void CBrick::Render()
 {
-	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(ID_ANI_BRICK)->Render(x, y);
+
+	int aniId;
+
+	if (model == 1) { aniId = ID_ANI_BRICK; }
+
+	if(model == 2) { aniId = ID_ANI_BRICK_2; }
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
 }
 

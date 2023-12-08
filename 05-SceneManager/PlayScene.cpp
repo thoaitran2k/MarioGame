@@ -233,7 +233,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y, GOOMBA_BASIC); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
+	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y, MODEL_BASIC); break;
+	case OBJECT_TYPE_BRICK_2: obj = new CBrick(x, y, MODEL_BASIC_2); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BRICK_Q_COIN: obj = new CBrickQuestion(x, y, QUESTION_BRICK_COIN); break;
 	case OBJECT_TYPE_BRICK_Q_MUSHROOM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_MUSHROOM); break;
