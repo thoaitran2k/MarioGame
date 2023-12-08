@@ -11,6 +11,8 @@ CBrickQuestion::CBrickQuestion(float x, float y, int model) :CGameObject(x, y)
 	this->minY = y - BRICK_Q_BBOX_HEIGHT/2;
 	this->startY = y;
 	this->startX = x;
+	isEmpty = false;
+	isUnbox = false;
 }
 
 
@@ -18,16 +20,50 @@ CBrickQuestion::CBrickQuestion(float x, float y, int model) :CGameObject(x, y)
 void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	if (!isUnbox) {
-		l = x - BRICK_Q_BBOX_WIDTH / 2;
-		t = y - BRICK_Q_BBOX_HEIGHT / 2;
-		r = l + BRICK_Q_BBOX_WIDTH;
-		b = t + BRICK_Q_BBOX_HEIGHT;
+		if (model == QUESTION_BRICK_COIN) {
+			l = (x - BRICK_Q_BBOX_WIDTH / 2)-4;
+			t = y - BRICK_Q_BBOX_HEIGHT / 2;
+			r = l + BRICK_Q_BBOX_WIDTH;
+			b = t + BRICK_Q_BBOX_HEIGHT;
+		}
+		if (model == QUESTION_BRICK_MUSHROOM) {
+			l = (x - BRICK_Q_BBOX_WIDTH / 2) - 4;
+			t = y - BRICK_Q_BBOX_HEIGHT / 2;
+			r = l + BRICK_Q_BBOX_WIDTH;
+			b = t + BRICK_Q_BBOX_HEIGHT;
+		}
+		
+		if (model == QUESTION_BRICK_LEAF)
+		{
+			l = x - BRICK_Q_BBOX_WIDTH / 2;
+			t = y - BRICK_Q_BBOX_HEIGHT / 2;
+			r = l + BRICK_Q_BBOX_WIDTH;
+			b = t + BRICK_Q_BBOX_HEIGHT;
+		}
+
 	}
 	else {
-		l = x - BRICK_Q_BBOX_WIDTH / 2;
-		t = y - BRICK_Q_BBOX_HEIGHT / 2;
-		r = l + BRICK_Q_BBOX_WIDTH-3;
-		b = t + BRICK_Q_BBOX_HEIGHT;
+		if (model == QUESTION_BRICK_COIN)
+		{
+			l = x - BRICK_Q_BBOX_WIDTH / 2;
+			t = y - BRICK_Q_BBOX_HEIGHT / 2;
+			r = l + BRICK_Q_BBOX_WIDTH - 6;
+			b = t + BRICK_Q_BBOX_HEIGHT;
+
+		}
+		else if (QUESTION_BRICK_LEAF) {
+			l = x - BRICK_Q_BBOX_WIDTH / 2;
+			t = y - BRICK_Q_BBOX_HEIGHT / 2;
+			r = l + BRICK_Q_BBOX_WIDTH;
+			b = t + BRICK_Q_BBOX_HEIGHT;
+		}
+		else
+		{
+			l = x - BRICK_Q_BBOX_WIDTH / 2;
+			t = y - BRICK_Q_BBOX_HEIGHT / 2;
+			r = l + BRICK_Q_BBOX_WIDTH;
+			b = t + BRICK_Q_BBOX_HEIGHT;
+		}
 	}
 }
 
@@ -45,8 +81,9 @@ void CBrickQuestion::OnNoCollision(DWORD dt)
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
-
 		vy += ay * dt;
+
+
 		if (y <= minY)
 		{
 			vy = BRICK_Q_SPEED_DOWN;
@@ -55,10 +92,12 @@ void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			y = startY;
 			vy = 0;
-			isEmpty = true;
-			isUnbox = true;
+			//isEmpty = true;
+			//isUnbox = true;
 
 		}
+	
+
 	
 
 

@@ -139,8 +139,19 @@ void CMario::OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e)
 			if (pshootred->GetState() != PLANT_STATE_NOT_TOUCH) {
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
+					
+					if (level > MARIO_LEVEL_BIG)
+					{
+						level = MARIO_LEVEL_BIG;
+						StartUntouchable();
+					}
+					else
+					{
+						level = MARIO_LEVEL_SMALL;
+
+
+						StartUntouchable();
+					}
 				}
 				else
 				{
@@ -157,23 +168,29 @@ void CMario::OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithFire_Bullet(LPCOLLISIONEVENT e)
 {
 		CbulletPlant* fire_bullet = dynamic_cast<CbulletPlant*>(e->obj);
+		if (untouchable == 0) {
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				if (level > MARIO_LEVEL_BIG)
+				{
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else
+				{
+					level = MARIO_LEVEL_SMALL;
 
-		if (level > MARIO_LEVEL_SMALL)
-		{
-			if (level > MARIO_LEVEL_BIG)
 
-				level = MARIO_LEVEL_BIG;
-
-			else level = MARIO_LEVEL_SMALL;
-			
-			StartUntouchable();
+					StartUntouchable();
+				}
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE by Fire_Bullet >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
+			e->obj->Delete();
 		}
-		else
-		{
-			DebugOut(L">>> Mario DIE by Fire_Bullet >>> \n");
-			SetState(MARIO_STATE_DIE);
-		}
-		e->obj -> Delete();
 
 }
 
@@ -379,6 +396,8 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
 
+	
+
 	CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	BOOLEAN isUnBox, isEmpty;
@@ -390,10 +409,11 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 	yTemp = questionBrick->GetY();
 	minY = questionBrick->GetMinY();
 
-
+	if (isUnBox) return;
 
 	if (e->ny > 0 && !isUnBox && !isEmpty) {
 
+		
 
 		if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
 		{
@@ -410,6 +430,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
 				questionBrick->SetState(BRICK_Q_STATE_UP);
 				questionBrick->SetIsEmpty(true);
+				questionBrick->SetIsUnbox(true);
 
 			
 		}
@@ -423,6 +444,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
 			questionBrick->SetState(BRICK_Q_STATE_UP);
 			questionBrick->SetIsEmpty(true);
+			questionBrick->SetIsUnbox(true);
 			coin++;
 
 		}

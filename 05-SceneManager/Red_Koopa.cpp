@@ -297,12 +297,28 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (checkfall->GetVy() > 0.05f) {
 					vx = -vx;
 					ResetCheck();
-					
-					
 				}
 
 				
 			}
+			else //isTurtleshell and Not Checkfall
+				if (!wasKicked)
+				{
+					if (!wasHeld && !isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
+					{
+						SetState(KOOPA_RED_STATE_TO_RETURN);
+						DebugOut(L">>> RETURN >>> \n");
+
+					}
+					if (!wasHeld && isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
+					{
+
+						SetState(KOOPA_RED_STATE_WALKING);
+						vx = KOOPA_RED_WALKING_SPEED;
+						y = y - KOOPA_RED_BBOX_HEIGHT / 2;
+						DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
+					}
+				}
 
 		}
 
