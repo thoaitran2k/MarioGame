@@ -143,6 +143,9 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
+		if (isOnPlatform) {
+			ResetCheck();
+		}
 		vx = -vx;
 	}
 

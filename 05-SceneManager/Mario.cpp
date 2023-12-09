@@ -69,7 +69,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CPara_Goomba*>(e->obj))
 		OnCollisionWithPara_Goomba(e);
 	else if (dynamic_cast<CGreen_Koopa*>(e->obj))
-		OnCollisionWithKoopa_Green_notWing(e);
+		OnCollisionWithKoopa_Green(e);
 	else if (dynamic_cast<CRed_Koopa*>(e->obj))
 		OnCollisionWithRed_Koopa(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
@@ -129,7 +129,7 @@ void CMario::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
 
 }
 
-void CMario::OnCollisionWithKoopa_Green_notWing(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 {
 	CGreen_Koopa* koopa = dynamic_cast<CGreen_Koopa*>(e->obj);
 
