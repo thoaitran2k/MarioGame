@@ -47,6 +47,11 @@
 #define KOOPA_GREEN_WALKING_STATE_TURN 460
 #define KOOPA_GREEN_STATE_WAIT_RESET 470
 #define KOOPA_GREEN_STATE_BE_HELD 478
+#define KOOPA_GREEN_STATE_JUMP_RIGHT 500
+#define KOOPA_GREEN_STATE_JUMP_LEFT 510
+#define KOOPA_GREEN_STATE_FALL 520
+
+
 
 //Ani_id
 #define ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_RIGHT 6001
@@ -72,6 +77,8 @@ protected:
 	float startX;
 	float startY;
 
+	float rangeFly;
+
 	CCheckFall* checkfall;
 	CGreen_Koopa* newkoopa;
 	CGoomba* goomba_under_koopa;
@@ -89,6 +96,8 @@ protected:
 	bool isDead;
 	bool isTurn;
 	bool wasHeld;
+	bool Jumping;
+	bool fall;
 	//int collis;
 
 	ULONGLONG count_start;
@@ -141,9 +150,18 @@ public:
 
 	void SetShell(bool b) { b = isTurtleShell; }
 
-	void SETay(float b) { b = ay; }
+	void SETay(float g) { g = ay; }
+
 
 	bool GetIsKick() { return isKicked; }
+
+	bool GetIsJumping() { return Jumping; }
+	void SetJumping(bool b) { b = Jumping; }
+
+	bool GetIsFall() { return fall; }
+	void SetFall(bool b) { b = fall; }
+	
+	
 
 	void SetIsKick(bool b) { isKicked = b; }
 
@@ -223,6 +241,7 @@ public:
 		if (goomba_under_koopa) goomba_under_koopa->Delete();
 		goomba_under_koopa = NULL;
 	}
+
 
 
 

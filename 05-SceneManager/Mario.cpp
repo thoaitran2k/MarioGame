@@ -136,9 +136,15 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL)
+		
+		koopa->SetJumping(false);
+		koopa->SetFall(true);
+
+		if ((koopa->GetState() == KOOPA_GREEN_STATE_JUMP_LEFT) or (koopa->GetState() == KOOPA_GREEN_STATE_JUMP_RIGHT) or (koopa->GetState()== KOOPA_GREEN_STATE_FALL))
 		{
-			koopa->SetState(KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL);
+			
+			koopa->SetState(KOOPA_GREEN_STATE_WALKING);
+			koopa->SETay(0.5f);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
