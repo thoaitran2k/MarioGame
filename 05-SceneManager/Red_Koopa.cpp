@@ -104,20 +104,22 @@ void CRed_Koopa::CreateCheckfall() {
 
 		if (vx<0)
 		{
-			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()- KOOPA_RED_BBOX_WIDTH, y, 0, 0);
+			CGameObject* add_object_left = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()- KOOPA_RED_BBOX_WIDTH, y+1, 0, 0);
 				AddCheck(add_object_left);
 				DebugOut(L">>> check tao obj left >>> \n");
 				checkfall->SetState(STATE_LEFT_KOOPA);
+				checkfall->SETay(0.09f);
 			
 			
 		}
 		else if(vx>=0)
 		{
-			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+ KOOPA_RED_BBOX_WIDTH, y,0/* KOOPA_RED_WALKING_SPEED*/, 0);
+			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+ KOOPA_RED_BBOX_WIDTH, y+1,0/* KOOPA_RED_WALKING_SPEED*/, 0);
 			
 			AddCheck(add_object_right);
 			DebugOut(L">>> check tao obj right >>> \n");
 			checkfall->SetState(STATE_RIGHT_KOOPA);
+			checkfall->SETay(0.09f);
 			
 		}
 
@@ -312,7 +314,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					//ResetCheck();
 					
 				}
-				else if (checkfall->GetVy() > 0.05f) {
+				else if (!checkfall->GetIsOnPlatform()) {
 					vx = -vx;
 					ResetCheck();
 				}

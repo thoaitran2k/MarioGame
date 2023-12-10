@@ -68,6 +68,9 @@ public:
 	
 	void SetIsOnPlatform(bool b) { b = isOnPlatformCheck; }
 
+	//set ay
+	void SETay(float y) { y = ay; }
+
 	/*bool checkfalling()
 	{
 		if (vy > 0.0004f) return true;

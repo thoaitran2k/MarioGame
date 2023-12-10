@@ -21,8 +21,8 @@ CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 {
 
 	this->ax = 0;
-	this->ay = 0.00009f;
-	isOnPlatformCheck = false;
+	this->ay = 0.09f;
+	//isOnPlatformCheck = false;
 	//OnTheBox = true;
 	//SetState(STATE_LEFT_KOOPA);
 
@@ -46,6 +46,14 @@ void CCheckFall::OnNoCollision(DWORD dt)
 void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
+
+	if (e->ny != 0 && e->obj->IsBlocking())
+	{
+		vy = 0;
+		if (e->ny < 0) isOnPlatformCheck = true;
+	}
+
+
 	//if (dynamic_cast<CCheckFall*>(e->obj)) return;
 
 	//if (e->nx != 0)
@@ -53,8 +61,8 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 
 
 	
-	if (dynamic_cast<CBackground*>(e->obj))
-		this->OnCollisionWithPlatForm(e);
+	//if (dynamic_cast<CBackground*>(e->obj))
+		//this->OnCollisionWithPlatForm(e);
 	if (dynamic_cast<CBox*>(e->obj))
 		this->OnCollisionWithBox(e);
 }
@@ -91,6 +99,7 @@ void CCheckFall::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	isOnPlatformCheck = false;
 
 
 	//if (GetX() < (x - 10)) isDeleted = true;
