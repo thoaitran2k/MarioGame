@@ -262,7 +262,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					DebugOut(L">>> CHECK TAO OBJ >>> \n");
 				}
 				else 
-					if (checkfall->GetIsOnPlatform())
+					if (!checkfall->GetIsOnPlatform())
 				{
 					SetState(KOOPA_RED_WALKING_STATE_TURN);
 					DebugOut(L">>> MOVING >>> \n");
