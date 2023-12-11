@@ -34,9 +34,15 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_A:
 		//if (mario->GetIsHolding()) mario->SetHolding(false);
 		//if(mario->GetIsHolding()) mario->SetHolding(false);
-		
-		if (mario->GetIsHold())
-			mario->SetHolding(true);
+		//if (koopa_red->GetIsTurtleShell())
+		//{
+			
+				//mario->SetIsHold(true);
+
+		//}
+
+		//if (mario->GetIsHold())
+			mario->SetIsHold(true);
 		//else mario->SetHolding(false);
 		break;
 

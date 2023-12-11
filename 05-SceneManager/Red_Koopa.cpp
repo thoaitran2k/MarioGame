@@ -339,7 +339,18 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
 					}
 				}
+			if (state == KOOPA_RED_STATE_BE_HELD)
+			{
+				vx = mario->GetVx();
+				vy = mario->GetVy();
+				this->x = mario->GetX() + mario->GetNx() * (MARIO_BIG_BBOX_WIDTH - 3);
+				this->y = mario->GetY() - 3;
 
+				if (!mario->GetIsHold())
+				{
+					SetState(KOOPA_RED_STATE_ISKICKED);
+				}
+			}
 		}
 
 

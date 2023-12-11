@@ -316,7 +316,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 			else
 				if (e->nx != 0){
 						//if(abs(x-koopared->GetX())<100)
-					if (!Holding)
+					if (!isHold)
 					{
 						
 							if (koopared->GetIsKick())
@@ -328,6 +328,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 						
 					}
 					else{
+						Holding = true;
 						koopared->SetState(KOOPA_RED_STATE_BE_HELD);
 							
 
