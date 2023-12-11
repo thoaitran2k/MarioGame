@@ -71,7 +71,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		//mario->SetHolding(true);
 		if (mario->GetIsHolding()) mario->SetHolding(false);
 
-		 mario->SetIsHold(false);
+		/*if(mario->GetIsHold())*/  mario->SetIsHold(false);
 		//mario->SetHolding(true);
 		break;
 	}

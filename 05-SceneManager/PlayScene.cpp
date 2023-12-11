@@ -436,7 +436,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cy > 410) cy = 450;
 
 	//CGame::GetInstance()->SetCamPos(cx,cy);
-	CGame::GetInstance()->SetCamPos(cx, 280);
+	CGame::GetInstance()->SetCamPos(cx, 245);
 
 	PurgeDeletedObjects();
 }

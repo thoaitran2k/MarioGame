@@ -21,7 +21,7 @@ CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 {
 
 	this->ax = 0;
-	this->ay = 0.04f;
+	this->ay = 0.015f;
 	//isOnPlatformCheck = false;
 	//OnTheBox = true;
 	//SetState(STATE_LEFT_KOOPA);

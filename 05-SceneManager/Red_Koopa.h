@@ -69,16 +69,20 @@ protected:
 	bool isDead;
 	bool isTurn;
 	bool wasHeld;
+	bool flagHeldKick;
 	//int collis;
 
 	ULONGLONG count_start;
 	ULONGLONG comback_time;
 	ULONGLONG time_delete;
 	ULONGLONG time_rs;
+	ULONGLONG isheld_time;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+
+	
 
 	int LeftOrRightMarrio();
 
@@ -109,11 +113,17 @@ protected:
 
 
 public:
+	ULONGLONG GetTimeHold() { return isheld_time; }
+
 	ULONGLONG GetTimeComback() { return comback_time; }
 
 	ULONGLONG GetTimeDelete() { return time_delete; }
 
 	ULONGLONG GetCount_time() { return count_start; }
+
+	void SetTimeHold(ULONGLONG b) { b = isheld_time; }
+
+	void SetCount_Start(ULONGLONG b) { b = count_start; }
 
 	void SetisTurn(bool b) { b = isTurn; }
 

@@ -14,6 +14,8 @@
 #define MODEL_BASIC	1
 #define MODEL_BASIC_2 2
 
+#define modehithox 77
+
 
 class CBrick : public CGameObject {
 
@@ -27,4 +29,6 @@ public:
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 };

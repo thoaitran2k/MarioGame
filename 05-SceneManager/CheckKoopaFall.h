@@ -57,6 +57,7 @@ public:
 	void OnCollisionWithBox(LPCOLLISIONEVENT e);
 	CCheckFall(float x, float y);
 
+
 	void GetDeleted() {
 		isDeleted = true;
 	}

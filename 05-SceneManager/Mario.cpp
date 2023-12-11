@@ -315,6 +315,8 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 			}
 			else
 				if (e->nx != 0){
+
+					//koopared->SetTimeHold(GetTickCount64());
 						//if(abs(x-koopared->GetX())<100)
 					if (!isHold)
 					{
@@ -328,9 +330,13 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 						
 					}
 					else{
+						
 						Holding = true;
 						koopared->SetState(KOOPA_RED_STATE_BE_HELD);
-							
+
+						
+						//if (GetTickCount64() - koopared->GetTimeHold() > 3000)
+							//koopared->SetState(KOOPA_RED_STATE_WALKING);
 
 						
 							//koopared->SetState(KOOPA_RED_STATE_ISKICKED);
@@ -373,6 +379,11 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 				koopared->SetState(KOOPA_RED_STATE_ISKICKED);
 		}*/
 
+		//if (koopared->GetState() == KOOPA_RED_STATE_BE_HELD) {
+			//if (GetTickCount64() - koopared->GetTimeHold() > 2000)
+				//koopared->SetState(KOOPA_RED_STATE_WALKING);
+		//}
+
 
 	}
 	else
@@ -385,9 +396,9 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 
 			if (koopared->GetState() != KOOPA_RED_STATE_ISTURTLESHELL && koopared->GetState() != KOOPA_RED_STATE_ISKICKED && koopared->GetState() != KOOPA_RED_STATE_TO_RETURN) //STATE_WALKING
 			{
-				
+				koopared->SetCount_Start(GetTickCount64());
 				koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
-				isHold = true;
+				//isHold = true;
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
 				DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 
