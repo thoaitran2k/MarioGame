@@ -436,7 +436,18 @@ void CPlayScene::Update(DWORD dt)
 	if (cy > 410) cy = 450;
 
 	//CGame::GetInstance()->SetCamPos(cx,cy);
+
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+
+
+	//if(mario->GetLevel() != 3 )
+
 	CGame::GetInstance()->SetCamPos(cx, 235);
+
+	//else CGame::GetInstance()->SetCamPos(cx, cy-50);
+
+
 
 	PurgeDeletedObjects();
 }
@@ -506,3 +517,4 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
 		objects.end());
 }
+

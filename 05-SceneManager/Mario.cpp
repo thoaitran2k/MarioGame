@@ -133,26 +133,34 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 {
 	CGreen_Koopa* koopa = dynamic_cast<CGreen_Koopa*>(e->obj);
 
-
 	if (e->ny < 0)
 	{
-		
-		koopa->SetJumping(false);
-		koopa->SetFall(true);
-
-		if ((koopa->GetState() == KOOPA_GREEN_STATE_JUMP_LEFT) or (koopa->GetState() == KOOPA_GREEN_STATE_JUMP_RIGHT) or (koopa->GetState()== KOOPA_GREEN_STATE_FALL))
-		{
-			
-			koopa->SetState(KOOPA_GREEN_STATE_WALKING);
-			koopa->SETay(0.5f);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}
+		if (koopa->GetIsJumping()) {
+				koopa->SetState(KOOPA_GREEN_STATE_WALKING);
+				koopa->SetFall(true);
+				koopa->SetJumping(false);
+				DebugOut(L">>> check mario x green_koopa >>> \n");
+				//koopa->SETay(0.5f);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			//}
+		} 
+		else
+			if (koopa->GetState() == KOOPA_GREEN_STATE_WALKING) {
+				koopa->SetState(KOOPA_GREEN_STATE_TO_RETURN);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+		//else
+		//{
+		//	koopa->SetJumping(false);
+		//	//koopa->SetFall(true);
+		//	koopa->SetState(KOOPA_GREEN_STATE_ISTURTLESHELL);	
+		//}
 	}
 	else // hit by koopa not wing walking
 	{
 		if (untouchable == 0)
 		{
-			if (koopa->GetState() != KOOPA_GREEN_NOT_WING_STATE_ISTURTLESHELL)
+			if (koopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
