@@ -237,6 +237,8 @@ void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 
 	
 
+	
+
 	if (isOnPlatform && state != KOOPA_RED_STATE_WALKING )
 	{
 		//isTurtleShell = true;
@@ -248,6 +250,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
@@ -544,6 +547,8 @@ void CRed_Koopa::SetState(int state)
 		isTurtleShell = false;
 		isDead = false;
 		HaveOrNotCheckFall = true;
+
+
 		ay = KOOPA_RED_GRAVITY;
 		//vx = 0;
 		break;

@@ -131,46 +131,163 @@ void CMario::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 {
-	CGreen_Koopa* koopa = dynamic_cast<CGreen_Koopa*>(e->obj);
+	CGreen_Koopa* gkoopa = dynamic_cast<CGreen_Koopa*>(e->obj);
 
-	if (e->ny < 0)
+	ULONGLONG red_koopa_comback;
+	red_koopa_comback = gkoopa->GetTimeComback();
+	bool wasKicked;
+	wasKicked = gkoopa->GETwasKicked();
+
+	
+
+	
+
+	if (gkoopa->GetIsTurtleShell())
 	{
-		if (koopa->GetIsJumping()) {
-				koopa->SetState(KOOPA_GREEN_STATE_WALKING);
-				koopa->SetFall(true);
-				koopa->SetJumping(false);
-				DebugOut(L">>> check mario x green_koopa >>> \n");
-				//koopa->SETay(0.5f);
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
-			//}
-		} 
-		else
-			if (koopa->GetState() == KOOPA_GREEN_STATE_WALKING) {
-				koopa->SetState(KOOPA_GREEN_STATE_TO_RETURN);
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
-			}
-		//else
-		//{
-		//	koopa->SetJumping(false);
-		//	//koopa->SetFall(true);
-		//	koopa->SetState(KOOPA_GREEN_STATE_ISTURTLESHELL);	
-		//}
-	}
-	else // hit by koopa not wing walking
-	{
-		if (untouchable == 0)
+		// K nhan A isHold = false , nhan phim A isHold = true; isHold = true -> holding;
+		if (!gkoopa->GETwasKicked())
 		{
-			if (koopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL)
+			if (e->ny < 0) {
+				if (gkoopa->GetIsKick()) {
+					//SetState(MARIO_STATE_KICK);
+					gkoopa->SetState(KOOPA_GREEN_STATE_ISKICKED);
+					//isHold = false;
+				}
+			}
+			else
+				if (e->nx != 0) {
+
+					//koopared->SetTimeHold(GetTickCount64());
+						//if(abs(x-koopared->GetX())<100)
+					if (!isHold)
+					{
+
+						if (gkoopa->GetIsKick())
+						{
+							SetState(MARIO_STATE_KICK);
+							gkoopa->SetState(KOOPA_GREEN_STATE_ISKICKED);
+							//isHold = false;
+						}
+
+					}
+					else {
+
+						Holding = true;
+						gkoopa->SetState(KOOPA_GREEN_STATE_BE_HELD);
+
+
+						//if (GetTickCount64() - koopared->GetTimeHold() > 3000)
+							//koopared->SetState(KOOPA_RED_STATE_WALKING);
+
+
+							//koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+							//koopared->SetIsKick(false);
+							//koopared->SetShell(true);
+							/*koopared->SetY(y-20);
+							koopared->SetVx(0);
+							koopared->SETay(0);
+							koopared->SetVy(0);*/
+
+					}
+				}
+
+		}
+		else {
+			if (untouchable == 0)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
+					if (level > MARIO_LEVEL_BIG)
+
+						level = MARIO_LEVEL_BIG;
+
+					else level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
+					DebugOut(L">>> Mario biến nhỏ >>> \n");
 				}
 				else
 				{
-					DebugOut(L">>> Mario DIE >>> \n");
+					DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
 					SetState(MARIO_STATE_DIE);
+				}
+			}
+
+		}
+
+		/*if (koopared->GetState() == KOOPA_RED_STATE_BE_HELD)
+		{
+			if (!koopared->GETwasKicked() && !isHold)
+				koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+		}*/
+
+		//if (koopared->GetState() == KOOPA_RED_STATE_BE_HELD) {
+			//if (GetTickCount64() - koopared->GetTimeHold() > 2000)
+				//koopared->SetState(KOOPA_RED_STATE_WALKING);
+		//}
+
+
+	}
+	else
+	{
+
+		if (e->ny < 0)
+		{
+			
+			
+
+			bool isCombackRedKoopa;
+			isCombackRedKoopa = gkoopa->GetIsComback();
+
+			if (gkoopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL && gkoopa->GetState() != KOOPA_GREEN_STATE_ISKICKED && gkoopa->GetState() != KOOPA_GREEN_STATE_TO_RETURN) //STATE_WALKING
+			{
+
+				
+				if (gkoopa->GetState() == KOOPA_GREEN_STATE_JUMP)
+				{
+					gkoopa->SetJump(false);
+
+					gkoopa->SetState(KOOPA_GREEN_STATE_WALKING);
+					gkoopa->SETay(0.9f);
+					
+
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
+				} 
+				else {
+
+					gkoopa->SetCount_Start(GetTickCount64());
+					gkoopa->SetState(KOOPA_GREEN_STATE_ISTURTLESHELL);
+					gkoopa->SetY(gkoopa->GetY() - 2);
+					//isHold = true;
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
+					DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
+
+
+				}
+
+			}
+		}
+		else
+		{// hit by green koopa (walking or turtleshell is kicked)
+			if (untouchable == 0)
+			{
+
+				if (gkoopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL && gkoopa->GetState() != KOOPA_GREEN_STATE_TO_RETURN)
+				{
+					if (level > MARIO_LEVEL_SMALL)
+					{
+						if (level > MARIO_LEVEL_BIG)
+
+							level = MARIO_LEVEL_BIG;
+
+						else level = MARIO_LEVEL_SMALL;
+						StartUntouchable();
+						DebugOut(L">>> Mario biến nhỏ >>> \n");
+					}
+					else
+					{
+						DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
+						SetState(MARIO_STATE_DIE);
+					}
 				}
 			}
 		}

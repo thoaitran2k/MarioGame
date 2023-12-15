@@ -4,8 +4,65 @@
 #include "debug.h"
 #include "Goomba.h"
 
-//#define KOOPA_GREEN_NOT_WING_GRAVITY 0.002f
-//#define KOOPA_GREEN_NOT_WING_WALKING_SPEED 0.05f
+#define KOOPA_GREEN_NOT_WING_GRAVITY 0.002f
+#define KOOPA_GREEN_NOT_WING_WALKING_SPEED 0.05f
+
+////speeds
+//#define KOOPA_GREEN_GRAVITY 0.002f
+//#define KOOPA_GREEN_WALKING_SPEED 0.015f
+//#define SPEED_KOOPA_GREEN_TURTLESHELL_IS_KICKED 0.25f
+
+
+#define KOOPA_GREEN_NOT_WING_BBOX_WIDTH 16
+#define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT 20
+#define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT_DEFEND 7
+
+////bbox
+//#define KOOPA_GREEN_BBOX_WIDTH 16
+//#define KOOPA_GREEN_BBOX_HEIGHT 16
+//#define KOOPA_GREEN_BBOX_HEIGHT_TURTLESHELL 7
+
+
+////times
+//#define KOOPA_GREEN_DIE_TIMEOUT 500
+//#define DISTANCE_MIN_SHELL_EXIST 150
+//#define TURTLE_SHELL_TIMEOUT 4000
+//#define TURTLE_SHELL_TOTURN_KOOPA 4000
+//#define TIME_COMBACK_KOOPA 1500
+//
+//#define KOOPA_GREEN_NOT_WING_DIE_TIMEOUT 500
+
+
+
+
+////States
+//#define KOOPA_GREEN_STATE_WALKING 100
+//#define KOOPA_GREEN_STATE_WALKING_LEFT 200
+//#define KOOPA_GREEN_STATE_WALKING_RIGHT 600
+//#define KOOPA_GREEN_STATE_ISTURTLESHELL 300
+//#define KOOPA_GREEN_STATE_ISKICKED 400
+//#define KOOPA_GREEN_STATE_TO_RETURN 450
+//#define KOOPA_GREEN_WALKING_STATE_TURN 460
+//#define KOOPA_GREEN_STATE_WAIT_RESET 470
+//#define KOOPA_GREEN_STATE_BE_HELD 478
+//#define KOOPA_GREEN_STATE_JUMP_RIGHT 500
+//#define KOOPA_GREEN_STATE_JUMP_LEFT 510
+//#define KOOPA_GREEN_STATE_FALL 520
+
+
+
+////Ani_id
+//#define ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_RIGHT 6001
+//#define ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_LEFT 6002
+//#define ID_ANI_KOOPA_GREEN_NOT_WING_TURTLESHELL 6003
+//#define ID_ANI_GREEN_KOOPA_ISKICKED_LEFT_TO_RIGHT 6004
+//#define ID_ANI_GREEN_KOOPA_ISKICKED_RIGHT_TO_LEFT 6400
+//#define ID_ANI_GREEN_KOOPA_COMEBACK 6006
+//
+//#define ID_ANI_GREEN_WING_RIGHT 6009
+//#define ID_ANI_GREEN_WING_LEFT 6010
+
+/////////////////////////////////////////////////////////////////////////////////////////
 
 //speeds
 #define KOOPA_GREEN_GRAVITY 0.002f
@@ -13,15 +70,10 @@
 #define SPEED_KOOPA_GREEN_TURTLESHELL_IS_KICKED 0.25f
 
 
-#define KOOPA_GREEN_NOT_WING_BBOX_WIDTH 16
-#define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT 20
-#define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT_DEFEND 7
-
 //bbox
 #define KOOPA_GREEN_BBOX_WIDTH 16
-#define KOOPA_GREEN_BBOX_HEIGHT 16
+#define KOOPA_GREEN_BBOX_HEIGHT 20
 #define KOOPA_GREEN_BBOX_HEIGHT_TURTLESHELL 7
-
 
 //times
 #define KOOPA_GREEN_DIE_TIMEOUT 500
@@ -29,11 +81,6 @@
 #define TURTLE_SHELL_TIMEOUT 4000
 #define TURTLE_SHELL_TOTURN_KOOPA 4000
 #define TIME_COMBACK_KOOPA 1500
-
-#define KOOPA_GREEN_NOT_WING_DIE_TIMEOUT 500
-
-
-
 
 //States
 #define KOOPA_GREEN_STATE_WALKING 100
@@ -45,25 +92,18 @@
 #define KOOPA_GREEN_WALKING_STATE_TURN 460
 #define KOOPA_GREEN_STATE_WAIT_RESET 470
 #define KOOPA_GREEN_STATE_BE_HELD 478
-#define KOOPA_GREEN_STATE_JUMP_RIGHT 500
-#define KOOPA_GREEN_STATE_JUMP_LEFT 510
+#define KOOPA_GREEN_STATE_JUMP 500
 #define KOOPA_GREEN_STATE_FALL 520
 
-
-
 //Ani_id
-#define ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_RIGHT 6001
-#define ID_ANI_KOOPA_GREEN_NOT_WING_WALKING_LEFT 6002
-#define ID_ANI_KOOPA_GREEN_NOT_WING_TURTLESHELL 6003
-#define ID_ANI_GREEN_KOOPA_ISKICKED_LEFT_TO_RIGHT 6004
-#define ID_ANI_GREEN_KOOPA_ISKICKED_RIGHT_TO_LEFT 6400
-#define ID_ANI_GREEN_KOOPA_COMEBACK 6006
-
+#define ID_ANI_KOOPA_GREEN_WALKING_RIGHT 6001
+#define ID_ANI_KOOPA_GREEN_WALKING_LEFT 6002
+#define ID_ANI_KOOPA_GREEN_TURTLESHELL 6003
+#define ID_ANI_KOOPA_GREEN_ISKICKED_LEFT_TO_RIGHT 6004
+#define ID_ANI_KOOPA_GREEN_ISKICKED_RIGHT_TO_LEFT 6400
+#define ID_ANI_GREEN_KOOPA_COMBACK 6006
 #define ID_ANI_GREEN_WING_RIGHT 6009
 #define ID_ANI_GREEN_WING_LEFT 6010
-
-
-
 
 
 class CGreen_Koopa : public CGameObject
@@ -79,7 +119,6 @@ protected:
 
 	CCheckFall* checkfall;
 	CGreen_Koopa* newkoopa;
-	CGoomba* goomba_under_koopa;
 
 
 
@@ -94,18 +133,23 @@ protected:
 	bool isDead;
 	bool isTurn;
 	bool wasHeld;
-	bool Jumping;
-	bool fall;
+	bool flagHeldKick;
+
+	bool Jump;
+	bool Fall;
 	//int collis;
 
 	ULONGLONG count_start;
 	ULONGLONG comback_time;
 	ULONGLONG time_delete;
 	ULONGLONG time_rs;
+	ULONGLONG isheld_time;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+
+
 
 	int LeftOrRightMarrio();
 
@@ -136,11 +180,25 @@ protected:
 
 
 public:
+	ULONGLONG GetTimeHold() { return isheld_time; }
+
 	ULONGLONG GetTimeComback() { return comback_time; }
 
 	ULONGLONG GetTimeDelete() { return time_delete; }
 
 	ULONGLONG GetCount_time() { return count_start; }
+
+	bool GetIsJump() { return Jump; }
+	bool GetIsFall() { return Fall; }
+
+	void SetJump(bool b) { b = Jump; }
+	void SetFall(bool b) { b = Fall; }
+
+
+
+	void SetTimeHold(ULONGLONG b) { b = isheld_time; }
+
+	void SetCount_Start(ULONGLONG b) { b = count_start; }
 
 	void SetisTurn(bool b) { b = isTurn; }
 
@@ -148,18 +206,9 @@ public:
 
 	void SetShell(bool b) { b = isTurtleShell; }
 
-	void SETay(float g) { g = ay; }
-
+	void SETay(float b) { b = ay; }
 
 	bool GetIsKick() { return isKicked; }
-
-	bool GetIsJumping() { return Jumping; }
-	void SetJumping(bool b) { b = Jumping; }
-
-	bool GetIsFall() { return fall; }
-	void SetFall(bool b) { b = fall; }
-	
-	
 
 	void SetIsKick(bool b) { isKicked = b; }
 
@@ -224,21 +273,7 @@ public:
 		checkfall->GetDeleted();
 	}
 
-	void AddGoomba(CGameObject* obj) {
-		if (!dynamic_cast<CGoomba*>(obj)) return;
-		else if (!goomba_under_koopa)
-		{
-			CGoomba* under_goomba = dynamic_cast<CGoomba*>(obj);
-			goomba_under_koopa = under_goomba;
-			DebugOut(L">>> Create Goomba phia duoi con koopa >>> \n");
-		}
-	}
 
-	void checknullGB()
-	{
-		if (goomba_under_koopa) goomba_under_koopa->Delete();
-		goomba_under_koopa = NULL;
-	}
 
 
 
