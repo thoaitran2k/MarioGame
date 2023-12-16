@@ -251,10 +251,7 @@ public:
 		}
 	}
 
-	void ResetTail() {
-		if (tail) tail->Delete();
-		tail = NULL;
-	}
+	
 
 	void CreateWhippingofTail();
 

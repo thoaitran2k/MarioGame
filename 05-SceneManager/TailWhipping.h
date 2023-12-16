@@ -8,8 +8,8 @@
 
 #define SPEED_WHIP 0.05f
 
-#define BBOX_WIDTH	10
-#define BBOX_HEIGHT	10
+#define BBOX_WIDTH	15
+#define BBOX_HEIGHT	7
 #define	WIDTH		10
 
 #define WHIP_STATE_DELETE	100

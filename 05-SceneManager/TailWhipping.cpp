@@ -2,6 +2,8 @@
 
 #include "debug.h"
 
+#include "Mario.h"
+
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	this->vx = vx;
 	SetState(WHIP_STATE_DELETE);
@@ -31,6 +33,12 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 void CTailWhipping::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (mario->GetX() < x)
+		SetState(WHIP_STATE_RIGHT_MARIO);
+	else SetState(WHIP_STATE_LEFT_MARIO);
+
+
 	if (GetTickCount64() - timming > 250)
 	{
 		
@@ -44,6 +52,7 @@ void CTailWhipping::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CTailWhipping::SetState(int state)
 {
+	
 	CGameObject::SetState(state);
 	switch (state)
 	{
@@ -55,6 +64,7 @@ void CTailWhipping::SetState(int state)
 	case WHIP_STATE_LEFT_MARIO:
 		vx = -SPEED_WHIP;
 		break;
+		
 
 
 	case WHIP_STATE_RIGHT_MARIO:

@@ -50,20 +50,25 @@ void CMario::CreateWhippingofTail() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	if (nx < 0) {
+		CTailWhipping* tail = new CTailWhipping(x - BBOX_WIDTH/2, y+5);
+		scene->AddObject(tail);
+
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x - BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, -1);
-		CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x - BBOX_WIDTH, y, 0, 0);
+		/*CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x - BBOX_WIDTH, y, 0, 0);
 		AddTail(whipping);
-		tail->SetState(WHIP_STATE_LEFT_MARIO);
+		tail->SetState(WHIP_STATE_LEFT_MARIO);*/
 		//if(tail->GetDelete())
 		//ResetTail();
 
 	}
 	else
 	{
+		CTailWhipping* tail = new CTailWhipping(x + BBOX_WIDTH/2, y+5);
+		scene->AddObject(tail);
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x + TAIL_BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, 1);
-		CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x + BBOX_WIDTH, y, 0, 0);
+		/*CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x + BBOX_WIDTH, y, 0, 0);
 		AddTail(whipping);
-		tail->SetState(WHIP_STATE_RIGHT_MARIO);
+		tail->SetState(WHIP_STATE_RIGHT_MARIO);*/
 		//if (tail->GetDelete())
 		//ResetTail();
 	}

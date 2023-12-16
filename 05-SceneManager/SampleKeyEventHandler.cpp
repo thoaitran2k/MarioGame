@@ -79,7 +79,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		if (mario->GetIsHolding()) mario->SetHolding(false);
 
 		/*if(mario->GetIsHold())*/  mario->SetIsHold(false);
-		mario->ResetTail();
+		//mario->ResetTail();
 		//mario->SetHolding(true);
 		break;
 	}
