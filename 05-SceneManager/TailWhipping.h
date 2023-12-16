@@ -19,8 +19,12 @@
 class CTailWhipping : public CGameObject
 {
 protected:
+
+	bool attack;
+
 	ULONGLONG timming;
 
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 
 
 public:

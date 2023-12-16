@@ -7,6 +7,7 @@
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	this->vx = vx;
 	SetState(WHIP_STATE_DELETE);
+	attack = false;
 }
 
 void CTailWhipping::GetBoundingBox(float& l, float& t, float& r, float& b)
@@ -18,7 +19,18 @@ void CTailWhipping::GetBoundingBox(float& l, float& t, float& r, float& b)
 }
 
 void CTailWhipping::Render() {
-	RenderBoundingBox();
+
+	if (attack) {
+		int aniId;
+
+		aniId = ID_ANI_TAIL_WHIPPING;
+
+
+
+		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	}
+	else RenderBoundingBox();
+	
 }
 
 void CTailWhipping::OnNoCollision(DWORD dt)
@@ -28,6 +40,34 @@ void CTailWhipping::OnNoCollision(DWORD dt)
 };
 
 void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
+
+	if (e->ny != 0)
+	{
+		vy = 0;
+	}
+	else if (e->nx != 0)
+	{
+		vx = vx;
+	}
+
+
+	if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
+
+
+
+
+}
+
+
+void CTailWhipping::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
+
+	attack = true;
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	
+	if (goomba->GetState() != GOOMBA_STATE_DIE)
+		goomba->SetState(GOOMBA_STATE_THROWN_BY_KOOPA);
+	
 
 }
 

@@ -27,7 +27,7 @@ green_plant.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	1920	300
+0	720	300
 #COIN
 #4	450	370
 #4	470	370
@@ -64,8 +64,8 @@ green_plant.txt
 
 #GOOMBA
 #2	520	380
-#2	787	380
-#2	830	380
+2	787	380
+2	830	380
 
 #BrickQuestion
 
@@ -151,8 +151,8 @@ green_plant.txt
 150	550	373
 #150	269	350
 
-150	1050	373
-150	780	373
+#150	1050	373
+#150	780	373
 #PARA_GOOMBA
 #160	920	390
 

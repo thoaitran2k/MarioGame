@@ -1093,7 +1093,7 @@ void CMario::SetState(int state)
 
 		//if (tail->GetDelete()) ResetTail();
 		ax = 0;
-		vx = 0;
+		//vx = 0;
 		break;
 
 	case MARIO_STATE_IDLE:
