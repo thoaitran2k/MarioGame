@@ -42,10 +42,14 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		//}
 
 		//if (mario->GetIsHold())
-			mario->SetIsHold(true);
+		mario->SetIsHold(true);
 		//else mario->SetHolding(false);
 		break;
 
+	case DIK_D:
+		mario->SetState(MARIO_STATE_ATTACK);
+		DebugOut(L">>> NHAN DDDDDDDDDDDDDDDDDD >>> \n");
+		break;
 		//else mario->SetHolding(false);
 		//break;
 	case DIK_R: // reset

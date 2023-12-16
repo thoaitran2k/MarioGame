@@ -867,6 +867,8 @@ int CMario::GetAniIdRacoon(){
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
+		
+
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
 			if (nx >= 0)
@@ -896,10 +898,12 @@ int CMario::GetAniIdRacoon(){
 				if (nx > 0) aniId = ID_ANI_RACOON_KICK_RIGHT;
 				else aniId = ID_ANI_RACOON_KICK_LEFT;
 			}
-			else if (Holding)
-				if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
-				else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
-			else
+			else 
+				if (Holding) {
+					if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
+					else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
+				}
+				else
 				if (vx == 0)
 				{
 					if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
@@ -936,6 +940,13 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if(state == MARIO_STATE_ATTACK)
+	{
+		if (nx > 0)
+			aniId = ID_ANI_RACOON_ATTACK_RIGHT;
+		else
+			aniId = ID_ANI_RACOON_ATTACK_LEFT;
+	}
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
@@ -952,8 +963,10 @@ void CMario::Render()
 
 void CMario::SetState(int state)
 {
+	if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 500)) return;
 	// DIE is the end state, cannot be changed! 
-	if (this->state == MARIO_STATE_DIE) return; 
+	 else if (this->state == MARIO_STATE_DIE) return; 
+	
 
 	if (Kicking && GetTickCount64() - timing > 200)
 	{
@@ -1041,6 +1054,13 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 		//Holding = true;
+		break;
+
+	case MARIO_STATE_ATTACK:
+		timing = GetTickCount64();
+		if (level != MARIO_LEVEL_RACOON || isSitting) return;
+		//ax = 0;
+		vx = 0;
 		break;
 
 	case MARIO_STATE_IDLE:

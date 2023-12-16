@@ -35,6 +35,8 @@
 #define MARIO_STATE_KICK			650
 #define MARIO_STATE_HOLDING_RIGHT	660
 #define MARIO_STATE_HOLDING_LEFT	670
+#define MARIO_STATE_ATTACK			680
+
 
 
 #pragma region ANIMATION_ID
@@ -145,7 +147,11 @@
 #define ID_ANI_RACOON_HOLD_JUMP_RIGHT 3051
 #define ID_ANI_RACOON_HOLD_JUMP_LEFT 3050
 
-#define ID_ANI_RACOON_ATTACK 3100
+#define ID_ANI_RACOON_ATTACK 3100 ////////////QUAY DUOI
+
+#define ID_ANI_RACOON_ATTACK_LEFT 3371
+#define ID_ANI_RACOON_ATTACK_RIGHT 3370
+
 
 #define ID_ANI_RACOON_FLY_RIGHT 3300
 #define ID_ANI_RACOON_FLY_LEFT 3200
@@ -187,6 +193,7 @@ class CMario : public CGameObject
 	BOOLEAN Kicking;
 	bool Holding;
 	bool isHold;
+	bool TailAttack;
 
 
 	float maxVx;
@@ -228,6 +235,7 @@ public:
 		Kicking = false;
 		Holding = false;
 		isHold = false;
+		TailAttack = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
@@ -279,9 +287,13 @@ public:
 
 	bool GetIsHold() { return isHold; }
 
+	bool GetAttack() { return TailAttack; }
+
 
 	//set
 	void SetHolding(bool b) { Holding = b; }
 
 	void SetIsHold(bool b) { isHold = b; }
+
+	void SetAttack(bool b) { TailAttack = b; }
 };
