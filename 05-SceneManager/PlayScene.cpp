@@ -22,6 +22,7 @@
 #include "Box.h"
 #include "CheckKoopaFall.h"
 #include "Green_Plant.h"
+#include "TailWhipping.h"
 
 
 
@@ -165,6 +166,8 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x, y, 0, 0); break;
 
 	case OBJECT_TYPE_GOOMBA_UNDER_KOOPA: obj = new CGoomba(x, y,GOOMBA_BASIC); break;
+
+	case OBJECT_TYPE_WHIPPING: obj = new CTailWhipping(x, y); break;
 
 
 		

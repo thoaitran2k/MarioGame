@@ -45,6 +45,31 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
+void CMario::CreateWhippingofTail() {
+
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	if (nx < 0) {
+		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x - BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, -1);
+		CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x - BBOX_WIDTH, y, 0, 0);
+		AddTail(whipping);
+		tail->SetState(WHIP_STATE_LEFT_MARIO);
+		//if(tail->GetDelete())
+		//ResetTail();
+
+	}
+	else
+	{
+		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x + TAIL_BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, 1);
+		CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x + BBOX_WIDTH, y, 0, 0);
+		AddTail(whipping);
+		tail->SetState(WHIP_STATE_RIGHT_MARIO);
+		//if (tail->GetDelete())
+		//ResetTail();
+	}
+}
+
+
 void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
@@ -1059,7 +1084,10 @@ void CMario::SetState(int state)
 	case MARIO_STATE_ATTACK:
 		timing = GetTickCount64();
 		if (level != MARIO_LEVEL_RACOON || isSitting) return;
-		//ax = 0;
+		CreateWhippingofTail();
+
+		//if (tail->GetDelete()) ResetTail();
+		ax = 0;
 		vx = 0;
 		break;
 

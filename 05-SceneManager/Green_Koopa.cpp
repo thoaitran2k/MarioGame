@@ -366,7 +366,7 @@ void CGreen_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (state == KOOPA_GREEN_STATE_WAIT_RESET)
 	{
 
-		CreateNewKoopa();
+		//CreateNewKoopa();
 		DebugOut(L">>> BBBBBBBBBBB >>> \n");
 		//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 

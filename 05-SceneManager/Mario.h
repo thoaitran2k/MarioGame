@@ -3,8 +3,14 @@
 
 #include "Animation.h"
 #include "Animations.h"
+#include "AssetIDs.h"
 
 #include "debug.h"
+
+#include "TailWhipping.h"
+
+#include "PlayScene.h"
+#include "Game.h"
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
@@ -205,6 +211,8 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start;
 	ULONGLONG timing;
 	BOOLEAN isOnPlatform;
+
+	CTailWhipping* tail;
 	
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
@@ -226,7 +234,33 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 	int GetAniIdRacoon();
 
+	
+
+	
+
 public:
+
+	void AddTail(CGameObject* obj) {
+		if (!dynamic_cast<CTailWhipping*>(obj)) return;
+		else if (!tail)
+		{
+			CTailWhipping* newTail = dynamic_cast<CTailWhipping*>(obj);
+			tail = newTail;
+			DebugOut(L">>> check tao tail >>> \n");
+
+		}
+	}
+
+	void ResetTail() {
+		if (tail) tail->Delete();
+		tail = NULL;
+	}
+
+	void CreateWhippingofTail();
+
+
+
+
 	
 	int GetCoin() { return this->coin; }
 	CMario(float x, float y) : CGameObject(x, y)
@@ -236,6 +270,7 @@ public:
 		Holding = false;
 		isHold = false;
 		TailAttack = false;
+		tail = NULL;
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY;
