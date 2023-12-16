@@ -43,7 +43,7 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 	if (e->ny != 0)
 	{
-		vy = 0;
+		vy = vy;
 	}
 	else if (e->nx != 0)
 	{
@@ -66,7 +66,7 @@ void CTailWhipping::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 	
 	if (goomba->GetState() != GOOMBA_STATE_DIE)
-		goomba->SetState(GOOMBA_STATE_THROWN_BY_KOOPA);
+		goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
 	
 
 }
@@ -78,8 +78,10 @@ void CTailWhipping::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(WHIP_STATE_RIGHT_MARIO);
 	else SetState(WHIP_STATE_LEFT_MARIO);
 
+	if (attack) mario->SetVx(0);
 
-	if (GetTickCount64() - timming > 250)
+
+	if (GetTickCount64() - timming > 150)
 	{
 		
 		timming = -1;

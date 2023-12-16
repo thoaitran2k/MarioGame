@@ -14,6 +14,7 @@
 #define GOOMBA_STATE_WALKING 100
 #define GOOMBA_STATE_DIE 200
 #define GOOMBA_STATE_THROWN_BY_KOOPA 300
+#define GOOMBA_STATE_DIE_UPSIDE 400
 
 #define GOOMBA_BASIC 1
 #define GOOMBA_RED 2
@@ -26,12 +27,15 @@
 
 #define ID_ANI_GOOMBA_RED 5003
 #define ID_ANI_GOOMBA_RED_DIE 5004
+#define ID_ANI_GOOMBA_DIE_UPSIDE 5007
+#define ID_ANI_GOOMBA_UPSIDE 5008
 
 class CGoomba : public CGameObject
 {
 protected:
 	float ax;				
-	float ay; 
+	float ay;
+	float range;
 	int model;
 	ULONGLONG die_start;
 

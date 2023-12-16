@@ -6,7 +6,7 @@
 
 #define ID_ANI_TAIL_WHIPPING	3070		
 
-#define SPEED_WHIP 0.05f
+#define SPEED_WHIP 0.09f
 
 #define BBOX_WIDTH	15
 #define BBOX_HEIGHT	7
@@ -34,6 +34,8 @@ public:
 	virtual void Render();
 
 	virtual int IsCollidable() { return 1; };
+
+	bool GetTailAttack() { return attack; }
 
 	virtual void OnNoCollision(DWORD dt);
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);

@@ -2,10 +2,12 @@
 #include "Mario.h"
 #include "Game.h"
 #include "PlayScene.h"
+#include "TailWhipping.h"
 
 
 CGoomba::CGoomba(float x, float y, int model):CGameObject(x, y)
 {
+	range = y - 20;
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
@@ -18,11 +20,13 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 {
 	if (state == GOOMBA_STATE_DIE)
 	{
-		left = x - GOOMBA_BBOX_WIDTH/2;
-		top = y - GOOMBA_BBOX_HEIGHT_DIE/2;
+		left = x - GOOMBA_BBOX_WIDTH / 2;
+		top = y - GOOMBA_BBOX_HEIGHT_DIE / 2;
 		right = left + GOOMBA_BBOX_WIDTH;
 		bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
 	}
+	else if (state == GOOMBA_STATE_THROWN_BY_KOOPA) return;
+	else if (state == GOOMBA_STATE_DIE_UPSIDE) return;
 	else
 	{ 
 		left = x - GOOMBA_BBOX_WIDTH/2;
@@ -40,6 +44,7 @@ void CGoomba::OnNoCollision(DWORD dt)
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CTailWhipping*>(e->obj)) return;
 	
 	if (!e->obj->IsBlocking()) return; 
 
@@ -66,12 +71,17 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return;
 	}
 
-	if ((state == GOOMBA_STATE_THROWN_BY_KOOPA) && GetTickCount64() - die_start > 900)
+	else if ((state == GOOMBA_STATE_THROWN_BY_KOOPA) && GetTickCount64() - die_start > 1500)
 	{
 		isDeleted = true;
 		return;
 	}
 
+	else if(state == GOOMBA_STATE_DIE_UPSIDE && GetTickCount64() - die_start >5000)
+	{
+		isDeleted = true;
+		return;
+	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -96,6 +106,11 @@ void CGoomba::Render()
 	{
 		aniId = ID_ANI_GOOMBA_DIE;
 	}
+	else if (state == GOOMBA_STATE_DIE_UPSIDE)
+	{
+		if (vy<0) aniId = ID_ANI_GOOMBA_UPSIDE;
+		else aniId = ID_ANI_GOOMBA_DIE_UPSIDE;
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
 	//RenderBoundingBox();
@@ -118,8 +133,8 @@ void CGoomba::SetState(int state)
 			die_start = GetTickCount64();
 			y -= 5;
 			vx = -0.004f;
-			vy = -0.025f;
-			ay = 0.00004f;
+			vy = -0.045f;
+			ay = 0.00008f;
 			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
@@ -127,6 +142,14 @@ void CGoomba::SetState(int state)
 		case GOOMBA_RED:
 			model = GOOMBA_RED;
 			vx = -GOOMBA_WALKING_SPEED;
+			break;
+
+		case GOOMBA_STATE_DIE_UPSIDE:
+			die_start = GetTickCount64();
+			vx = 0.004f;
+			vy = -0.24f;
+			ay = 0.0009f;
+			break;
 
 
 	}

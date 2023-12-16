@@ -16,6 +16,7 @@
 #define ID_TEX_MICS_RIGHT 90
 #define ID_TEX_MARIO_NEW1 100
 #define ID_TEX_TAIL_HITBOX 110
+#define ID_TEX_ENEMIES_2 120
 
 
 

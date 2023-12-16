@@ -50,7 +50,7 @@ void CMario::CreateWhippingofTail() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	if (nx < 0) {
-		CTailWhipping* tail = new CTailWhipping(x - BBOX_WIDTH/2, y+5);
+		CTailWhipping* tail = new CTailWhipping(x - BBOX_WIDTH, y+5);
 		scene->AddObject(tail);
 
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x - BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, -1);
@@ -63,7 +63,7 @@ void CMario::CreateWhippingofTail() {
 	}
 	else
 	{
-		CTailWhipping* tail = new CTailWhipping(x + BBOX_WIDTH/2, y+5);
+		CTailWhipping* tail = new CTailWhipping(x + BBOX_WIDTH, y+5);
 		scene->AddObject(tail);
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x + TAIL_BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, 1);
 		/*CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x + BBOX_WIDTH, y, 0, 0);
