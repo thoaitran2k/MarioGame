@@ -5,14 +5,14 @@
 #include "Mario.h"
 
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
-	this->vx = vx;
+	//this->vx = vx;
 	SetState(WHIP_STATE_DELETE);
 	attack = false;
 }
 
 void CTailWhipping::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - BBOX_WIDTH / 2;
+	l = x - BBOX_WIDTH/2;
 	t = y - BBOX_HEIGHT / 2;
 	r = l + BBOX_WIDTH;
 	b = t + BBOX_HEIGHT;
@@ -104,7 +104,7 @@ void CTailWhipping::SetState(int state)
 
 
 	case WHIP_STATE_LEFT_MARIO:
-		vx = -SPEED_WHIP;
+		vx = -SPEED_WHIP_LEFT;
 		break;
 		
 
