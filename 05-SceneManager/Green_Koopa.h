@@ -3,6 +3,7 @@
 #include "CheckKoopaFall.h"
 #include "debug.h"
 #include "Goomba.h"
+#include "Mario.h"
 
 #define KOOPA_GREEN_NOT_WING_GRAVITY 0.002f
 #define KOOPA_GREEN_NOT_WING_WALKING_SPEED 0.05f
@@ -136,6 +137,7 @@ protected:
 	bool isTurn;
 	bool wasHeld;
 	bool flagHeldKick;
+	bool isActive;
 
 	bool Jump;
 	bool Fall;
@@ -165,6 +167,14 @@ protected:
 	void CreateGoomba();
 
 	virtual int IsCollidable() { return 1; }
+
+
+	void Green_Koopa_Active() {
+		CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+		if (abs(mario->GetX() - x) < 150)
+			isActive = true;
+	}
 
 
 

@@ -82,9 +82,6 @@ protected:
 
 		if (abs(mario->GetX() - x) < 150)
 			isActive = true;
-		
-
-
 	}
  
 public:

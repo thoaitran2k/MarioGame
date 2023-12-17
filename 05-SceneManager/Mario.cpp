@@ -1107,7 +1107,9 @@ void CMario::SetState(int state)
 		CreateWhippingofTail();
 
 		//if (tail->GetDelete()) ResetTail();
-		ax = 0;
+		if (nx > 0)
+			ax = 0.00008f;
+		else ax = 0;
 		//vx = 0;
 		break;
 
