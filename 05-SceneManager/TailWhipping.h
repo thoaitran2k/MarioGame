@@ -6,8 +6,8 @@
 
 #define ID_ANI_TAIL_WHIPPING	3070		
 
-#define SPEED_WHIP 0.09f
-#define SPEED_WHIP_LEFT 0.14f
+#define SPEED_WHIP 0.14f
+#define SPEED_WHIP_LEFT 0.15f
 
 #define BBOX_WIDTH	15
 #define BBOX_HEIGHT	7
