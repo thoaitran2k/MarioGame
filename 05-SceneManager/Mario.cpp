@@ -21,6 +21,7 @@
 #include "Para_Goomba.h"
 #include "PipePlantShoot.h"
 #include "Green_Plant.h"
+#include "glassBrick.h"
 
 
 
@@ -118,6 +119,26 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlantShootRed(e);
 	else if (dynamic_cast<CGreen_Plant*>(e->obj))
 		OnCollisionWithGreenPlant(e);
+	else if (dynamic_cast<CglassBrick*>(e->obj))
+		OnCollisionWithGlassBrick(e);
+
+
+	
+}
+
+void CMario::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
+	CglassBrick* glBrick = dynamic_cast<CglassBrick*>(e->obj);
+
+		if (e->ny > 0) {
+			if (!glBrick->GetEmpty() && !glBrick->GetUnBox())
+			{
+				glBrick->SetCollision(true);
+				glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
+			}
+
+
+
+		}
 	
 }
 

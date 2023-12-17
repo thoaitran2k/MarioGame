@@ -256,7 +256,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GREEN_KOOPA_INITI_WALKING: obj = new CGreen_Koopa(x, y, 2); break;
 	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
 	case OBJECT_TYPE_GLASS_BRICK_NORMAL: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_NORMAL); break;
-	
+	//case OBJECT_TYPE_GLASS_BRICK_CONTAIN_BUTTON_P: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_CONTAIN_BUTTON); break;
 
 	case OBJECT_TYPE_BOX:
 	{

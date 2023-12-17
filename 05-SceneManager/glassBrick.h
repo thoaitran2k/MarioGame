@@ -26,6 +26,10 @@ class CglassBrick : public CGameObject
 {
 	int mode;
 	int notCoin;
+	bool mario_collis;
+
+	bool unBox;
+	bool Empty;
 	ULONGLONG timming;
 
 public:
@@ -35,6 +39,14 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+
+	bool GetCollision() { return mario_collis; }
+
+	void SetCollision(bool b) { b = mario_collis; }
+
+	bool GetUnBox() { return unBox; }
+
+	bool GetEmpty() { return Empty; }
 
 	virtual void SetState(int state);
 

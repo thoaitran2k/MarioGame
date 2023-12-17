@@ -5,12 +5,29 @@ CglassBrick::CglassBrick(float x, float y, int model) :CGameObject(x,y)
 {
 	this->mode = model;
 	timming = -1;
+	mario_collis = false;
+	unBox = false;
+	Empty = false;
+	SetState(GLASS_BRICK_STATE_NORMAL);
 }
 
 void CglassBrick::Render()
 {
 	
-	int aniId = ID_ANI_GLASS_BRICK;
+	int aniId = 0;
+
+	switch(state)
+	{
+	case GLASS_BRICK_STATE_NORMAL:
+		aniId = ID_ANI_GLASS_BRICK;
+		break;
+
+	case GLASS_BRICK_STATE_ISTOUCHED:
+		aniId = ID_ANI_BRICK_CONTAIN_BUTTON_P;
+		break;
+	default:
+		break;
+	}
 	/*switch (state)
 	{
 	case GLASS_BRICK_STATE_NORMAL:
@@ -42,11 +59,19 @@ void CglassBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
+
+	if (mario_collis) {
+		unBox = true;
+		Empty = true;
+	}
+
 	
-	 if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 10000)
+
+	/* if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 10000)
 	{
 		SetState(GLASS_BRICK_STATE_NORMAL);
-	}
+	}*/
 }
 
 void CglassBrick::SetState(int state)
@@ -56,7 +81,6 @@ void CglassBrick::SetState(int state)
 	case GLASS_BRICK_STATE_NORMAL:
 		break;
 	case GLASS_BRICK_STATE_ISTOUCHED:
-		
 		break;
 	case GLASS_BRICK_STATE_CHANGE_TO_COIN:
 		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) return;
