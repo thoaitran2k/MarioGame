@@ -230,8 +230,8 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 					if (level > MARIO_LEVEL_BIG)
 
 						level = MARIO_LEVEL_BIG;
-
 					else level = MARIO_LEVEL_SMALL;
+
 					StartUntouchable();
 					DebugOut(L">>> Mario biến nhỏ >>> \n");
 				}
@@ -259,64 +259,79 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 	}
 	else
 	{
-
-		if (e->ny < 0)
-		{
-			
-			
-
-			bool isCombackRedKoopa;
-			isCombackRedKoopa = gkoopa->GetIsComback();
-
-			if (gkoopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL && gkoopa->GetState() != KOOPA_GREEN_STATE_ISKICKED && gkoopa->GetState() != KOOPA_GREEN_STATE_TO_RETURN) //STATE_WALKING
-			{
-
-				
+		if (gkoopa->GetIsJump()) {
+			if (e->ny < 0) {
 				if (gkoopa->GetState() == KOOPA_GREEN_STATE_JUMP)
 				{
 					gkoopa->SetJump(false);
-
+					//untouchable = 1;
 					gkoopa->SetState(KOOPA_GREEN_STATE_WALKING);
 					gkoopa->SETay(0.9f);
-					
-
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
-				} 
-				else {
-
-					gkoopa->SetCount_Start(GetTickCount64());
-					gkoopa->SetState(KOOPA_GREEN_STATE_ISTURTLESHELL);
-					gkoopa->SetY(gkoopa->GetY() - 2);
-					//isHold = true;
-					vy = -MARIO_JUMP_DEFLECT_SPEED;
-					DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
+				}
+			}
 
 
+
+			else
+			{
+				if(untouchable==0)
+				{
+						if (level > MARIO_LEVEL_SMALL)
+						{
+							if (level > MARIO_LEVEL_BIG)
+
+								level = MARIO_LEVEL_BIG;
+
+							else level = MARIO_LEVEL_SMALL;
+							StartUntouchable();
+							DebugOut(L">>> Mario biến nhỏ >>> \n");
+						}
+						else
+						{
+							DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
+							SetState(MARIO_STATE_DIE);
+						}
 				}
 
 			}
+
 		}
 		else
-		{// hit by green koopa (walking or turtleshell is kicked)
-			if (untouchable == 0)
+		{
+			if (e->ny < 0)
 			{
-
-				if (gkoopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL && gkoopa->GetState() != KOOPA_GREEN_STATE_TO_RETURN)
+				if (gkoopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL && gkoopa->GetState() != KOOPA_GREEN_STATE_ISKICKED && gkoopa->GetState() != KOOPA_GREEN_STATE_TO_RETURN) //STATE_WALKING || //STATE_JUMP
 				{
-					if (level > MARIO_LEVEL_SMALL)
+					gkoopa->SetCount_Start(GetTickCount64());
+					gkoopa->SetState(KOOPA_GREEN_STATE_ISTURTLESHELL);
+					gkoopa->SetY(gkoopa->GetY() - 6);
+					//isHold = true;
+					vy = -MARIO_JUMP_DEFLECT_SPEED;
+					DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
+				}
+			}
+			else
+			{// hit by green koopa (walking or turtleshell is kicked)
+				if (untouchable == 0)
+				{
+					if (gkoopa->GetState() != KOOPA_GREEN_STATE_ISTURTLESHELL && gkoopa->GetState() != KOOPA_GREEN_STATE_TO_RETURN)
 					{
-						if (level > MARIO_LEVEL_BIG)
+						if (level > MARIO_LEVEL_SMALL)
+						{
+							if (level > MARIO_LEVEL_BIG)
 
-							level = MARIO_LEVEL_BIG;
+								level = MARIO_LEVEL_BIG;
 
-						else level = MARIO_LEVEL_SMALL;
-						StartUntouchable();
-						DebugOut(L">>> Mario biến nhỏ >>> \n");
-					}
-					else
-					{
-						DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
-						SetState(MARIO_STATE_DIE);
+							else level = MARIO_LEVEL_SMALL;
+							StartUntouchable();
+							DebugOut(L">>> Mario biến nhỏ >>> \n");
+						}
+						else
+						{
+							DebugOut(L">>> Mario DIE by TurtleShell move or  by KOOPA WALKING >>> \n");
+							SetState(MARIO_STATE_DIE);
+						}
 					}
 				}
 			}
@@ -512,10 +527,9 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 				if (level > MARIO_LEVEL_SMALL)
 				{
 					if (level > MARIO_LEVEL_BIG)
-
 						level = MARIO_LEVEL_BIG;
-
 					else level = MARIO_LEVEL_SMALL;
+
 					StartUntouchable();
 					DebugOut(L">>> Mario biến nhỏ >>> \n");
 				}
@@ -989,6 +1003,7 @@ void CMario::Render()
 	//RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
+	//DebugOutTitle(L"Toa do x =: %d",x );
 }
 
 void CMario::SetState(int state)

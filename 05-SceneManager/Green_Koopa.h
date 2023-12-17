@@ -65,8 +65,8 @@
 /////////////////////////////////////////////////////////////////////////////////////////
 
 //speeds
-#define KOOPA_GREEN_GRAVITY 0.002f
-#define KOOPA_GREEN_WALKING_SPEED 0.015f
+#define KOOPA_GREEN_GRAVITY 0.0004f
+#define KOOPA_GREEN_WALKING_SPEED 0.025f
 #define SPEED_KOOPA_GREEN_TURTLESHELL_IS_KICKED 0.25f
 
 
@@ -109,6 +109,8 @@
 class CGreen_Koopa : public CGameObject
 {
 protected:
+
+	int count_Fly;
 	float ax;
 	float ay;
 
@@ -144,6 +146,7 @@ protected:
 	ULONGLONG time_delete;
 	ULONGLONG time_rs;
 	ULONGLONG isheld_time;
+	ULONGLONG timeFly;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

@@ -146,7 +146,7 @@ void CGoomba::SetState(int state)
 
 		case GOOMBA_STATE_DIE_UPSIDE:
 			die_start = GetTickCount64();
-			vx = 0.004f;
+			vx = 0.09f;
 			vy = -0.24f;
 			ay = 0.0009f;
 			break;

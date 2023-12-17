@@ -146,10 +146,12 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
+		
+		  vx = -vx;
 		if (isOnPlatform) {
 			ResetCheck();
 		}
-		vx = -vx;
+		
 	}
 
 	if (dynamic_cast<CBackground*>(e->obj))
@@ -186,12 +188,12 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 
 
 	if (wasKicked) {
-		if (goomba->GetState() == GOOMBA_STATE_THROWN_BY_KOOPA) return;
+		if (goomba->GetState() == GOOMBA_STATE_DIE_UPSIDE) return;
 			
 		else
-		if (goomba->GetState() != GOOMBA_STATE_THROWN_BY_KOOPA)
+		if (goomba->GetState() != GOOMBA_STATE_DIE_UPSIDE)
 		{
-			goomba->SetState(GOOMBA_STATE_THROWN_BY_KOOPA);
+			goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
 			//goomba->SetVy(-0.02f);
 			//goomba->SetVx(-0.01f);
 			//goomba->SetY(y + 2);
