@@ -27,3 +27,5 @@ height	240
 100	textures\mario2.png
 110	textures\hitboxoftail.png
 120	textures\enemies_2.png
+130	textures\misc_4.png
+140	textures\misc_5.png
