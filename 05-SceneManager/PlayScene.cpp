@@ -170,6 +170,10 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 
 	case OBJECT_TYPE_WHIPPING: obj = new CTailWhipping(x, y); break;
 
+	//case OBJECT_TYPE_BUTTON_P: obj = new CButtonP(x, y); break;
+
+	//case OBJECT_TYPE_GLASS_BRICK_CHANGETO_COIN: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_NORMAL); break;
+
 
 		
 
@@ -186,6 +190,15 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	objects.push_back(obj);
 	return obj;
 	
+}
+
+void CPlayScene::GlassBrickChangeToCoin()
+{
+	for (int i = 0; i < objects.size(); i++)
+	{
+		if(dynamic_cast<CglassBrick*>(objects[i]))
+			objects[i]->SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
+	}
 }
 
 CGameObject* CPlayScene::AddObj (int id, float x, float y, float vx, float vy)
@@ -256,6 +269,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GREEN_KOOPA_INITI_WALKING: obj = new CGreen_Koopa(x, y, 2); break;
 	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
 	case OBJECT_TYPE_GLASS_BRICK_NORMAL: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_NORMAL); break;
+	case OBJECT_TYPE_GLASS_BRICK_CONTAIN_BUTTON_P: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_CONTAIN_BUTTON); break;
+	
 	//case OBJECT_TYPE_GLASS_BRICK_CONTAIN_BUTTON_P: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_CONTAIN_BUTTON); break;
 
 	case OBJECT_TYPE_BOX:

@@ -1,9 +1,15 @@
 #include "ButtonP.h"
 
 CButtonP::CButtonP(float x, float y) :CGameObject(x, y) {
-
-
+	/*glassbrick = NULL;
+	ChangeToCoin();*/
 }
+
+//void CButtonP::BrickToCoin()
+//{
+//	if (state == BUTTON_STATE_BE_COLLIDABLED)
+//		glassbrick->SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
+//}
 
 void CButtonP::Render() {
 

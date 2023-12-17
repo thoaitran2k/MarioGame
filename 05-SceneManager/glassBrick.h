@@ -1,9 +1,13 @@
 #pragma once
 
 #include "debug.h"
+#include "PlayScene.h"
+#include "Game.h"
 #include "GameObject.h"
 #include "Animation.h"
 #include "Animations.h"
+//#include "ButtonP.h"
+
 
 #define ID_ANI_GLASS_BRICK 10124
 #define ID_ANI_BRICK_CONTAIN_BUTTON_P 10103
@@ -32,8 +36,31 @@ class CglassBrick : public CGameObject
 	bool Empty;
 	ULONGLONG timming;
 
+	//CButtonP* p;
+
+	
+	
+		/*void Add_button(CGameObject* obj) {
+		if (!dynamic_cast<CButtonP*>(obj)) return;
+		else if (!p)
+		{
+			CButtonP* button = dynamic_cast<CButtonP*>(obj);
+			p = button;
+			DebugOut(L">>> ADD OBJECT BUTTON P >>> \n");
+		}
+		}*/
+
+
+
+	
+
+	
+
 public:
+	
 	CglassBrick(float x, float y, int mode);
+
+	//void SetButtonP(CButtonP* b) { b = p; }
 
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -48,11 +75,28 @@ public:
 
 	bool GetEmpty() { return Empty; }
 
+	void SetUnBox(bool b) { b = unBox; }
+
+	void SetEmpty(bool b) { b = Empty; }
+
+	
+
 	virtual void SetState(int state);
 
 	int IsBlocking() { return notCoin; }
 
-	float GetModel() { return mode; }
+	int GetModel() { return mode; }
+
+	
+	//void CreateButtonP() {
+	//	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	//	if (unBox)
+	//	{
+	//		CGameObject* p = scene->CreateObjectAndReturn(OBJECT_TYPE_GREEN_KOOPA_WALKING, x, y - 16, 0, 0);
+	//		Add_button(p);
+	//	}
+
+	//}
 
 };
 

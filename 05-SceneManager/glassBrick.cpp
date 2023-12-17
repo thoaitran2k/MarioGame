@@ -1,15 +1,26 @@
 #include "glassBrick.h"
 #include "AssetIDs.h"
+#include "GameObject.h"
+#include "Game.h"
+#include "PlayScene.h"
 
-CglassBrick::CglassBrick(float x, float y, int model) :CGameObject(x,y)
+
+CglassBrick::CglassBrick(float x, float y, int mode) :CGameObject(x,y)
 {
-	this->mode = model;
+
+
+	
+	this->mode = mode;
 	timming = -1;
 	mario_collis = false;
 	unBox = false;
 	Empty = false;
 	SetState(GLASS_BRICK_STATE_NORMAL);
+	//p = NULL;
+	
 }
+
+
 
 void CglassBrick::Render()
 {
@@ -25,7 +36,10 @@ void CglassBrick::Render()
 	case GLASS_BRICK_STATE_ISTOUCHED:
 		aniId = ID_ANI_BRICK_CONTAIN_BUTTON_P;
 		break;
-	default:
+
+	case GLASS_BRICK_STATE_CHANGE_TO_COIN:
+		if(mode != GLASS_BRICK_MODEL_CONTAIN_BUTTON)
+		aniId = ID_ANI_BREAK_BRICK_TRANSFORM_TO_COIN;
 		break;
 	}
 	/*switch (state)
@@ -59,12 +73,30 @@ void CglassBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	//if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) CreateButtonP();
 
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	if (mario_collis) {
+	/*if (mario_collis)
+	{
+		scene->GlassBrickChangeToCoin();
+	}*/
+
+	//if (mode == 2) notCoin = 1;
+	
+	if (state == GLASS_BRICK_STATE_ISTOUCHED)
+	{
+		SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
+		}
+
+	if (mario_collis){
 		unBox = true;
 		Empty = true;
+		
 	}
+
+	//if (p->GetState() == BUTTON_STATE_BE_COLLIDABLED)
+		//SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
 
 	
 
@@ -76,18 +108,24 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CglassBrick::SetState(int state)
 {
+	
+	
 	switch (state)
 	{
 	case GLASS_BRICK_STATE_NORMAL:
+		notCoin = 1;
 		break;
 	case GLASS_BRICK_STATE_ISTOUCHED:
+		//notCoin = 1;
 		break;
 	case GLASS_BRICK_STATE_CHANGE_TO_COIN:
-		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) return;
+		notCoin = 0;
+		//mode = GLASS_BRICK_MODEL_NORMAL;
+		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) { notCoin = 1; return; }
+		//isDeleted = true;
 		timming = GetTickCount64();
-		break;
-	default:
 		break;
 	}
 	CGameObject::SetState(state);
+	
 }

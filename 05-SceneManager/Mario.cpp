@@ -131,30 +131,63 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e) {
 	CButtonP* P = dynamic_cast<CButtonP*>(e->obj);
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	
 
 	//e->obj->Delete();
 	
 
 	P->SetState(BUTTON_STATE_BE_COLLIDABLED);
+	scene->GlassBrickChangeToCoin();
+	//P->ChangeToCoin();
+	//P->BrickToCoin();
 
 }
 
 void CMario::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 	CglassBrick* glBrick = dynamic_cast<CglassBrick*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	if (!glBrick->GetEmpty() && !glBrick->GetUnBox() && glBrick->GetModel() == GLASS_BRICK_MODEL_CONTAIN_BUTTON && glBrick->GetState() != GLASS_BRICK_STATE_ISTOUCHED) {
 		if (e->ny > 0) {
-			if (!glBrick->GetEmpty() && !glBrick->GetUnBox())
-			{
-				glBrick->SetCollision(true);
-				glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
-			}
 
+
+			glBrick->SetCollision(true);
+			glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
 			CButtonP* P = new CButtonP(glBrick->GetX(), glBrick->GetY() - 16);
-
 			scene->AddObject(P);
-			
+
+
+
+
+
+
+			//glBrick->SetUnBox(true);
+			//glBrick->SetEmpty(true);
 
 		}
+	}
+		else 
+	{
+		if (glBrick->GetState() == GLASS_BRICK_STATE_CHANGE_TO_COIN)
+		{
+			coin++;
+			e->obj->Delete();
+		}
+		}
+	
+
+	
+		
+	
+			
+
+			//glBrick->SetButtonP(NULL);
+
+			//glBrick->CreateButtonP();
+			
+
+
+		
 	
 }
 

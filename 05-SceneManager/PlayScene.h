@@ -32,7 +32,11 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 	
 public: 
+
+	
 	CPlayScene(int id, LPCWSTR filePath);
+
+	virtual void GlassBrickChangeToCoin();
 
 	CGameObject* AddObj(int id, float x, float y, float vx, float vy);
 	CGameObject* CreateObjectAndReturn(int id, float x, float y, float vx, float vy);
