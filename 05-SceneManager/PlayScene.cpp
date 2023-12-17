@@ -155,7 +155,7 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	{
 
 	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
-	case OBJECT_TYPE_GREEN_KOOPA_WALKING: obj = new CGreen_Koopa(x, y); break;
+	case OBJECT_TYPE_GREEN_KOOPA_WALKING: obj = new CGreen_Koopa(x, y,1); break;
 
 	case OBJECT_TYPE_PARA_GOOMBA: obj = new CPara_Goomba(x, y); break;
 
@@ -251,8 +251,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PARA_GOOMBA: obj = new CPara_Goomba(x, y); break;
 	case OBJECT_TYPE_PIPE_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_PIPE); break;
 	case OBJECT_TYPE_PIPE_M_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_M_PIPE); break;
-	case OBJECT_TYPE_KOOPA_GREEN_WALKING: obj = new CGreen_Koopa(x, y); break;
+	case OBJECT_TYPE_KOOPA_GREEN_WALKING: obj = new CGreen_Koopa(x, y,1); break;
+	case OBJECT_TYPE_GREEN_KOOPA_INITI_WALKING: obj = new CGreen_Koopa(x, y, 2); break;
 	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
+	
 
 	case OBJECT_TYPE_BOX:
 	{

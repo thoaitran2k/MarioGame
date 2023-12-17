@@ -17,6 +17,7 @@
 
 CRed_Koopa::CRed_Koopa(float x, float y) :CGameObject(x, y)
 {
+	
 	this->ax = 0;
 	this->ay = KOOPA_RED_GRAVITY;
 	count_start =-1;
@@ -254,6 +255,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vx += ax * dt;
 
 
+
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (!isDead) {
@@ -436,30 +438,37 @@ int CRed_Koopa::DistanceTurtleShellisKickedWithMario() {
 
 void CRed_Koopa::Render()
 {
-	int aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
-	if (isTurtleShell) {
-		switch (state)
-		{
-		case KOOPA_RED_STATE_ISTURTLESHELL:
-			aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
-			break;
+	
+	
+	
 
-		case KOOPA_RED_STATE_BE_HELD:
-			aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
-			break;
+		int aniId = ID_ANI_KOOPA_RED_WALKING_RIGHT;
+		if (isTurtleShell) {
+			switch (state)
+			{
+			case KOOPA_RED_STATE_ISTURTLESHELL:
+				aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
+				break;
 
-		case KOOPA_RED_STATE_TO_RETURN:
-			aniId = ID_ANI_RED_KOOPA_COMBACK;
-			break;
-		default: if (vx > 0)
-			aniId = ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT;
-			   else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
+			case KOOPA_RED_STATE_BE_HELD:
+				aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
+				break;
 
-			break;
-		}
-	}
-	else if (vx < 0) aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
+			case KOOPA_RED_STATE_TO_RETURN:
+				aniId = ID_ANI_RED_KOOPA_COMBACK;
+				break;
+			default: if (vx > 0)
+				aniId = ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT;
+				   else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
 
+				break;
+			}
+			}
+		else if (vx < 0) aniId = ID_ANI_KOOPA_RED_WALKING_LEFT;
+		
+	
+	
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 
 	/*
 	if(state == KOOPA_RED_STATE_WALKING){
@@ -491,7 +500,7 @@ void CRed_Koopa::Render()
 		 else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
 		 DebugOut(L">>> Rua bi da va dang chay >>> \n");
 	 }*/
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	
 	//RenderBoundingBox();
 }
 

@@ -4,6 +4,10 @@
 #include "debug.h"
 #include "Goomba.h"
 
+//Model
+
+
+
 
 //speeds
 #define KOOPA_RED_GRAVITY 0.002f
@@ -42,6 +46,11 @@
 #define ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT 6401
 #define ID_ANI_RED_KOOPA_COMBACK 6106
 
+//GREEN_WALKING Ani_id
+#define ID_ANI_KOOPA_GREEN_WALKING_RIGHT 6001
+#define ID_ANI_KOOPA_GREEN_WALKING_LEFT 6002
+
+
 
 class CRed_Koopa : public CGameObject
 {
@@ -51,6 +60,8 @@ protected:
 
 	float startX;
 	float startY;
+
+	
 
 	CCheckFall* checkfall;
 	CRed_Koopa* newkoopa;

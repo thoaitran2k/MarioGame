@@ -72,6 +72,8 @@
 
 #define OBJECT_TYPE_WHIPPING	194
 
+#define OBJECT_TYPE_GREEN_KOOPA_INITI_WALKING	195
+
 
 #pragma region MARIO 
 

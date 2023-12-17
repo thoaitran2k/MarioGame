@@ -18,6 +18,11 @@
 #define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT 20
 #define KOOPA_GREEN_NOT_WING_BBOX_HEIGHT_DEFEND 7
 
+
+//TYPE
+#define WING 1
+#define NOT_WING 2
+
 ////bbox
 //#define KOOPA_GREEN_BBOX_WIDTH 16
 //#define KOOPA_GREEN_BBOX_HEIGHT 16
@@ -141,6 +146,8 @@ protected:
 
 	bool Jump;
 	bool Fall;
+
+	int type_koopa;
 	//int collis;
 
 	ULONGLONG count_start;
@@ -294,7 +301,7 @@ public:
 
 
 
-	CGreen_Koopa(float x, float y);
+	CGreen_Koopa(float x, float y, int type);
 	virtual void SetState(int state);
 };
 

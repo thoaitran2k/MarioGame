@@ -15,8 +15,9 @@
 
 
 
-CGreen_Koopa::CGreen_Koopa(float x, float y) :CGameObject(x, y)
+CGreen_Koopa::CGreen_Koopa(float x, float y, int type) :CGameObject(x, y)
 {
+	this->type_koopa = type;
 	//timeFly = -1;
 	//count_Fly = 0;
 	//vy = -0.9f;
@@ -25,7 +26,14 @@ CGreen_Koopa::CGreen_Koopa(float x, float y) :CGameObject(x, y)
 	this->ay = KOOPA_GREEN_GRAVITY;
 	vx = -0.045f;
 	count_start = -1;
-	SetState(KOOPA_GREEN_STATE_JUMP);
+	if (type_koopa == 1) {
+		SetState(KOOPA_GREEN_STATE_JUMP);
+		Jump = true;
+	}
+	else if (type_koopa == 2) {
+		SetState(KOOPA_GREEN_STATE_WALKING);
+		Jump = false;
+	}
 	isTurtleShell = false;
 	startX = x;
 	startY = y;
@@ -38,7 +46,7 @@ CGreen_Koopa::CGreen_Koopa(float x, float y) :CGameObject(x, y)
 	isDead = false;
 	wasHeld = false;
 	time_rs = -1;
-	Jump = true;
+	
 	//isheld_time = -1;
 	//collis = 1;
 	//CreateGoomba();
@@ -403,9 +411,10 @@ void CGreen_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		if (state == KOOPA_GREEN_STATE_WAIT_RESET)
 		{
-			
+			if (type_koopa == 1) {
 				CreateNewKoopa();
 				DebugOut(L">>> BBBBBBBBBBB >>> \n");
+			}
 				//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 			
 			//CGreen_Koopa* rs_koopa = new CGreen_Koopa(startX, startY);
