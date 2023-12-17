@@ -228,6 +228,7 @@ class CMario : public CGameObject
 	void OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e);
 	void OnCollisionWithGreenPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);
 	
 
 

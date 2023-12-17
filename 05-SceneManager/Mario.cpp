@@ -22,6 +22,7 @@
 #include "PipePlantShoot.h"
 #include "Green_Plant.h"
 #include "glassBrick.h"
+#include "ButtonP.h"
 
 
 
@@ -121,14 +122,26 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGreenPlant(e);
 	else if (dynamic_cast<CglassBrick*>(e->obj))
 		OnCollisionWithGlassBrick(e);
+	else if (dynamic_cast<CButtonP*>(e->obj))
+		OnCollisionWithButtonP(e);
 
 
 	
 }
 
+void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e) {
+	CButtonP* P = dynamic_cast<CButtonP*>(e->obj);
+
+	//e->obj->Delete();
+	
+
+	P->SetState(BUTTON_STATE_BE_COLLIDABLED);
+
+}
+
 void CMario::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 	CglassBrick* glBrick = dynamic_cast<CglassBrick*>(e->obj);
-
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 		if (e->ny > 0) {
 			if (!glBrick->GetEmpty() && !glBrick->GetUnBox())
 			{
@@ -136,7 +149,10 @@ void CMario::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 				glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
 			}
 
+			CButtonP* P = new CButtonP(glBrick->GetX(), glBrick->GetY() - 16);
 
+			scene->AddObject(P);
+			
 
 		}
 	
