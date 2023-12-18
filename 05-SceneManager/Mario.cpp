@@ -55,8 +55,9 @@ void CMario::CreateWhippingofTail() {
 	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (nx < 0) {
-		CTailWhipping* tail = new CTailWhipping(x - BBOX_WIDTH/2, y+5);
+		CTailWhipping* tail = new CTailWhipping(x-1, y+5);
 		scene->AddObject(tail);
+		//ax = 0;
 
 		
 
@@ -70,8 +71,9 @@ void CMario::CreateWhippingofTail() {
 	}
 	else
 	{
-		CTailWhipping* tail = new CTailWhipping(x + BBOX_WIDTH/2, y+5);
+		CTailWhipping* tail = new CTailWhipping(x+1, y+5);
 		scene->AddObject(tail);
+		//ax = 0;
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x + TAIL_BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, 1);
 		/*CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x + BBOX_WIDTH, y, 0, 0);
 		AddTail(whipping);
@@ -1184,24 +1186,23 @@ void CMario::SetState(int state)
 		timing = GetTickCount64();
 		if (level != MARIO_LEVEL_RACOON || isSitting) return;
 		CreateWhippingofTail();
-		//if (tail->GetDelete()) ResetTail();
-		//ax = 0;
-		 //ax = 0;
-		if (nx > 0)
-			ax = 0.00008f;
-		else ax = -0.00008f;
-		//vx = 0;
+		ax = 0;
+		//nx = 0;
 		//vx = 0;
 		break;
 
 	case MARIO_STATE_ATTACK_LEFT:
-		maxVx = -0.07f;
-		ax = 0.0007f;
+		if (level != MARIO_LEVEL_RACOON || isSitting) return;
+		maxVx = -0.01f;
+		ax = -MARIO_ACCEL_WALK_X;
+		//vx = 0;
 		nx = -1;
 		break;
 	case MARIO_STATE_ATTACK_RIGHT:
-		maxVx = 0.07f;
-		ax = -0.0007f;
+		if (level != MARIO_LEVEL_RACOON || isSitting) return;
+		maxVx = 0.01f;
+		ax = MARIO_ACCEL_WALK_X;
+		//vx = 0;
 		nx = 1;
 		break;
 

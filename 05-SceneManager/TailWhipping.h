@@ -6,11 +6,11 @@
 
 #define ID_ANI_TAIL_WHIPPING	3070		
 
-#define SPEED_WHIP 0.14f
-#define SPEED_WHIP_LEFT 0.15f
+#define SPEED_WHIP 0.1f
+#define SPEED_WHIP_LEFT 0.1f
 
-#define BBOX_WIDTH	15
-#define BBOX_HEIGHT	7
+#define BBOX_WIDTH	12
+#define BBOX_HEIGHT	4
 #define	WIDTH		10
 
 #define WHIP_STATE_DELETE	100
@@ -22,10 +22,12 @@ class CTailWhipping : public CGameObject
 protected:
 
 	bool attack;
+	bool attackBrick;
 
 	ULONGLONG timming;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
 
 
 public:
@@ -33,6 +35,8 @@ public:
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+
+	void SetResetWhip(bool b) { b = attackBrick; }
 
 	virtual int IsCollidable() { return 1; };
 

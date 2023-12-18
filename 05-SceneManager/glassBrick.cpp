@@ -3,13 +3,14 @@
 #include "GameObject.h"
 #include "Game.h"
 #include "PlayScene.h"
+#include "FragGlass.h"
 
 
 CglassBrick::CglassBrick(float x, float y, int mode) :CGameObject(x,y)
 {
 
-
-	
+	this->vy = 0.035f;
+	//this->ay = 0.00075f;
 	this->mode = mode;
 	timming = -1;
 	mario_collis = false;
@@ -41,6 +42,11 @@ void CglassBrick::Render()
 		if(mode != GLASS_BRICK_MODEL_CONTAIN_BUTTON)
 		aniId = ID_ANI_BREAK_BRICK_TRANSFORM_TO_COIN;
 		break;
+
+	/*case GLASS_BRICK_STATE_BREAK:
+		if(mode != GLASS_BRICK_MODEL_CONTAIN_BUTTON)
+		aniId = ID_ANI_GLASS_BRICK_BREAK;
+		break;*/
 	}
 	/*switch (state)
 	{
@@ -63,16 +69,30 @@ void CglassBrick::Render()
 	//RenderBoundingBox();
 }
 
+
+
 void CglassBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - GLASS_BRICK_BBOX_WIDTH / 2;
-	t = y - GLASS_BRICK_BBOX_HEIGHT / 2;
-	r = l + GLASS_BRICK_BBOX_WIDTH;
-	b = t + GLASS_BRICK_BBOX_HEIGHT;
+	if (state == GLASS_BRICK_STATE_BREAK) return;
+	else {
+		l = x - GLASS_BRICK_BBOX_WIDTH / 2;
+		t = y - GLASS_BRICK_BBOX_HEIGHT / 2;
+		r = l + GLASS_BRICK_BBOX_WIDTH;
+		b = t + GLASS_BRICK_BBOX_HEIGHT;
+	}
 }
+
+
+void CglassBrick::OnNoCollision(DWORD dt)
+{
+	x += vx * dt;
+	y += vy * dt;
+};
 
 void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
+	vy += ay * dt;
 	//if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) CreateButtonP();
 
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -84,12 +104,9 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	//if (mode == 2) notCoin = 1;
 	
-	if (state == GLASS_BRICK_STATE_ISTOUCHED)
-	{
-		SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
-		}
+	
 
-	if (mario_collis){
+	 if (mario_collis){
 		unBox = true;
 		Empty = true;
 		
@@ -97,10 +114,22 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	//if (p->GetState() == BUTTON_STATE_BE_COLLIDABLED)
 		//SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
+	 if (state == GLASS_BRICK_STATE_ISTOUCHED)
+	 {
+		 SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
+	 }
 
-	
+	 else if (state == GLASS_BRICK_STATE_BREAK)
+	{
+		 isDeleted = true;
+		// CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		 //CFragGlass* frag = new CFragGlass(x + 50, y - 80, 0, 0);
+		// scene->AddObject(frag);
+		
+	}
 
-	 if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 10000)
+
+	else if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 10000)
 	{
 		SetState(GLASS_BRICK_STATE_NORMAL);
 	}
@@ -113,16 +142,31 @@ void CglassBrick::SetState(int state)
 	switch (state)
 	{
 	case GLASS_BRICK_STATE_NORMAL:
+		ay = 0;
 		notCoin = 1;
 		break;
 	case GLASS_BRICK_STATE_ISTOUCHED:
+		ay = 0;
 		//notCoin = 1;
 		break;
 	case GLASS_BRICK_STATE_CHANGE_TO_COIN:
+		ay = 0;
 		notCoin = 0;
 		//mode = GLASS_BRICK_MODEL_NORMAL;
 		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) { notCoin = 1; return; }
 		//isDeleted = true;
+		timming = GetTickCount64();
+		break;
+
+	case GLASS_BRICK_STATE_BREAK:
+		//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		//CFragGlass* frag = new CFragGlass(x,y, 0.004f, -0.00035f);
+		//scene->AddObject(frag);
+
+		//vy = -0.35f;
+		//ay = 0.00075f;
+		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) { notCoin = 1; return; }
+
 		timming = GetTickCount64();
 		break;
 	}

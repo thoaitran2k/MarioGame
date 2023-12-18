@@ -27,7 +27,8 @@ green_plant.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	323	300
+0	1923	300
+#0	1234	300
 #COIN
 #4	450	370
 #4	470	370
@@ -215,7 +216,9 @@ green_plant.txt
 200	2120	408
 
 ##CONTAIN_P
-201	1950	346
+201	2040	376
+
+204	1990	346
 
 
 
