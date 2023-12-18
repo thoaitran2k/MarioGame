@@ -27,8 +27,9 @@ green_plant.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-#0	1923	300
-0	1234	300
+0	1923	300
+#0	1234	300
+#0	480	320
 #COIN
 #4	450	370
 #4	470	370
@@ -155,6 +156,10 @@ green_plant.txt
 #RED KOOPA WALKING
 150	550	373
 #150	269	350
+
+#150	2004	352
+
+206	2102	372
 
 #150	1050	373
 #150	780	373

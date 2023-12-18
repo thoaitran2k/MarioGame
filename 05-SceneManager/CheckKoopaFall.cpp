@@ -10,6 +10,7 @@
 #include "Goomba.h"
 #include "Background.h"
 #include "Box.h"
+#include "glassBrick.h"
 
 
 
@@ -17,11 +18,12 @@
 #define OBJ_BBOX_HEIGHT 18
 
 
-CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
+CCheckFall::CCheckFall(float x, float y, int model) :CGameObject(x, y)
 {
 
+	this->model = model;
 	this->ax = 0;
-	this->ay = 0.015f;
+	this->ay = 0.014f;
 	//isOnPlatformCheck = false;
 	//OnTheBox = true;
 	//SetState(STATE_LEFT_KOOPA);
@@ -31,10 +33,19 @@ CCheckFall::CCheckFall(float x, float y) :CGameObject(x, y)
 
 void CCheckFall::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - OBJ_BBOX_WIDTH / 2;
-	t = y - OBJ_BBOX_HEIGHT / 2;
-	r = l + OBJ_BBOX_WIDTH;
-	b = t + OBJ_BBOX_HEIGHT;
+	if (model == 1) {
+		l = x - OBJ_BBOX_WIDTH / 2;
+		t = y - OBJ_BBOX_HEIGHT / 2;
+		r = l + OBJ_BBOX_WIDTH;
+		b = t + OBJ_BBOX_HEIGHT;
+	}
+	else if( model == 2)
+	{
+		l = x - BOX_SMALL_BBOX_WIDTH / 2;
+		t = y - BOX_SMALL_BBOX_HEIGHT / 2;
+		r = l + BOX_SMALL_BBOX_WIDTH;
+		b = t + BOX_SMALL_BBOX_HEIGHT;
+	}
 }
 
 void CCheckFall::OnNoCollision(DWORD dt)
@@ -45,9 +56,9 @@ void CCheckFall::OnNoCollision(DWORD dt)
 
 void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
+	//if (!e->obj->IsBlocking()) return;
 
-	if (e->ny != 0 && e->obj->IsBlocking())
+	if (e->ny != 0)
 	{
 		vy = 0;
 		if (e->ny < 0) isOnPlatformCheck = true;
@@ -65,6 +76,19 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 		//this->OnCollisionWithPlatForm(e);
 	if (dynamic_cast<CBox*>(e->obj))
 		this->OnCollisionWithBox(e);
+	else if (dynamic_cast<CglassBrick*>(e->obj))
+		OnCollisionWithGlassBrick(e);
+}
+
+void CCheckFall::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
+
+	CglassBrick* glassBrick = dynamic_cast<CglassBrick*>(e->obj);
+	if (e->ny != 0)
+	{
+		vy = 0;
+		if (e->ny < 0) isOnPlatformCheck = true;
+	}
+
 }
 
 void CCheckFall::OnCollisionWithPlatForm(LPCOLLISIONEVENT e) {
@@ -131,17 +155,37 @@ void CCheckFall::SetState(int state)
 	CGameObject::SetState(state);
 	switch (state)
 	{
+		if (model == 1) {
 	case STATE_LEFT_KOOPA:
 		vx = -SPEED_PREVIOUS_KOOPA;
 		vy = 0;
-	
+
 		break;
 
 	case STATE_RIGHT_KOOPA:
-		
-		
+
+
 		vx = SPEED_PREVIOUS_KOOPA;
 		vy = 0;
 		break;
+		}
+
+		else if (model == 2)
+		{
+	case SMALL_STATE_LEFT_KOOPA:
+		vx = -SMALL_SPEED_PREVIOUS_KOOPA;
+		ay = 0.022f;
+		vy = 0;
+
+		break;
+
+	case SMALL_STATE_RIGHT_KOOPA:
+
+
+		vx = SMALL_SPEED_PREVIOUS_KOOPA;
+		vy = 0;
+		ay = 0.022f;
+		break;
+		}
 	}
 }

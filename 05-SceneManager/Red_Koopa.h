@@ -5,6 +5,8 @@
 #include "Goomba.h"
 
 //Model
+#define KOOPA_RED_NORMAL 1
+#define KOOPA_RED_ON_THE_BRICK 2
 
 
 
@@ -37,6 +39,8 @@
 #define KOOPA_RED_WALKING_STATE_TURN 460
 #define KOOPA_RED_STATE_WAIT_RESET 470
 #define KOOPA_RED_STATE_BE_HELD 478
+#define KOOPA_RED_WALKING_STATE_TURN_ON_GLASS 480
+#define KOOPA_RED_STATE_WALKING_ON_GLASS 481
 
 //Ani_id
 #define ID_ANI_KOOPA_RED_WALKING_RIGHT 6101
@@ -55,6 +59,8 @@
 class CRed_Koopa : public CGameObject
 {
 protected:
+
+	int type;
 	float ax;
 	float ay;
 
@@ -65,6 +71,8 @@ protected:
 
 	CCheckFall* checkfall;
 	CRed_Koopa* newkoopa;
+
+
 	CGoomba* goomba_under_koopa;
 	
 
@@ -81,6 +89,7 @@ protected:
 	bool isTurn;
 	bool wasHeld;
 	bool flagHeldKick;
+	bool OntheGlassBrick;
 	//int collis;
 
 	ULONGLONG count_start;
@@ -101,9 +110,13 @@ protected:
 
 	void CreateCheckfall();
 
+	void CreateCheckfallSmall();
+
 	void CreateNewKoopa();
 
 	void CreateGoomba();
+
+
 	
 	virtual int IsCollidable() { return 1;}
 
@@ -120,6 +133,7 @@ protected:
 	void OnCollisionWithBrick_Question(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithOntheBox(LPCOLLISIONEVENT e);
+	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
 
 
 
@@ -180,9 +194,14 @@ public:
 
 	void ResetKP()
 	{
-		if(newkoopa) newkoopa->Delete();
+		if (newkoopa) newkoopa->Delete();
 		newkoopa = NULL;
 	}
+
+	
+
+	
+
 
 
 
@@ -230,7 +249,7 @@ public:
 
 	
 
-	CRed_Koopa(float x, float y);
+	CRed_Koopa(float x, float y,int type);
 	virtual void SetState(int state);
 };
 

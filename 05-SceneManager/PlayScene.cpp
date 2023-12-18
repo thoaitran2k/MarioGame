@@ -158,14 +158,19 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	switch (object_type)
 	{
 
-	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
+	//case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y,1); break;
+
+	//case OBJECT_TYPE_NEW_RED_KOOPA_ON_GLASS_BRICK: obj = new CRed_Koopa(x, y,2); break;
+
 	case OBJECT_TYPE_GREEN_KOOPA_WALKING: obj = new CGreen_Koopa(x, y,1); break;
 
 	case OBJECT_TYPE_PARA_GOOMBA: obj = new CPara_Goomba(x, y); break;
 
 	//case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x, y, GOOMBA_BASIC); break;
 
-	case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y); break;
+	case OBJECT_TYPE_CHECKFALL_KOOPA: obj = new CCheckFall(x, y,1); break;
+
+	case OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK: obj = new CCheckFall(x, y, 2); break;
 
 	case OBJECT_TYPE_FIRE_BULLET_OF_PLANT: obj = new CbulletPlant(x, y, 0, 0); break;
 
@@ -274,10 +279,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIPE_M_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_M_PIPE); break;
 	case OBJECT_TYPE_KOOPA_GREEN_WALKING: obj = new CGreen_Koopa(x, y,1); break;
 	case OBJECT_TYPE_GREEN_KOOPA_INITI_WALKING: obj = new CGreen_Koopa(x, y, 2); break;
-	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y); break;
+	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y,1); break;
 	case OBJECT_TYPE_GLASS_BRICK_NORMAL: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_NORMAL); break;
 	case OBJECT_TYPE_GLASS_BRICK_CONTAIN_BUTTON_P: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_CONTAIN_BUTTON); break;
 	case OBJECT_TYPE_FRAG_GLASS_BRICK: obj = new CFragGlass(x, y, 0,0); break;
+	case OBJECT_TYPE_NEW_RED_KOOPA_ON_GLASS_BRICK: obj = new CRed_Koopa(x, y, 2); break;
+
 	
 	//case OBJECT_TYPE_GLASS_BRICK_CONTAIN_BUTTON_P: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_CONTAIN_BUTTON); break;
 
