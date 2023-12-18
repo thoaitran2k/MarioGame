@@ -173,6 +173,10 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 
 	case OBJECT_TYPE_WHIPPING: obj = new CTailWhipping(x, y); break;
 
+	case OBJECT_TYPE_FRAG_GLASS_BRICK: obj = new CFragGlass(x, y, 0, 0); break;
+
+	case OBJECT_TYPE_FRAG_GLASS_BRICK_2: obj = new CFragGlass(x, y, 0, 0); break;
+
 	//case OBJECT_TYPE_BUTTON_P: obj = new CButtonP(x, y); break;
 
 	//case OBJECT_TYPE_GLASS_BRICK_CHANGETO_COIN: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_NORMAL); break;

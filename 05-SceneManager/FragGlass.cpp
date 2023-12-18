@@ -15,7 +15,7 @@ void CFragGlass::Render()
 
 	int aniId;
 
-	if(state == STATE_BREAK)
+	//if(state == STATE_BREAK)
 	aniId = ID_ANI_GLASS_BRICK_BREAK;
 
 

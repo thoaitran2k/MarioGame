@@ -4,7 +4,8 @@
 #include "Animations.h"
 
 
-#define ID_ANI_TAIL_WHIPPING	3070		
+#define ID_ANI_TAIL_WHIPPING	3070
+#define ID_ANI_GLASS_BRICK_BREAK 10125
 
 #define SPEED_WHIP 0.1f
 #define SPEED_WHIP_LEFT 0.1f
@@ -16,6 +17,7 @@
 #define WHIP_STATE_DELETE	100
 #define WHIP_STATE_LEFT_MARIO	200
 #define WHIP_STATE_RIGHT_MARIO	300
+#define WHIP_STATE_BREAK_BRICK	400
 
 class CTailWhipping : public CGameObject
 {

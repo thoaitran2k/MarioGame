@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Animation.h"
 #include "Animations.h"
+#include "FragGlass.h"
 //#include "ButtonP.h"
 
 
@@ -44,8 +45,27 @@ class CglassBrick : public CGameObject
 	bool Empty;
 	ULONGLONG timming;
 
+	CFragGlass* frag;
+
 
 	virtual void OnNoCollision(DWORD dt);
+
+
+	void AddFrag_Glass(CGameObject* obj) {
+		if (!dynamic_cast<CFragGlass*>(obj)) return;
+		else if (!frag)
+		{
+			CFragGlass* break_glass = dynamic_cast<CFragGlass*>(obj);
+			frag = break_glass;
+			DebugOut(L">>> KINH BI VO >>> \n");
+
+		}
+	}
+
+	void Reset() {
+		//if (frag) frag->Delete();
+		frag = NULL;
+	}
 
 	//CButtonP* p;
 
@@ -64,14 +84,19 @@ class CglassBrick : public CGameObject
 
 
 	
-
+	
 	
 
 public:
 	
+
+
 	CglassBrick(float x, float y, int mode);
 
 	//void SetButtonP(CButtonP* b) { b = p; }
+
+	void CreateAniFragGlass2();
+	void CreateAniFragGlass1();
 
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

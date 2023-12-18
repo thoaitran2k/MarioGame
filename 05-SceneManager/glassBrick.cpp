@@ -9,19 +9,40 @@
 CglassBrick::CglassBrick(float x, float y, int mode) :CGameObject(x,y)
 {
 
-	this->vy = 0.035f;
-	//this->ay = 0.00075f;
+	//this->vy = 0.035f;
+	this->ay = 0.00075f;
 	this->mode = mode;
 	timming = -1;
 	mario_collis = false;
 	unBox = false;
 	Empty = false;
 	SetState(GLASS_BRICK_STATE_NORMAL);
+	frag = NULL;
 	//p = NULL;
 	
 }
 
+void CglassBrick::CreateAniFragGlass1() {
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CGameObject* frag_glass = scene->CreateObjectAndReturn(OBJECT_TYPE_FRAG_GLASS_BRICK, x-6,y+1, -0.004f, 0);
+	
+	AddFrag_Glass(frag_glass);
+	CGameObject* frag_glass2 = scene->CreateObjectAndReturn(OBJECT_TYPE_FRAG_GLASS_BRICK, x +6, y-1, 0.004f, 0);
+	AddFrag_Glass(frag_glass2);
+	
 
+}
+void CglassBrick::CreateAniFragGlass2() {
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	
+	
+	CGameObject* frag_glass3 = scene->CreateObjectAndReturn(OBJECT_TYPE_FRAG_GLASS_BRICK_2, x-8, y-4, 0.001f, 0);
+	CGameObject* frag_glass1 = scene->CreateObjectAndReturn(OBJECT_TYPE_FRAG_GLASS_BRICK_2, x+10, y+6, -0.008f, 0);
+	AddFrag_Glass(frag_glass3);
+	AddFrag_Glass(frag_glass1);
+	
+
+}
 
 void CglassBrick::Render()
 {
@@ -121,6 +142,7 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	 else if (state == GLASS_BRICK_STATE_BREAK)
 	{
+		 Reset();
 		 isDeleted = true;
 		// CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 		 //CFragGlass* frag = new CFragGlass(x + 50, y - 80, 0, 0);

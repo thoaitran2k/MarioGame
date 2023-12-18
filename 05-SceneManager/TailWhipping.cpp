@@ -45,14 +45,15 @@ void CTailWhipping::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 void CTailWhipping::Render() {
 
+	int aniId;
 	if (attack) {
-		int aniId;
+		
 
 		aniId = ID_ANI_TAIL_WHIPPING;
 
-
-
 		CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+
+		
 	}
 	else RenderBoundingBox();
 	
@@ -111,6 +112,8 @@ void CTailWhipping::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e)
 	//scene->AddObject(frag);
 	//attackBrick = true;
 
+	attackBrick = true;
+
 	if (e->nx != 0)
 	{
 		//attack = true;
@@ -119,12 +122,10 @@ void CTailWhipping::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e)
 
 			break_brick->SetState(GLASS_BRICK_STATE_BREAK);
 
-			if (break_brick->GetState() == GLASS_BRICK_STATE_BREAK)
-			{
-				attackBrick = true;
+			break_brick->CreateAniFragGlass1();
+			break_brick->CreateAniFragGlass2();
 
-
-			}
+			
 		}
 		else if (break_brick->GetModel() == GLASS_BRICK_MODEL_CONTAIN_BUTTON && break_brick->GetState() != GLASS_BRICK_STATE_CHANGE_TO_COIN)
 		{
@@ -206,6 +207,11 @@ void CTailWhipping::SetState(int state)
 	case WHIP_STATE_RIGHT_MARIO:
 		vx = SPEED_WHIP;
 		break;
+
+
+	/*case WHIP_STATE_BREAK_BRICK:
+		timming = GetTickCount64();
+		break;*/
 
 
 	}
