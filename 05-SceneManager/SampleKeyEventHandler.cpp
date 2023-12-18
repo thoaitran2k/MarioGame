@@ -43,6 +43,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 		//if (mario->GetIsHold())
 		mario->SetIsHold(true);
+
 		mario->SetState(MARIO_STATE_ATTACK);
 
 		
@@ -79,6 +80,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		if (mario->GetIsHolding()) mario->SetHolding(false);
 
 		/*if(mario->GetIsHold())*/  mario->SetIsHold(false);
+		if (mario->GetState() == MARIO_STATE_ATTACK) mario->SetState(MARIO_STATE_IDLE);
 		//mario->ResetTail();
 		//mario->SetHolding(true);
 		break;
@@ -110,6 +112,25 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 			else
 
 				mario->SetState(MARIO_STATE_WALKING_LEFT);
+		}
+		else
+			mario->SetState(MARIO_STATE_IDLE);
+	}
+
+	else if (mario->GetState() == MARIO_STATE_ATTACK)
+	{
+		if (game->IsKeyDown(DIK_RIGHT))
+		{
+			if (game->IsKeyDown(DIK_A))
+			mario->SetState(MARIO_STATE_ATTACK_RIGHT);
+			//else
+				//mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		}
+		else if (game->IsKeyDown(DIK_LEFT)) {
+				if (game->IsKeyDown(DIK_A))
+			mario->SetState(MARIO_STATE_ATTACK_LEFT);
+				//else
+					//mario->SetState(MARIO_STATE_WALKING_LEFT);
 		}
 		else
 			mario->SetState(MARIO_STATE_IDLE);

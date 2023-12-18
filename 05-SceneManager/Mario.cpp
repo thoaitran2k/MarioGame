@@ -32,8 +32,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
+	
+	
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
+
 
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -50,10 +52,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 void CMario::CreateWhippingofTail() {
 
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (nx < 0) {
 		CTailWhipping* tail = new CTailWhipping(x - BBOX_WIDTH/2, y+5);
 		scene->AddObject(tail);
+
+		
 
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x - BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, -1);
 		/*CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x - BBOX_WIDTH, y, 0, 0);
@@ -79,8 +84,10 @@ void CMario::CreateWhippingofTail() {
 
 void CMario::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+	
+		x += vx * dt;
+		y += vy * dt;
+	
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -591,7 +598,9 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 				}
 
 		}
-		else {
+		else 
+		
+		{
 			if (untouchable == 0)
 			{
 				if (level > MARIO_LEVEL_SMALL)
@@ -1078,7 +1087,7 @@ void CMario::Render()
 
 void CMario::SetState(int state)
 {
-	if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 500)) return;
+	if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 400)) return;
 	// DIE is the end state, cannot be changed! 
 	 else if (this->state == MARIO_STATE_DIE) return; 
 	
@@ -1175,20 +1184,33 @@ void CMario::SetState(int state)
 		timing = GetTickCount64();
 		if (level != MARIO_LEVEL_RACOON || isSitting) return;
 		CreateWhippingofTail();
-
 		//if (tail->GetDelete()) ResetTail();
-		
-		ax = 0;
-			
-		
+		//ax = 0;
 		 //ax = 0;
+		if (nx > 0)
+			ax = 0.00008f;
+		else ax = -0.00008f;
 		//vx = 0;
+		//vx = 0;
+		break;
+
+	case MARIO_STATE_ATTACK_LEFT:
+		maxVx = -0.07f;
+		ax = 0.0007f;
+		nx = -1;
+		break;
+	case MARIO_STATE_ATTACK_RIGHT:
+		maxVx = 0.07f;
+		ax = -0.0007f;
+		nx = 1;
 		break;
 
 	case MARIO_STATE_IDLE:
 		ax = 0.0f;
 		vx = 0.0f;
 		break;
+
+
 
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_DEFLECT_SPEED;

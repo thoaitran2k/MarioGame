@@ -3,6 +3,9 @@
 #include "debug.h"
 
 #include "Mario.h"
+#include"Red_Koopa.h"
+
+#include"CheckKoopaFall.h"
 
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	//this->vx = vx;
@@ -41,12 +44,21 @@ void CTailWhipping::OnNoCollision(DWORD dt)
 
 void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
+	//if (dynamic_cast<CMario*>(e->obj)) return;
+	//if (e->obj->IsBlocking()) return;
+	if (dynamic_cast<CRed_Koopa*>(e->obj)) return;
+	if (dynamic_cast<CCheckFall*>(e->obj)) return;
+
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
 	if (e->ny != 0)
 	{
 		vy = vy;
 	}
 	else if (e->nx != 0)
 	{
+		//if (mario->GetState() != MARIO_STATE_ATTACK) vx = 0;
+		//else 
 		vx = vx;
 	}
 

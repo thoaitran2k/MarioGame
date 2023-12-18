@@ -100,10 +100,10 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	
 
-	/* if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 10000)
+	 if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 10000)
 	{
 		SetState(GLASS_BRICK_STATE_NORMAL);
-	}*/
+	}
 }
 
 void CglassBrick::SetState(int state)

@@ -17,6 +17,8 @@
 class CButtonP :public CGameObject
 {
 
+	bool Effective;
+
 	//CglassBrick* glassbrick;
 
 	//void Change_Coin(CGameObject* obj) {
@@ -37,6 +39,10 @@ public:
 	CButtonP(float x, float y);
 	void Render();
 	void Update(DWORD dt) {};
+
+	bool GetEffective() { return Effective; }
+
+	void SetEffective(bool b) { b = Effective; }
 
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
