@@ -25,15 +25,19 @@ CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 void CTailWhipping::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	
-	if (attackBrick)
+
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	if (mario->GetVx() != 0 && mario->GetNx() != 0)
 	{
-		l = x - 7 / 2;
+		l = x - 3;
 		t = y - BBOX_HEIGHT / 2;
-		r = l + 7;
+		r = l + 5;
 		b = t + BBOX_HEIGHT;
 
 	}
 	 else
+		
 	{
 		 l = x - BBOX_WIDTH / 2;
 		 t = y - BBOX_HEIGHT / 2;
@@ -169,7 +173,7 @@ void CTailWhipping::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//attack = false;
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetX() < x)
+	if (mario->GetNx()>0)
 		SetState(WHIP_STATE_RIGHT_MARIO);
 	else SetState(WHIP_STATE_LEFT_MARIO);
 
@@ -189,6 +193,7 @@ void CTailWhipping::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CTailWhipping::SetState(int state)
 {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	
 	CGameObject::SetState(state);
 	switch (state)
@@ -199,13 +204,17 @@ void CTailWhipping::SetState(int state)
 
 
 	case WHIP_STATE_LEFT_MARIO:
-		vx = -SPEED_WHIP_LEFT;
+		if (mario->GetVx() < 0)
+			vx = -0.11f;
+		 else vx = -SPEED_WHIP_LEFT;
 		break;
 		
 
 
 	case WHIP_STATE_RIGHT_MARIO:
-		vx = SPEED_WHIP;
+		if (mario->GetVx() > 0)
+			vx = 0.11f;
+		else vx = SPEED_WHIP;
 		break;
 
 

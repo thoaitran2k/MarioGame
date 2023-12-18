@@ -7,8 +7,8 @@
 #define ID_ANI_TAIL_WHIPPING	3070
 #define ID_ANI_GLASS_BRICK_BREAK 10125
 
-#define SPEED_WHIP 0.1f
-#define SPEED_WHIP_LEFT 0.1f
+#define SPEED_WHIP 0.06f
+#define SPEED_WHIP_LEFT 0.06f
 
 #define BBOX_WIDTH	12
 #define BBOX_HEIGHT	4

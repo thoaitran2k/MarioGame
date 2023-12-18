@@ -55,8 +55,19 @@ void CMario::CreateWhippingofTail() {
 	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (nx < 0) {
-		CTailWhipping* tail = new CTailWhipping(x-1, y+5);
-		scene->AddObject(tail);
+		CTailWhipping* tail1 = new CTailWhipping(x, y+5);
+
+		if (state == MARIO_STATE_IDLE)
+		
+			scene->AddObject(tail1);
+			//tail->SetState(WHIP_STATE_LEFT_MARIO);
+		
+
+		CTailWhipping* tail2 = new CTailWhipping(x -16, y + 5);
+		if (vx<0)
+			scene->AddObject(tail2);
+		
+			
 		//ax = 0;
 
 		
@@ -71,8 +82,18 @@ void CMario::CreateWhippingofTail() {
 	}
 	else
 	{
-		CTailWhipping* tail = new CTailWhipping(x+1, y+5);
-		scene->AddObject(tail);
+		CTailWhipping* tail3 = new CTailWhipping(x, y + 5);
+
+		if (state == MARIO_STATE_IDLE)
+		
+			scene->AddObject(tail3);
+			//tail->SetState(WHIP_STATE_RIGHT_MARIO);
+		
+	
+
+		CTailWhipping* tail4 = new CTailWhipping(x + 16, y + 5);
+			if (vx>0)
+			scene->AddObject(tail4);
 		//ax = 0;
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x + TAIL_BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, 1);
 		/*CGameObject* whipping = scene->CreateObjectAndReturn(OBJECT_TYPE_WHIPPING, x + BBOX_WIDTH, y, 0, 0);
