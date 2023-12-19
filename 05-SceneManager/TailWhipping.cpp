@@ -180,7 +180,7 @@ void CTailWhipping::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (attack) mario->SetVx(0);
 
 
-	if (GetTickCount64() - timming > 150)
+	if (GetTickCount64() - timming > 200)
 	{
 		
 		timming = -1;

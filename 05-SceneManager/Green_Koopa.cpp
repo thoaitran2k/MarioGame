@@ -100,8 +100,9 @@ void CGreen_Koopa::GetBoundingBox(float& left, float& top, float& right, float& 
 
 void CGreen_Koopa::CreateNewKoopa() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	if (isDead /*&& GetTickCount64() - time_rs > 4000*/) {
+	if (isDead /*&& GetTickCount64() - time_rs > 4000*/ || mario->GetX() == startX ) {
 		CGameObject* new_koopa1 = scene->CreateObjectAndReturn(OBJECT_TYPE_GREEN_KOOPA_WALKING, startX, startY, 0, 0);
 		//CGameObject* new_koopa2 = scene->CreateObjectAndReturn(OBJECT_TYPE_GREEN_KOOPA_WALKING, startX+35, startY, 0, 0);
 		Addnew_koopa(new_koopa1);

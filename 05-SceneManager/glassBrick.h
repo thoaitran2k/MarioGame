@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "Animations.h"
 #include "FragGlass.h"
+#include "Red_Koopa.h"
 //#include "ButtonP.h"
 
 
@@ -47,6 +48,7 @@ class CglassBrick : public CGameObject
 
 	CFragGlass* frag;
 
+	CRed_Koopa* newkoopa;
 
 	virtual void OnNoCollision(DWORD dt);
 
@@ -89,6 +91,7 @@ class CglassBrick : public CGameObject
 
 public:
 	
+	void CreateNewKoopa();
 
 
 	CglassBrick(float x, float y, int mode);
@@ -115,13 +118,30 @@ public:
 
 	void SetEmpty(bool b) { b = Empty; }
 
-	
+	void SetNotCoin(int b) { b = notCoin; }
 
 	virtual void SetState(int state);
 
 	int IsBlocking() { return notCoin; }
 
 	int GetModel() { return mode; }
+
+	void Addnew_koopa(CGameObject* obj) {
+		if (!dynamic_cast<CRed_Koopa*>(obj)) return;
+		else if (!newkoopa)
+		{
+			CRed_Koopa* newKP = dynamic_cast<CRed_Koopa*>(obj);
+			newkoopa = newKP;
+			DebugOut(L">>> check tao bullet >>> \n");
+
+		}
+	}
+
+	void ResetKP()
+	{
+		if (newkoopa) newkoopa->Delete();
+		newkoopa = NULL;
+	}
 
 	
 	//void CreateButtonP() {

@@ -16,15 +16,13 @@
 
 
 
-CRed_Koopa::CRed_Koopa(float x, float y,int type) :CGameObject(x, y)
+CRed_Koopa::CRed_Koopa(float x, float y,int typeKoopa) :CGameObject(x, y)
 {
-	this->type = type;
+	this->typeKoopa = typeKoopa;
 	this->ax = 0;
 	this->ay = KOOPA_RED_GRAVITY;
 	count_start =-1;
-	if (type == 1)
 	SetState(KOOPA_RED_STATE_WALKING);
-	else if (type == 2) SetState(KOOPA_RED_STATE_WALKING_ON_GLASS);
 	isTurtleShell = false;
 	startX = x;
 	startY = y;
@@ -39,15 +37,23 @@ CRed_Koopa::CRed_Koopa(float x, float y,int type) :CGameObject(x, y)
 	wasHeld = false;
 	time_rs = -1;
 	
+	newkoopa = NULL;
+	
+	//CreateKoopaOnGlassBrick();
+	
+	//KoopaOnGlassActive = false;
+	/*if (type != 1) {
+		Koopa_onGlassBrick_Active();
+	}*/
 	//koopa_brick = NULL;
 	//isheld_time = -1;
 	//collis = 1;
 	
 	
 	
-	//CreateGoomba();
-	//CreateNewKoopaOnGlassBrick();
 	
+	//CreateNewKoopaOnGlassBrick();
+	//CreateNewKoopa();
 }
 
 
@@ -106,6 +112,14 @@ void CRed_Koopa::CreateGoomba() {
 //	SetState(KOOPA_RED_STATE_WALKING);
 //}
 
+//void CRed_Koopa::CreateKoopaOnGlassBrick() {
+//	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+//	//CGameObject* new_koopa1 = scene->CreateObjectAndReturn(OBJECT_TYPE_RED_KOOPA_WALKING, startX+1559, startY, 0, 0);
+//	CGameObject* new_koopa1 = scene->CreateObjectAndReturn(OBJECT_TYPE_RED_KOOPA_WALKING, startX + 45, startY, 0, 0);
+//	Addnew_koopa(new_koopa1);
+//	SetState(KOOPA_RED_STATE_WALKING);
+//}
+
 void CRed_Koopa::CreateNewKoopa() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
@@ -125,22 +139,22 @@ void CRed_Koopa::CreateCheckfallSmall() {
 
 	if (vx < 0)
 	{
-		CGameObject* add_object_left1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()-2, y + 5, 0, 0);
+		CGameObject* add_object_left1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()-2, y + 6, 0, 0);
 		AddCheck(add_object_left1);
 		DebugOut(L">>> check tao obj left >>> \n");
 		checkfall->SetState(SMALL_STATE_LEFT_KOOPA);
-		checkfall->SETay(0.0009f);
+		//checkfall->SETay(0.0009f);
 
 
 	}
 	else if (vx >= 0)
 	{
-		CGameObject* add_object_right1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()+2, y + 5, 0/* KOOPA_RED_WALKING_SPEED*/, 0);
+		CGameObject* add_object_right1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()+2, y + 6, 0/* KOOPA_RED_WALKING_SPEED*/, 0);
 
 		AddCheck(add_object_right1);
 		DebugOut(L">>> check tao obj right >>> \n");
 		checkfall->SetState(SMALL_STATE_RIGHT_KOOPA);
-		checkfall->SETay(0.0009f);
+		//checkfall->SETay(0.0009f);
 
 	}
 
@@ -160,7 +174,7 @@ void CRed_Koopa::CreateCheckfall() {
 			
 			
 		}
-		else if(vx>=0)
+		else 
 		{
 			CGameObject* add_object_right = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA, GetX()+ KOOPA_RED_BBOX_WIDTH, y+1,0/* KOOPA_RED_WALKING_SPEED*/, 0);
 			
@@ -219,8 +233,37 @@ void CRed_Koopa::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 	if (e->ny < 0)
 	{
 		OntheGlassBrick = true;
+		typeKoopa = 2;
+
 
 	}
+	else if (e->nx != 0)
+		{
+		if (isTurtleShell) {
+			if (wasKicked) {
+				if (glBrick->GetModel() == GLASS_BRICK_MODEL_NORMAL && glBrick->GetState() != GLASS_BRICK_STATE_CHANGE_TO_COIN)
+				{
+					e->obj->Delete();
+					//glBrick->SetState(GLASS_BRICK_STATE_BREAK);
+					glBrick->CreateAniFragGlass1();
+					glBrick->CreateAniFragGlass2();
+					//ay = 0.0004f;
+					//vx = 0.19f;
+
+
+				}
+			}
+
+		}
+		else {
+			if (glBrick->GetState() == GLASS_BRICK_STATE_CHANGE_TO_COIN)
+			{
+				//if (typeKoopa == 2) return;
+			}
+		}
+			
+		}
+	
 
 }
 
@@ -228,8 +271,12 @@ void CRed_Koopa::OnCollisionWithOntheBox(LPCOLLISIONEVENT e) {
 
 
 	
-		if (e->ny < 0)
+	if (e->ny < 0) {
 		isOntheBox = true;
+		//CreateGoomba();
+	}
+		
+	
 
 }
 
@@ -295,6 +342,8 @@ void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 	CBackground* platform = dynamic_cast<CBackground*>(e->obj);
 	if (e->ny < 0) {
 		isOnPlatform = true;
+		//typeKoopa = 1;
+		
 	}
 
 	
@@ -313,9 +362,18 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-
-
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	//if (type == 2) {
+	//	
+	//	if (!KoopaOnGlassActive) {
+	//		vx = 0;
+	//		nx = -1;
+	//	}
+	//	else SetState(KOOPA_RED_STATE_WALKING_ON_GLASS);
+	//}
+
+
+	
 
 	if (!isDead) {
 		//if (isOntheBox)
@@ -328,17 +386,17 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					/*if (OntheGlassBrick) {
 						CreateCheckfallSmall();
 					}*/
-					if (type == 1) {
+					if (typeKoopa == 1) {
 						CreateCheckfall();
 					}
-					else if (type == 2) CreateCheckfallSmall();
+					else if (typeKoopa == 2) CreateCheckfallSmall();
 					DebugOut(L">>> CHECK TAO OBJ >>> \n");
 				}
 				else 
-					if (!checkfall->GetIsOnPlatform() && (checkfall->GetModel() == 1 || checkfall->GetModel() == 2) && (isOntheBox || OntheGlassBrick))
+					if (!checkfall->GetIsOnPlatform() && (checkfall->GetModel() == 1 || checkfall->GetModel() == 2) && (isOntheBox || OntheGlassBrick|| isOnPlatform))
 				{
-					SetState(KOOPA_RED_WALKING_STATE_TURN);
-					DebugOut(L">>> MOVING >>> \n");
+						SetState(KOOPA_RED_WALKING_STATE_TURN);
+						//DebugOut(L">>> MOVING >>> \n");
 
 				}
 			}
@@ -355,11 +413,10 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					    if (!mario->GetIsHolding() && !wasHeld && isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
 					    {
 
-							if(type == 1)
+							
 								//count_start = GetTickCount64();
 								SetState(KOOPA_RED_STATE_WALKING);
 
-							else if (type == 2) SetState(KOOPA_RED_STATE_WALKING_ON_GLASS);
 							count_start = GetTickCount64();
 							vx = KOOPA_RED_WALKING_SPEED;
 							y = y - KOOPA_RED_BBOX_HEIGHT / 2;
@@ -391,20 +448,21 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						//SetState(KOOPA_RED_STATE_TO_RETURN);
 						if (mario->GetIsHolding()) 
 						{
+
 							SetState(KOOPA_RED_STATE_TO_RETURN);
 							if(GetTickCount64() - comback_time > 500)
 							{
-								if (type == 1)
+								
 									//count_start = GetTickCount64();
 									SetState(KOOPA_RED_STATE_WALKING);
 
-								else if (type == 2) SetState(KOOPA_RED_STATE_WALKING_ON_GLASS);
 								DebugOut(L">>> RETURN >>> \n");
 
 							}
 						}
-						else 
+						else {
 							SetState(KOOPA_RED_STATE_ISKICKED);
+						}
 						
 					//}
 				}
@@ -485,6 +543,8 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if(state == KOOPA_RED_STATE_WAIT_RESET)
 	{
 	
+			
+
 			CreateNewKoopa();
 			DebugOut(L">>> BBBBBBBBBBB >>> \n");	
 			//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -572,7 +632,7 @@ void CRed_Koopa::Render()
 		 DebugOut(L">>> Rua bi da va dang chay >>> \n");
 	 }*/
 	
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CRed_Koopa::SetState(int state)
@@ -621,19 +681,26 @@ void CRed_Koopa::SetState(int state)
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
 		isDead = false;
+
+		if(typeKoopa == 1 )
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
+		else if(typeKoopa == 2)
+			vx = 0.14f * LeftOrRightMarrio();
 		ay = KOOPA_RED_GRAVITY;
 		
 		break;
 	case KOOPA_RED_STATE_WALKING:
-		vx = KOOPA_RED_WALKING_SPEED;
+		if (typeKoopa == 1)
+			vx = KOOPA_RED_WALKING_SPEED;
+		else if (typeKoopa == 2)
+			vx = 0.011f;
 		isTurtleShell = false;
 		isDead = false;
 		HaveOrNotCheckFall = true;
 		break;
 
 	case KOOPA_RED_STATE_WALKING_ON_GLASS:
-		vx = 0.011f;
+		vx = -0.011f;
 		isTurtleShell = false;
 		isDead = false;
 		HaveOrNotCheckFall = true;

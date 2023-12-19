@@ -18,6 +18,7 @@ CglassBrick::CglassBrick(float x, float y, int mode) :CGameObject(x,y)
 	Empty = false;
 	SetState(GLASS_BRICK_STATE_NORMAL);
 	frag = NULL;
+	CreateNewKoopa();
 	//p = NULL;
 	
 }
@@ -91,10 +92,23 @@ void CglassBrick::Render()
 }
 
 
+void CglassBrick::CreateNewKoopa(){
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	if (mode == 2) {
+		CGameObject* new_koopa = scene->CreateObjectAndReturn(OBJECT_TYPE_NEW_RED_KOOPA, x+64, y-50, 0, 0);
+		Addnew_koopa(new_koopa);
+		DebugOut(L">>> koopa duoc rs >>> \n");
+		new_koopa->SetState(KOOPA_RED_STATE_WALKING);
+	}
+	
+}
+
 
 void CglassBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	if (state == GLASS_BRICK_STATE_BREAK) return;
+
 	else {
 		l = x - GLASS_BRICK_BBOX_WIDTH / 2;
 		t = y - GLASS_BRICK_BBOX_HEIGHT / 2;
@@ -142,7 +156,7 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	 else if (state == GLASS_BRICK_STATE_BREAK)
 	{
-		 Reset();
+		 //Reset();
 		 isDeleted = true;
 		// CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 		 //CFragGlass* frag = new CFragGlass(x + 50, y - 80, 0, 0);

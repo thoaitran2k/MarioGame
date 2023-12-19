@@ -3,6 +3,8 @@
 #include "CheckKoopaFall.h"
 #include "debug.h"
 #include "Goomba.h"
+#include "Game.h"
+#include "PlayScene.h"
 
 //Model
 #define KOOPA_RED_NORMAL 1
@@ -60,12 +62,14 @@ class CRed_Koopa : public CGameObject
 {
 protected:
 
-	int type;
+	int typeKoopa;
 	float ax;
 	float ay;
 
 	float startX;
 	float startY;
+
+	bool KoopaOnGlassActive;
 
 	
 
@@ -116,6 +120,8 @@ protected:
 
 	void CreateGoomba();
 
+	void CreateKoopaOnGlassBrick();
+
 
 	
 	virtual int IsCollidable() { return 1;}
@@ -134,6 +140,13 @@ protected:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithOntheBox(LPCOLLISIONEVENT e);
 	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
+
+	void Koopa_onGlassBrick_Active() {
+		CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+		if (abs(mario->GetX() - x) < 50)
+			KoopaOnGlassActive = true;
+	}
 
 
 
@@ -249,7 +262,7 @@ public:
 
 	
 
-	CRed_Koopa(float x, float y,int type);
+	CRed_Koopa(float x, float y,int typeKoopa);
 	virtual void SetState(int state);
 };
 

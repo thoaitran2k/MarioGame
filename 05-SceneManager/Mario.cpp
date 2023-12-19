@@ -622,8 +622,8 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 
 		}
 		else 
-		
 		{
+			//koopared->SetX(+3);
 			if (untouchable == 0)
 			{
 				if (level > MARIO_LEVEL_SMALL)
@@ -641,6 +641,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 					SetState(MARIO_STATE_DIE);
 				}
 			}
+			//else koopared->SetVx(koopared->GetVx());
 
 		}
 
@@ -1263,8 +1264,6 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
-	
-
 	else
 	{
 		left = x - MARIO_SMALL_BBOX_WIDTH/2;

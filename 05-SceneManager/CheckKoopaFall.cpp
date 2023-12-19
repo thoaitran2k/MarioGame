@@ -88,6 +88,7 @@ void CCheckFall::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 		vy = 0;
 		if (e->ny < 0) isOnPlatformCheck = true;
 	}
+	
 
 }
 
@@ -174,7 +175,7 @@ void CCheckFall::SetState(int state)
 		{
 	case SMALL_STATE_LEFT_KOOPA:
 		vx = -SMALL_SPEED_PREVIOUS_KOOPA;
-		ay = 0.022f;
+		ay = 0.012f;
 		vy = 0;
 
 		break;
@@ -184,7 +185,7 @@ void CCheckFall::SetState(int state)
 
 		vx = SMALL_SPEED_PREVIOUS_KOOPA;
 		vy = 0;
-		ay = 0.022f;
+		ay = 0.012f;
 		break;
 		}
 	}
