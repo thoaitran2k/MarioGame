@@ -50,6 +50,31 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
+void CMario::CreatEffect(int effect) {
+
+	
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	switch (effect)
+	{
+	case 9: // RACOON with GREEN_MUSHROOM
+	{
+		CGameEffects* up_1 = new CGameEffects(x, y - 4, 9);
+		scene->AddObject(up_1);
+		SetCoin(GetCoin() + 1000);
+		break;
+	}
+
+	case 1:
+	{
+		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+		scene->AddObject(plusscore100);
+		break;
+	}
+		
+	}
+
+}
+
 void CMario::CreateWhippingofTail() {
 
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -719,7 +744,9 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			CreatEffect(1);
 		}
+
 	}
 	else // hit by Goomba
 	{
@@ -870,6 +897,8 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
+	
+	
 	CMushRoom* mr = dynamic_cast<CMushRoom*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
@@ -890,10 +919,16 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 		{
 			if (level > MARIO_LEVEL_SMALL)
 			{
-				CGameEffects* up_1 = new CGameEffects(mr->GetX(), mr->GetY() - 4, 9);
+				//effect = 9;
+				CreatEffect(9);
+				//SetEffect(9);
 				
-				scene->AddObject(up_1);
-				SetCoin(GetCoin() + 1000);
+				//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+				/*if (effect == 9) {
+					CGameEffects* up_1 = new CGameEffects(x, y - 4, 9);
+					scene->AddObject(up_1);
+					SetCoin(GetCoin() + 1000);
+				}*/
 				//coin++;
 				//SetLevel(MARIO_LEVEL_BIG);
 				//y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);

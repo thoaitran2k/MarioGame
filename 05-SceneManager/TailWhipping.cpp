@@ -158,10 +158,15 @@ void CTailWhipping::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e)
 void CTailWhipping::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 
 	attack = true;
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 	
 	if (goomba->GetState() != GOOMBA_STATE_DIE)
+	{
 		goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
+		mario->CreatEffect(1);
+	}
+
 	
 
 }

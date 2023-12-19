@@ -203,6 +203,7 @@ class CMario : public CGameObject
 	bool isHold;
 	bool TailAttack;
 
+	int effect;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -239,6 +240,9 @@ class CMario : public CGameObject
 	int GetAniIdRacoon();
 
 	
+	
+
+	
 
 	
 
@@ -266,6 +270,7 @@ public:
 	int GetCoin() { return this->coin; }
 	CMario(float x, float y) : CGameObject(x, y)
 	{
+		
 		isSitting = false;
 		Kicking = false;
 		Holding = false;
@@ -332,4 +337,8 @@ public:
 	void SetIsHold(bool b) { isHold = b; }
 
 	void SetAttack(bool b) { TailAttack = b; }
+
+	
+
+	void CreatEffect(int effect);
 };
