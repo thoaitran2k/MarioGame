@@ -160,6 +160,7 @@
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="FragGlass.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameEffects.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="glassBrick.cpp" />
     <ClCompile Include="Goomba.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="FragGlass.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameEffects.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="glassBrick.h" />
     <ClInclude Include="Goomba.h" />

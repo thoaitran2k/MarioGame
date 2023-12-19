@@ -17,6 +17,7 @@ koopa.txt
 Boxs.txt
 leaf.txt
 green_plant.txt
+GameEffect.txt
 [MAP]
 #MAP
 99	1408	216

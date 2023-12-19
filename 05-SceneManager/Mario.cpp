@@ -23,6 +23,7 @@
 #include "Green_Plant.h"
 #include "glassBrick.h"
 #include "ButtonP.h"
+#include "GameEffects.h"
 
 
 
@@ -870,6 +871,7 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
 	CMushRoom* mr = dynamic_cast<CMushRoom*>(e->obj);
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	if (mr->GetMod() == 1) {
 		if (!mr->IsDeleted())
@@ -888,7 +890,9 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 		{
 			if (level > MARIO_LEVEL_SMALL)
 			{
-
+				CGameEffects* up_1 = new CGameEffects(mr->GetX(), mr->GetY() - 4, 9);
+				
+				scene->AddObject(up_1);
 				SetCoin(GetCoin() + 1000);
 				//coin++;
 				//SetLevel(MARIO_LEVEL_BIG);
