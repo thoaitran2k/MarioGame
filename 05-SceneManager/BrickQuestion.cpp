@@ -26,14 +26,14 @@ void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 			r = l + BRICK_Q_BBOX_WIDTH;
 			b = t + BRICK_Q_BBOX_HEIGHT;
 		}
-		if (model == QUESTION_BRICK_MUSHROOM) {
+		else if (model == QUESTION_BRICK_NOT_COIN) {
 			l = (x - BRICK_Q_BBOX_WIDTH / 2) - 4;
 			t = y - BRICK_Q_BBOX_HEIGHT / 2;
 			r = l + BRICK_Q_BBOX_WIDTH;
 			b = t + BRICK_Q_BBOX_HEIGHT;
 		}
 		
-		if (model == QUESTION_BRICK_LEAF)
+		else if (model == QUESTION_BRICK_LEAF)
 		{
 			l = x - BRICK_Q_BBOX_WIDTH / 2;
 			t = y - BRICK_Q_BBOX_HEIGHT / 2;
@@ -51,7 +51,14 @@ void CBrickQuestion::GetBoundingBox(float& l, float& t, float& r, float& b)
 			b = t + BRICK_Q_BBOX_HEIGHT;
 
 		}
-		else if (QUESTION_BRICK_LEAF) {
+		else if (model ==  QUESTION_BRICK_LEAF) {
+			l = x - BRICK_Q_BBOX_WIDTH / 2;
+			t = y - BRICK_Q_BBOX_HEIGHT / 2;
+			r = l + BRICK_Q_BBOX_WIDTH;
+			b = t + BRICK_Q_BBOX_HEIGHT;
+		}
+		else if (model == QUESTION_BRICK_NOT_COIN)
+		{
 			l = x - BRICK_Q_BBOX_WIDTH / 2;
 			t = y - BRICK_Q_BBOX_HEIGHT / 2;
 			r = l + BRICK_Q_BBOX_WIDTH;
@@ -80,6 +87,7 @@ void CBrickQuestion::OnNoCollision(DWORD dt)
 
 void CBrickQuestion::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
 
 		vy += ay * dt;
 
@@ -130,7 +138,7 @@ void CBrickQuestion::Render()
 {
 
 	int aniId;
-	if (model == QUESTION_BRICK_COIN || QUESTION_BRICK_MUSHROOM || QUESTION_BRICK_LEAF) {
+	if (model == QUESTION_BRICK_COIN || QUESTION_BRICK_MUSHROOM || QUESTION_BRICK_LEAF || QUESTION_BRICK_NOT_COIN) {
 		aniId = ID_ANI_BRICK_Q;
 	}
 	if (isEmpty || isUnbox)

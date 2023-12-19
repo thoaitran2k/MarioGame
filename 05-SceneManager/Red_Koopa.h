@@ -118,6 +118,8 @@ protected:
 
 	void CreateNewKoopa();
 
+	void CreateNewKoopa2();
+
 	void CreateGoomba();
 
 	void CreateKoopaOnGlassBrick();

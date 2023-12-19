@@ -120,14 +120,31 @@ void CRed_Koopa::CreateGoomba() {
 //	SetState(KOOPA_RED_STATE_WALKING);
 //}
 
+void CRed_Koopa::CreateNewKoopa2() {
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	if (isDead /*&& GetTickCount64() - time_rs > 4000*/) {
+
+		CGameObject* new_koopa2 = scene->CreateObjectAndReturn(OBJECT_TYPE_NEW_RED_KOOPA, startX, startY, 0, 0);
+		Addnew_koopa(new_koopa2);
+		DebugOut(L">>> koopa duoc rs >>> \n");
+		SetState(KOOPA_RED_STATE_WALKING);
+		CreateCheckfallSmall();
+	}
+
+}
+
 void CRed_Koopa::CreateNewKoopa() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	if (isDead /*&& GetTickCount64() - time_rs > 4000*/) {
+		
 		CGameObject* new_koopa = scene->CreateObjectAndReturn(OBJECT_TYPE_RED_KOOPA_WALKING, startX, startY, 0, 0);
 			Addnew_koopa(new_koopa);
 			DebugOut(L">>> koopa duoc rs >>> \n");
 			SetState(KOOPA_RED_STATE_WALKING);
+
+			if (typeKoopa == 2) CreateCheckfallSmall();
 	}
 	
 }
@@ -139,7 +156,7 @@ void CRed_Koopa::CreateCheckfallSmall() {
 
 	if (vx < 0)
 	{
-		CGameObject* add_object_left1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()-2, y + 6, 0, 0);
+		CGameObject* add_object_left1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()-1, y + 6, 0, 0);
 		AddCheck(add_object_left1);
 		DebugOut(L">>> check tao obj left >>> \n");
 		checkfall->SetState(SMALL_STATE_LEFT_KOOPA);
@@ -149,7 +166,7 @@ void CRed_Koopa::CreateCheckfallSmall() {
 	}
 	else if (vx >= 0)
 	{
-		CGameObject* add_object_right1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()+2, y + 6, 0/* KOOPA_RED_WALKING_SPEED*/, 0);
+		CGameObject* add_object_right1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()+1, y + 6, 0/* KOOPA_RED_WALKING_SPEED*/, 0);
 
 		AddCheck(add_object_right1);
 		DebugOut(L">>> check tao obj right >>> \n");
@@ -389,6 +406,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 					if (typeKoopa == 1) {
 						CreateCheckfall();
 					}
+					
 					else if (typeKoopa == 2) CreateCheckfallSmall();
 					DebugOut(L">>> CHECK TAO OBJ >>> \n");
 				}
@@ -415,10 +433,14 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 							
 								//count_start = GetTickCount64();
-								SetState(KOOPA_RED_STATE_WALKING);
+							SetState(KOOPA_RED_STATE_WALKING);
 
 							count_start = GetTickCount64();
-							vx = KOOPA_RED_WALKING_SPEED;
+							if (typeKoopa == 1)
+								vx = KOOPA_RED_WALKING_SPEED;
+
+							else if (typeKoopa == 2)
+								vx = 0.011f;
 							y = y - KOOPA_RED_BBOX_HEIGHT / 2;
 							DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
 						}
@@ -544,8 +566,9 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 	
 			
-
+		if (typeKoopa == 1)
 			CreateNewKoopa();
+		else if (typeKoopa == 2) CreateNewKoopa2();
 			DebugOut(L">>> BBBBBBBBBBB >>> \n");	
 			//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
@@ -685,7 +708,7 @@ void CRed_Koopa::SetState(int state)
 		if(typeKoopa == 1 )
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
 		else if(typeKoopa == 2)
-			vx = 0.14f * LeftOrRightMarrio();
+			vx = 0.137f * LeftOrRightMarrio();
 		ay = KOOPA_RED_GRAVITY;
 		
 		break;

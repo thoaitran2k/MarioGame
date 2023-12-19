@@ -757,8 +757,6 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 {
 
-	
-
 	CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	BOOLEAN isUnBox, isEmpty;
@@ -774,28 +772,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 
 	if (e->ny > 0 && !isUnBox && !isEmpty) {
 
-		
-
-		if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
-		{
-				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
-
-				//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
-				//CBrick* newbullet = new CBrick(367, 320);
-
-
-				scene->AddObject(mushroom);
-				//scene->AddObject(bullet);
-
-				//scene->AddObject(newbullet);
-				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
-				questionBrick->SetState(BRICK_Q_STATE_UP);
-				questionBrick->SetIsEmpty(true);
-				questionBrick->SetIsUnbox(true);
-
-			
-		}
-		  else if (questionBrick->GetModel() == QUESTION_BRICK_COIN)
+		if (questionBrick->GetModel() == QUESTION_BRICK_COIN)
 		{
 
 			SetCoin(GetCoin() + 1);
@@ -809,19 +786,77 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			coin++;
 
 		}
-		  else if (questionBrick->GetModel() == QUESTION_BRICK_LEAF)
-		{
-			CLeaf* leaf = new CLeaf(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+		
+		else if(questionBrick->GetModel() == QUESTION_BRICK_NOT_COIN){
 
+			if (level == MARIO_LEVEL_SMALL) 
+			{
+				CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), 1);
+				scene->AddObject(mushroom);
+				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+				questionBrick->SetState(BRICK_Q_STATE_UP);
+				questionBrick->SetIsEmpty(true);
+				questionBrick->SetIsUnbox(true);
+			}
+			else if (level == MARIO_LEVEL_BIG) {
+				CLeaf* leaf = new CLeaf(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+				scene->AddObject(leaf);
+				leaf->SetState(LEAF_SUMMON_STATE);
+				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+				questionBrick->SetState(BRICK_Q_STATE_UP);
+				questionBrick->SetIsEmpty(true);
+				questionBrick->SetIsUnbox(true);
 
-			scene->AddObject(leaf);
-			leaf->SetState(LEAF_SUMMON_STATE);
-			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
-			questionBrick->SetState(BRICK_Q_STATE_UP);
-			questionBrick->SetIsEmpty(true);
-			questionBrick->SetIsUnbox(true);
-
+			}
+			else if (level == MARIO_LEVEL_RACOON)
+			{
+				CMushRoom* mushroomgreen = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), 2);
+				scene->AddObject(mushroomgreen);
+				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+				questionBrick->SetState(BRICK_Q_STATE_UP);
+				questionBrick->SetIsEmpty(true);
+				questionBrick->SetIsUnbox(true);
+			}
 		}
+
+		
+
+		
+
+		//if (questionBrick->GetModel() == QUESTION_BRICK_MUSHROOM)
+		//{
+		//		CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN),1);
+
+		//		//CbulletPlant* bullet = new CbulletPlant(xTemp + 50, yTemp);
+		//		//CBrick* newbullet = new CBrick(367, 320);
+
+
+		//		scene->AddObject(mushroom);
+		//		//scene->AddObject(bullet);
+
+		//		//scene->AddObject(newbullet);
+		//		questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+		//		questionBrick->SetState(BRICK_Q_STATE_UP);
+		//		questionBrick->SetIsEmpty(true);
+		//		questionBrick->SetIsUnbox(true);
+
+		//	
+		//}
+		//  
+		//  else if (questionBrick->GetModel() == QUESTION_BRICK_LEAF)
+		//{
+		//	CLeaf* leaf = new CLeaf(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+
+
+		//	scene->AddObject(leaf);
+		//	leaf->SetState(LEAF_SUMMON_STATE);
+		//	questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+		//	questionBrick->SetState(BRICK_Q_STATE_UP);
+		//	questionBrick->SetIsEmpty(true);
+		//	questionBrick->SetIsUnbox(true);
+
+		//}
+		  /*else*/ 
 	}
 }
 
@@ -835,15 +870,18 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 {
 	CMushRoom* mr = dynamic_cast<CMushRoom*>(e->obj);
-	if (!mr->IsDeleted())
-	{
-		if (level == MARIO_LEVEL_SMALL)
+
+	if (mr->GetMod() == 1) {
+		if (!mr->IsDeleted())
 		{
-			SetLevel (MARIO_LEVEL_BIG);
-			y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
+			if (level == MARIO_LEVEL_SMALL)
+			{
+				SetLevel(MARIO_LEVEL_BIG);
+				y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
+			}
 		}
+		mr->Delete();
 	}
-	mr->Delete();
 }
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)

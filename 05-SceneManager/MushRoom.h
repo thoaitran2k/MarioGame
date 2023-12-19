@@ -10,7 +10,11 @@
 
 
 #define ID_ANI_MUSHROOM 99
+#define ID_ANI_MUSHROOM_GREEN 207
 
+
+#define MODE_RED 1
+#define MODE_GREEN 2
 
 
 #define MUSHROOM_GRAVITY 0.001f
@@ -23,6 +27,8 @@
 #define MUSHROOM_STATE_OUTSIDE 200
 
 class CMushRoom : public CGameObject {
+	int mode_mushroom;
+
 	float ax;
 	float ay;
 	float startY;
@@ -31,12 +37,14 @@ class CMushRoom : public CGameObject {
 	void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
 
 public:
-	CMushRoom(float x, float y);
+	CMushRoom(float x, float y,int mode_mushroom);
 	
 	void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual int IsCollidable() { return 1; }
 	void OnNoCollision(DWORD dt);
+
+	int GetMod() { return mode_mushroom; }
 
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 

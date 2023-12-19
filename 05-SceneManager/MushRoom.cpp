@@ -4,8 +4,9 @@
 #include "PlayScene.h"
 #include "Mario.h"
 
-CMushRoom::CMushRoom(float x, float y) :CGameObject(x, y)
+CMushRoom::CMushRoom(float x, float y,int mode_mushroom) :CGameObject(x, y)
 {
+	this->mode_mushroom = mode_mushroom;
 	this->ax = 0;
 	this->ay = MUSHROOM_GRAVITY;
 	vy = 0;
@@ -65,9 +66,14 @@ void CMushRoom::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 }
 void CMushRoom::Render()
 {
+	int aniId = -1;
+
+	if (mode_mushroom == MODE_RED) aniId = ID_ANI_MUSHROOM;
+	else aniId = ID_ANI_MUSHROOM_GREEN;
+
 
 	CAnimations* animations = CAnimations::GetInstance();
-	 animations->Get(ID_ANI_MUSHROOM)->Render(x, y);
+	 animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
 }
