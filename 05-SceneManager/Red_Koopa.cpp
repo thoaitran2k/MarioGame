@@ -328,6 +328,7 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 }
 
 void CRed_Koopa::OnCollisionWithBrick_Question(LPCOLLISIONEVENT e) {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	if (wasKicked) {
 		CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
@@ -341,14 +342,35 @@ void CRed_Koopa::OnCollisionWithBrick_Question(LPCOLLISIONEVENT e) {
 
 		if (e->nx != 0 && !isUnBox && !isEmpty) {
 
-			if (questionBrick->GetModel() == QUESTION_BRICK_LEAF)
+			if (questionBrick->GetModel() == QUESTION_BRICK_NOT_COIN)
 			{
-				CLeaf* leaf = new CLeaf(xTemp, yTemp);
-				leaf->SetState(LEAF_SUMMON_STATE);
-				scene->AddObject(leaf);
-				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
-				questionBrick->SetIsEmpty(true);
-				questionBrick->SetIsUnbox(true);
+				if (mario->GetLevel() == MARIO_LEVEL_SMALL) {
+					CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), 1);
+					scene->AddObject(mushroom);
+					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+					questionBrick->SetState(BRICK_Q_STATE_UP);
+					questionBrick->SetIsEmpty(true);
+					questionBrick->SetIsUnbox(true);
+
+				}
+				else if(mario->GetLevel() == MARIO_LEVEL_BIG)
+				{
+					CLeaf* leaf = new CLeaf(xTemp, yTemp);
+					leaf->SetState(LEAF_SUMMON_STATE);
+					scene->AddObject(leaf);
+					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+					questionBrick->SetIsEmpty(true);
+					questionBrick->SetIsUnbox(true);
+				}
+				else if (mario->GetLevel() == MARIO_LEVEL_RACOON)
+				{
+					CMushRoom* mushroomgreen = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), 2);
+					scene->AddObject(mushroomgreen);
+					questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+					questionBrick->SetState(BRICK_Q_STATE_UP);
+					questionBrick->SetIsEmpty(true);
+					questionBrick->SetIsUnbox(true);
+				}
 			}
 		}
 	}

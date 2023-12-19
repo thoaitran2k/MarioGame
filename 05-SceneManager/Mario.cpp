@@ -890,7 +890,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 			{
 
 				SetCoin(GetCoin() + 1000);
-				coin++;
+				//coin++;
 				//SetLevel(MARIO_LEVEL_BIG);
 				//y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
 			}
