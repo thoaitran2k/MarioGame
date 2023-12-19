@@ -882,6 +882,21 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 		}
 		mr->Delete();
 	}
+	else if (mr->GetMod() == 2) //GREEN_MUSHROOM
+	{
+		if (!mr->IsDeleted())
+		{
+			if (level > MARIO_LEVEL_SMALL)
+			{
+
+				SetCoin(GetCoin() + 1000);
+				coin++;
+				//SetLevel(MARIO_LEVEL_BIG);
+				//y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
+			}
+		}
+		mr->Delete();
+	}
 }
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
