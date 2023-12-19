@@ -107,14 +107,14 @@ void CglassBrick::CreateNewKoopa(){
 
 void CglassBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	if (state == GLASS_BRICK_STATE_BREAK) return;
+	//if (state == GLASS_BRICK_STATE_BREAK) return;
 
-	else {
-		l = x - GLASS_BRICK_BBOX_WIDTH / 2;
+	//else {
+		l = x - GLASS_BRICK_BBOX_WIDTH / 2-2;
 		t = y - GLASS_BRICK_BBOX_HEIGHT / 2;
 		r = l + GLASS_BRICK_BBOX_WIDTH;
 		b = t + GLASS_BRICK_BBOX_HEIGHT;
-	}
+	//}
 }
 
 

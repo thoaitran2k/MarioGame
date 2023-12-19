@@ -28,10 +28,11 @@ GameEffect.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	150	320
+#0	150	320
 #0	1923	300
 #0	1234	300
 #0	480	320
+0	1780	320
 #COIN
 #4	450	370
 #4	470	370
@@ -136,7 +137,7 @@ GameEffect.txt
 #177	1872	385
 
 #not_shoot
-#178	1807	402
+178	1807	402
 
 #PIPE COVER
 89	367	393

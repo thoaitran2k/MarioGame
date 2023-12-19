@@ -13,6 +13,7 @@
 #include "Game.h"
 #include "PlayScene.h"
 #include "ButtonP.h"
+#include "Green_Plant.h"
 
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	//this->vx = vx;
@@ -98,15 +99,20 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 		attackBrick = true;
 		OnCollisionWithGlassBrick(e);
 	}
+
+	else if (dynamic_cast<CGreen_Plant*>(e->obj))
+		OnCollisionWithGreenPlant(e);
 		
-		
-	
-
-
-
-
 }
 
+void CTailWhipping::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	attack = true;
+	e->obj->Delete();
+	mario->CreatEffect(1);
+	
+}
 
 void CTailWhipping::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e)
 {
