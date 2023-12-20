@@ -47,6 +47,8 @@
 
 #define RACOON_STATE_FLY_DOWN_RELEASE	800
 
+#define RACOON_STATE_FLY	810
+
 
 
 #pragma region ANIMATION_ID
@@ -162,6 +164,9 @@
 #define ID_ANI_RACOON_ATTACK_LEFT 3371
 #define ID_ANI_RACOON_ATTACK_RIGHT 3370
 
+#define ID_ANI_RACOON_FLY_DOWN_RIGHT 3061
+#define ID_ANI_RACOON_FLY_DOWN_LEFT 3060
+
 
 #define ID_ANI_RACOON_FLY_RIGHT 3300
 #define ID_ANI_RACOON_FLY_LEFT 3200
@@ -206,6 +211,8 @@ class CMario : public CGameObject
 	bool TailAttack;
 
 	int effect;
+
+	bool Fly;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -278,10 +285,13 @@ public:
 		Holding = false;
 		isHold = false;
 		TailAttack = false;
+		Fly = false;
 		tail = NULL;
 		maxVx = 0.0f;
 		ax = 0.0f;
+
 		ay = MARIO_GRAVITY;
+		
 
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
@@ -332,6 +342,8 @@ public:
 
 	bool GetAttack() { return TailAttack; }
 
+	bool GetFly() { return Fly; }
+
 
 	//set
 	void SetHolding(bool b) { Holding = b; }
@@ -343,4 +355,6 @@ public:
 	void SETay(float b) { b = ay; }
 
 	void CreatEffectMario(int effect);
+
+	void SetFly(bool b) { b = Fly; }
 };

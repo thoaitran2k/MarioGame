@@ -1125,21 +1125,21 @@ int CMario::GetAniIdRacoon(){
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		
-
-		if (abs(ax) == MARIO_ACCEL_RUN_X)
-		{
-			if (nx >= 0)
-				aniId = ID_ANI_RACOON_JUMP_RUN_RIGHT;
+		if (!Fly) {
+			if (abs(ax) == MARIO_ACCEL_RUN_X)
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_RACOON_JUMP_RUN_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
+			}
 			else
-				aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
-		}
-		else
-		{
-			if (nx >= 0)
-				aniId = ID_ANI_RACOON_JUMP_WALK_RIGHT;
-			else
-				aniId = ID_ANI_RACOON_JUMP_WALK_LEFT;
+			{
+				if (nx >= 0)
+					aniId = ID_ANI_RACOON_JUMP_WALK_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_JUMP_WALK_LEFT;
+			}
 		}
 	}
 	else
@@ -1205,6 +1205,20 @@ void CMario::Render()
 		else
 			aniId = ID_ANI_RACOON_ATTACK_LEFT;
 	}
+	else if (state == RACOON_STATE_FLY_DOWN_RELEASE) {
+		if (nx > 0)
+			aniId = ID_ANI_RACOON_FLY_DOWN_RIGHT;
+		else
+			aniId = ID_ANI_RACOON_FLY_DOWN_LEFT;
+	}
+
+	else if (state == RACOON_STATE_FLY) {
+		if (nx > 0)
+			aniId = ID_ANI_RACOON_FLY_RIGHT;
+		else
+			aniId = ID_ANI_RACOON_FLY_LEFT;
+
+	}
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
@@ -1223,8 +1237,12 @@ void CMario::Render()
 void CMario::SetState(int state)
 {
 	if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 400)) return;
+
+	else if(this->state == RACOON_STATE_FLY_DOWN_RELEASE && (GetTickCount64() - timing < 200)&& !isOnPlatform) return;
 	// DIE is the end state, cannot be changed! 
-	 else if (this->state == MARIO_STATE_DIE) return; 
+	else if (this->state == MARIO_STATE_DIE) return; 
+
+
 	
 
 	if (Kicking && GetTickCount64() - timing > 200)
@@ -1270,32 +1288,30 @@ void CMario::SetState(int state)
 				else
 					vy = -MARIO_JUMP_SPEED_Y;
 			}
-			else {
-				if (abs(this->vx) == MARIO_RUNNING_SPEED)
-					vy = -0.9;
-				else
-					vy = -0.7;
-			}
 		}
 		break;
 
-	case MARIO_STATE_RELEASE_JUMP:
-		//if (level != 3) {
-			if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
-		//}
-		//else {
-		//	if (vy < 0) vy += 0.1f / 2;
-				           //MARIO_GRAVITY = 0.0002f;
-				//ay = 0.0001f;
-				//ay = 0.0001f;
-			//ay = 0.000006f;
-			//if (isOnPlatform) SetState(MARIO_STATE_JUMP);
-		//}
+	case RACOON_STATE_FLY:
+		Fly = true;
+		ay = 0.00001f;
+		vy = -0.05f;
 		break;
 
-	/*case RACOON_STATE_FLY_DOWN_RELEASE:
-			 ay = 0.001f;
-			 break;*/
+	case MARIO_STATE_RELEASE_JUMP:
+		
+		
+		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+
+		
+		
+		break;
+
+	case RACOON_STATE_FLY_DOWN_RELEASE:
+		if (vy < 0) vy += 0.15 / 2;
+		timing = GetTickCount64();
+		Fly = false;
+		//ay = 0.00002f;
+		break;
 
 	case MARIO_STATE_SIT:
 		if (isOnPlatform && level != MARIO_LEVEL_SMALL)
