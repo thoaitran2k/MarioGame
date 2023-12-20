@@ -45,6 +45,8 @@
 #define MARIO_STATE_ATTACK_LEFT		690
 #define MARIO_STATE_ATTACK_RIGHT	700
 
+#define RACOON_STATE_FLY_DOWN_RELEASE	800
+
 
 
 #pragma region ANIMATION_ID
@@ -338,7 +340,7 @@ public:
 
 	void SetAttack(bool b) { TailAttack = b; }
 
-	
+	void SETay(float b) { b = ay; }
 
 	void CreatEffectMario(int effect);
 };

@@ -34,7 +34,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 	
-	
+	/*if (state == MARIO_STATE_RELEASE_JUMP && !isOnPlatform)
+	{
+		if (level == 3)
+			if (vy > 0) ay = 0.00001f;
+			else ay = MARIO_GRAVITY;
+	}
+	*/
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 
@@ -94,10 +100,12 @@ void CMario::CreateWhippingofTail() {
 			scene->AddObject(tail1);
 			//tail->SetState(WHIP_STATE_LEFT_MARIO);
 		
-
-		CTailWhipping* tail2 = new CTailWhipping(x -16, y + 5);
-		if (vx<0)
+		//CTailWhipping* tail5 = new CTailWhipping(x - 10, y + 5);
+		CTailWhipping* tail2 = new CTailWhipping(x -5, y + 5);
+		if (vx != 0)
 			scene->AddObject(tail2);
+
+		//else scene->AddObject(tail2);
 		
 			
 		//ax = 0;
@@ -123,8 +131,8 @@ void CMario::CreateWhippingofTail() {
 		
 	
 
-		CTailWhipping* tail4 = new CTailWhipping(x + 16, y + 5);
-			if (vx>0)
+		CTailWhipping* tail4 = new CTailWhipping(x +5, y + 5);
+			if (vx != 0)
 			scene->AddObject(tail4);
 		//ax = 0;
 		//CGame::GetInstance()->GetCurrentScene()->CreateObjectAndReturn(OBJECT_TYPE_TAIL, x + TAIL_BBOX_WIDTH / 2, y + MARIO_BIG_BBOX_HEIGHT / 2 - TAIL_BBOX_HEIGHT, 1);
@@ -1256,16 +1264,38 @@ void CMario::SetState(int state)
 		if (isSitting) break;
 		if (isOnPlatform)
 		{
-			if (abs(this->vx) == MARIO_RUNNING_SPEED)
-				vy = -MARIO_JUMP_RUN_SPEED_Y;
-			else
-				vy = -MARIO_JUMP_SPEED_Y;
+			if (level != 3) {
+				if (abs(this->vx) == MARIO_RUNNING_SPEED)
+					vy = -MARIO_JUMP_RUN_SPEED_Y;
+				else
+					vy = -MARIO_JUMP_SPEED_Y;
+			}
+			else {
+				if (abs(this->vx) == MARIO_RUNNING_SPEED)
+					vy = -0.9;
+				else
+					vy = -0.7;
+			}
 		}
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
-		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		//if (level != 3) {
+			if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		//}
+		//else {
+		//	if (vy < 0) vy += 0.1f / 2;
+				           //MARIO_GRAVITY = 0.0002f;
+				//ay = 0.0001f;
+				//ay = 0.0001f;
+			//ay = 0.000006f;
+			//if (isOnPlatform) SetState(MARIO_STATE_JUMP);
+		//}
 		break;
+
+	/*case RACOON_STATE_FLY_DOWN_RELEASE:
+			 ay = 0.001f;
+			 break;*/
 
 	case MARIO_STATE_SIT:
 		if (isOnPlatform && level != MARIO_LEVEL_SMALL)

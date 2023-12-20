@@ -31,22 +31,22 @@ void CTailWhipping::GetBoundingBox(float& l, float& t, float& r, float& b)
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	if (mario->GetVx() != 0 && mario->GetNx() != 0)
+	/*if (mario->GetVx() != 0)
 	{
-		l = x - 3;
+		l = x - 1;
 		t = y - BBOX_HEIGHT / 2;
-		r = l + 5;
+		r = l + 1;
 		b = t + BBOX_HEIGHT;
 
-	}
-	 else
+	}*/
+	 //else
 		
-	{
+	//{
 		 l = x - BBOX_WIDTH / 2;
 		 t = y - BBOX_HEIGHT / 2;
 		 r = l + BBOX_WIDTH;
 		 b = t + BBOX_HEIGHT;
-	}
+	//}
 	
 }
 
