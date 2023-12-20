@@ -21,7 +21,7 @@
 #define MARIO_JUMP_SPEED_Y		0.55f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
 
-#define MARIO_GRAVITY			0.002f
+#define MARIO_GRAVITY			0.0019f
 
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
 
@@ -344,6 +344,8 @@ public:
 
 	bool GetFly() { return Fly; }
 
+	bool GetIsOnPlatform() { return isOnPlatform; }
+
 
 	//set
 	void SetHolding(bool b) { Holding = b; }
@@ -352,7 +354,7 @@ public:
 
 	void SetAttack(bool b) { TailAttack = b; }
 
-	void SETay(float b) { b = ay; }
+	void SETay(float b) { b = this->ay; }
 
 	void CreatEffectMario(int effect);
 

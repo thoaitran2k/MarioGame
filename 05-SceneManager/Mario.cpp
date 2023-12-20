@@ -33,6 +33,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+
+	
 	
 	/*if (state == MARIO_STATE_RELEASE_JUMP && !isOnPlatform)
 	{
@@ -149,7 +151,12 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	
 		x += vx * dt;
-		y += vy * dt;
+
+		if (state == RACOON_STATE_FLY_DOWN_RELEASE or state == RACOON_STATE_FLY) {
+			y += 0.3 * vy * dt;
+
+		}
+		else y += vy * dt;
 	
 }
 
@@ -711,7 +718,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 				koopared->SetCount_Start(GetTickCount64());
 				koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
 				//isHold = true;
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				vy = -MARIO_JUMP_SPEED_Y;
 				DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 
 
@@ -1125,22 +1132,24 @@ int CMario::GetAniIdRacoon(){
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		if (!Fly) {
-			if (abs(ax) == MARIO_ACCEL_RUN_X)
-			{
+	
+
+	if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
 				if (nx >= 0)
 					aniId = ID_ANI_RACOON_JUMP_RUN_RIGHT;
 				else
 					aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
-			}
-			else
-			{
+		}
+		else
+		{
 				if (nx >= 0)
 					aniId = ID_ANI_RACOON_JUMP_WALK_RIGHT;
 				else
 					aniId = ID_ANI_RACOON_JUMP_WALK_LEFT;
-			}
 		}
+
+		
 	}
 	else
 		if (isSitting)
@@ -1205,14 +1214,16 @@ void CMario::Render()
 		else
 			aniId = ID_ANI_RACOON_ATTACK_LEFT;
 	}
-	else if (state == RACOON_STATE_FLY_DOWN_RELEASE) {
-		if (nx > 0)
+	else if (state == RACOON_STATE_FLY_DOWN_RELEASE)
+	{
+		if (nx >= 0)
 			aniId = ID_ANI_RACOON_FLY_DOWN_RIGHT;
 		else
 			aniId = ID_ANI_RACOON_FLY_DOWN_LEFT;
 	}
+	
 
-	else if (state == RACOON_STATE_FLY) {
+	else if (state == RACOON_STATE_FLY_DOWN_RELEASE) {
 		if (nx > 0)
 			aniId = ID_ANI_RACOON_FLY_RIGHT;
 		else
@@ -1236,11 +1247,15 @@ void CMario::Render()
 
 void CMario::SetState(int state)
 {
-	if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 400)) return;
-
-	else if(this->state == RACOON_STATE_FLY_DOWN_RELEASE && (GetTickCount64() - timing < 200)&& !isOnPlatform) return;
+	
 	// DIE is the end state, cannot be changed! 
-	else if (this->state == MARIO_STATE_DIE) return; 
+	if (this->state == MARIO_STATE_DIE) return;
+
+	else if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 400)) return;
+
+	else if (this->state == RACOON_STATE_FLY_DOWN_RELEASE && (GetTickCount64() - timing < 200)) return;
+
+	//else if (this->state == RACOON_STATE_FLY) return;
 
 
 	
@@ -1279,38 +1294,58 @@ void CMario::SetState(int state)
 		nx = -1;
 		break;
 	case MARIO_STATE_JUMP:
+		//if (Fly) break;
 		if (isSitting) break;
 		if (isOnPlatform)
 		{
 			if (level != 3) {
+				//Fly = false;
 				if (abs(this->vx) == MARIO_RUNNING_SPEED)
 					vy = -MARIO_JUMP_RUN_SPEED_Y;
 				else
 					vy = -MARIO_JUMP_SPEED_Y;
 			}
+			else {
+				if (abs(this->vx) == MARIO_RUNNING_SPEED)
+					vy = -0.65;
+				else
+					vy = -0.6;
+			}
 		}
 		break;
 
 	case RACOON_STATE_FLY:
+		ay = MARIO_GRAVITY;
 		Fly = true;
-		ay = 0.00001f;
-		vy = -0.05f;
+		//y += 6;
+		//ay = 0.00001f;
+		//vy = -0.3f;
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
 		
 		
-		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		if (vy < 0)
+			if (level != 3)
+				vy += MARIO_JUMP_SPEED_Y / 2;
+			else vy += 0.2f / 2;
 
-		
-		
 		break;
 
 	case RACOON_STATE_FLY_DOWN_RELEASE:
-		if (vy < 0) vy += 0.15 / 2;
-		timing = GetTickCount64();
-		Fly = false;
+		if (isOnPlatform) return;
+		else {
+			if (vy < 0) vy += 0.15 / 2;
+
+			timing = GetTickCount64();
+			Fly = false;
+			//ay = 0.00165;
+			//vy = -0.2f;
+
+		}
+		//if(!isOnPlatform)
 		//ay = 0.00002f;
+		//ay = 0;
 		break;
 
 	case MARIO_STATE_SIT:
