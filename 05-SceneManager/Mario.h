@@ -340,5 +340,5 @@ public:
 
 	
 
-	void CreatEffect(int effect);
+	void CreatEffectMario(int effect);
 };

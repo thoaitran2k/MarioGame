@@ -107,10 +107,10 @@ void CglassBrick::CreateNewKoopa(){
 
 void CglassBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	//if (state == GLASS_BRICK_STATE_BREAK) return;
+	//if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN) return;
 
 	//else {
-		l = x - GLASS_BRICK_BBOX_WIDTH / 2-2;
+		l = x - GLASS_BRICK_BBOX_WIDTH / 2;
 		t = y - GLASS_BRICK_BBOX_HEIGHT / 2;
 		r = l + GLASS_BRICK_BBOX_WIDTH;
 		b = t + GLASS_BRICK_BBOX_HEIGHT;
@@ -149,10 +149,10 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	//if (p->GetState() == BUTTON_STATE_BE_COLLIDABLED)
 		//SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
-	 if (state == GLASS_BRICK_STATE_ISTOUCHED)
+	 /*if (state == GLASS_BRICK_STATE_ISTOUCHED)
 	 {
 		 SetState(GLASS_BRICK_STATE_CHANGE_TO_COIN);
-	 }
+	 }*/
 
 	 else if (state == GLASS_BRICK_STATE_BREAK)
 	{
@@ -165,7 +165,7 @@ void CglassBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 
 
-	else if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 10000)
+	else if (state == GLASS_BRICK_STATE_CHANGE_TO_COIN && GetTickCount64() - timming > 14000)
 	{
 		SetState(GLASS_BRICK_STATE_NORMAL);
 	}

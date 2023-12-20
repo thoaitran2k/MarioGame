@@ -16,8 +16,8 @@
 #define ID_ANI_BRICK_CONTAIN_BUTTON_P 10103
 #define ID_ANI_BREAK_BRICK_TRANSFORM_TO_COIN 110102
 
-#define GLASS_BRICK_BBOX_WIDTH 16
-#define GLASS_BRICK_BBOX_HEIGHT 16
+#define GLASS_BRICK_BBOX_WIDTH 14
+#define GLASS_BRICK_BBOX_HEIGHT 14
 
 #define GLASS_BRICK_MODEL_NORMAL 1
 #define GLASS_BRICK_MODEL_CONTAIN_BUTTON 2
@@ -44,6 +44,7 @@ class CglassBrick : public CGameObject
 
 	bool unBox;
 	bool Empty;
+
 	ULONGLONG timming;
 
 	CFragGlass* frag;

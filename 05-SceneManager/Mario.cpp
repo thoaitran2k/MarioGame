@@ -50,7 +50,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-void CMario::CreatEffect(int effect) {
+void CMario::CreatEffectMario(int effect) {
 
 	
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -69,6 +69,12 @@ void CMario::CreatEffect(int effect) {
 		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
 		scene->AddObject(plusscore100);
 		break;
+	}
+	case 5: {
+		CGameEffects* plusscore1000 = new CGameEffects(x, y - 4, 5);
+		scene->AddObject(plusscore1000);
+		break;
+
 	}
 		
 	}
@@ -744,7 +750,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			CreatEffect(1);
+			CreatEffectMario(1);
 		}
 
 	}
@@ -908,6 +914,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 			if (level == MARIO_LEVEL_SMALL)
 			{
 				SetLevel(MARIO_LEVEL_BIG);
+				CreatEffectMario(1);
 				y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
 			}
 		}
@@ -917,10 +924,12 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 	{
 		if (!mr->IsDeleted())
 		{
+			//CreatEffectMario(5);
 			if (level > MARIO_LEVEL_SMALL)
 			{
 				//effect = 9;
-				CreatEffect(9);
+				CreatEffectMario(9);
+				
 				//SetEffect(9);
 				
 				//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
@@ -943,9 +952,11 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
 	if (level > MARIO_LEVEL_SMALL)
 	{
+		CreatEffectMario(5);
 		if (level > MARIO_LEVEL_BIG)
 		{
 			leaf->Delete();
+			
 			return;
 		}
 

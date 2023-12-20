@@ -25,6 +25,7 @@
 #include "TailWhipping.h"
 #include "glassBrick.h"
 #include "FragGlass.h"
+#include "GameEffects.h"
 
 
 
@@ -208,6 +209,10 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	objects.push_back(obj);
 	return obj;
 	
+}
+
+void CPlayScene::CreateEffects() {
+
 }
 
 void CPlayScene::GlassBrickChangeToCoin()

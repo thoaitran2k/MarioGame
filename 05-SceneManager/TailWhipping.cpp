@@ -15,6 +15,8 @@
 #include "ButtonP.h"
 #include "Green_Plant.h"
 
+#include "GameEffects.h"
+
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	//this->vx = vx;
 	SetState(WHIP_STATE_DELETE);
@@ -107,10 +109,12 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 void CTailWhipping::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 	attack = true;
 	e->obj->Delete();
-	mario->CreatEffect(1);
+	CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+	scene->AddObject(plusscore100);
 	
 }
 
@@ -165,12 +169,18 @@ void CTailWhipping::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 
 	attack = true;
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 	
 	if (goomba->GetState() != GOOMBA_STATE_DIE)
 	{
+		
 		goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
-		mario->CreatEffect(1);
+		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+		scene->AddObject(plusscore100);
+		//mario->CreatEffectMario(1);
+		
 	}
 
 	

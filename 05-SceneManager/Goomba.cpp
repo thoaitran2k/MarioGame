@@ -5,9 +5,10 @@
 #include "TailWhipping.h"
 
 
+
 CGoomba::CGoomba(float x, float y, int model):CGameObject(x, y)
 {
-	range = y - 20;
+	//range = y - 20;
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
@@ -45,6 +46,7 @@ void CGoomba::OnNoCollision(DWORD dt)
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CTailWhipping*>(e->obj)) return;
+	//if (dynamic_cast<CGameEffects*>(e->obj)) return;
 	
 	if (!e->obj->IsBlocking()) return; 
 
@@ -77,8 +79,9 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		return;
 	}
 
-	else if(state == GOOMBA_STATE_DIE_UPSIDE && GetTickCount64() - die_start >5000)
+	else if(state == GOOMBA_STATE_DIE_UPSIDE && GetTickCount64() - die_start >4000)
 	{
+		
 		isDeleted = true;
 		return;
 	}
@@ -146,8 +149,9 @@ void CGoomba::SetState(int state)
 
 		case GOOMBA_STATE_DIE_UPSIDE:
 			die_start = GetTickCount64();
-			vx = 0.09f;
-			vy = -0.24f;
+			vx = -nx*0.07f;
+			//y += 10;
+			vy = -0.248f;
 			ay = 0.0009f;
 			break;
 

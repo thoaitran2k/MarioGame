@@ -12,6 +12,7 @@
 #include "bullet_plant.h"
 #include "Box.h"
 #include "glassBrick.h"
+#include "GameEffects.h"
 
 
 
@@ -152,28 +153,30 @@ void CRed_Koopa::CreateNewKoopa() {
 void CRed_Koopa::CreateCheckfallSmall() {
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
+	
+
+		if (vx < 0)
+		{
+			CGameObject* add_object_left1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX() - 1, y + 6, 0, 0);
+			AddCheck(add_object_left1);
+			DebugOut(L">>> check tao obj left >>> \n");
+			checkfall->SetState(SMALL_STATE_LEFT_KOOPA);
+			//checkfall->SETay(0.0009f);
 
 
-	if (vx < 0)
-	{
-		CGameObject* add_object_left1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()-1, y + 6, 0, 0);
-		AddCheck(add_object_left1);
-		DebugOut(L">>> check tao obj left >>> \n");
-		checkfall->SetState(SMALL_STATE_LEFT_KOOPA);
-		//checkfall->SETay(0.0009f);
+		}
+		else if (vx >= 0)
+		{
+			CGameObject* add_object_right1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX() + 1, y + 6, 0/* KOOPA_RED_WALKING_SPEED*/, 0);
 
+			AddCheck(add_object_right1);
+			DebugOut(L">>> check tao obj right >>> \n");
+			checkfall->SetState(SMALL_STATE_RIGHT_KOOPA);
+			//checkfall->SETay(0.0009f);
 
-	}
-	else if (vx >= 0)
-	{
-		CGameObject* add_object_right1 = scene->CreateObjectAndReturn(OBJECT_TYPE_CHECKFALL_KOOPA_ON_GLASS_BRICK, GetX()+1, y + 6, 0/* KOOPA_RED_WALKING_SPEED*/, 0);
+		}
+	
 
-		AddCheck(add_object_right1);
-		DebugOut(L">>> check tao obj right >>> \n");
-		checkfall->SetState(SMALL_STATE_RIGHT_KOOPA);
-		//checkfall->SETay(0.0009f);
-
-	}
 
 
 }
@@ -213,7 +216,10 @@ void CRed_Koopa::OnNoCollision(DWORD dt)
 
 void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	//if (!e->obj->IsBlocking()) return;
+	if (typeKoopa == 2) {
+		if (!e->obj->IsBlocking()) return;
+	}
+
 	if (dynamic_cast<CRed_Koopa*>(e->obj)) return;
 	if (dynamic_cast<CbulletPlant*>(e->obj)) return;
 	//if (state == KOOPA_RED_STATE_BE_HELD) return;
@@ -252,10 +258,9 @@ void CRed_Koopa::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 		OntheGlassBrick = true;
 		typeKoopa = 2;
 
-
 	}
 	else if (e->nx != 0)
-		{
+	{
 		if (isTurtleShell) {
 			if (wasKicked) {
 				if (glBrick->GetModel() == GLASS_BRICK_MODEL_NORMAL && glBrick->GetState() != GLASS_BRICK_STATE_CHANGE_TO_COIN)
@@ -269,17 +274,15 @@ void CRed_Koopa::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 
 
 				}
+				else if (glBrick->GetState() == GLASS_BRICK_STATE_CHANGE_TO_COIN)
+				{
+					glBrick->SetNotCoin(0);
+					return;
+				}
 			}
 
 		}
-		else {
-			if (glBrick->GetState() == GLASS_BRICK_STATE_CHANGE_TO_COIN)
-			{
-				//if (typeKoopa == 2) return;
-			}
-		}
-			
-		}
+	}
 	
 
 }
@@ -298,6 +301,8 @@ void CRed_Koopa::OnCollisionWithOntheBox(LPCOLLISIONEVENT e) {
 }
 
 void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
+
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
 	if (x > goomba->GetX())
@@ -318,6 +323,9 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 		if (goomba->GetState() != GOOMBA_STATE_DIE_UPSIDE)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
+			CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+			scene->AddObject(plusscore100);
+
 			//goomba->SetVy(-0.02f);
 			//goomba->SetVx(-0.01f);
 			//goomba->SetY(y + 2);
@@ -382,6 +390,8 @@ void CRed_Koopa::OnCollisionWithPlatForm(LPCOLLISIONEVENT e)
 	if (e->ny < 0) {
 		isOnPlatform = true;
 		//typeKoopa = 1;
+		//if (state == KOOPA_RED_STATE_WALKING)
+			//vx = 0.015f;
 		
 	}
 
@@ -730,7 +740,7 @@ void CRed_Koopa::SetState(int state)
 		if(typeKoopa == 1 )
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
 		else if(typeKoopa == 2)
-			vx = 0.137f * LeftOrRightMarrio();
+			vx = 0.153f * LeftOrRightMarrio();
 		ay = KOOPA_RED_GRAVITY;
 		
 		break;
@@ -738,7 +748,11 @@ void CRed_Koopa::SetState(int state)
 		if (typeKoopa == 1)
 			vx = KOOPA_RED_WALKING_SPEED;
 		else if (typeKoopa == 2)
+		{	
+			/*if (isOnPlatform) vx = 0.132f;
+			else*/
 			vx = 0.011f;
+		}
 		isTurtleShell = false;
 		isDead = false;
 		HaveOrNotCheckFall = true;
