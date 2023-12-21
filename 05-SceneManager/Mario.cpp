@@ -668,8 +668,17 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 				}
 
 		}
-		else 
+		else
 		{
+			if (e->ny < 0) {
+				koopared->SetState(KOOPA_RED_STATE_RESET_AFTER_KICKED);
+				koopared->SetVx(0);
+				koopared->SetVy(0);
+				vy = -0.65f;
+
+			}
+
+			else {
 			//koopared->SetX(+3);
 			if (untouchable == 0)
 			{
@@ -688,6 +697,7 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 					SetState(MARIO_STATE_DIE);
 				}
 			}
+		}
 			//else koopared->SetVx(koopared->GetVx());
 
 		}

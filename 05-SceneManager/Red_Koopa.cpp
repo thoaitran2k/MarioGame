@@ -76,7 +76,7 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 		right = left + KOOPA_RED_BBOX_WIDTH;
 		bottom = top + KOOPA_RED_BBOX_HEIGHT + 4;
 	}
-	else if(state == KOOPA_RED_STATE_ISTURTLESHELL)
+	else if(state == KOOPA_RED_STATE_ISTURTLESHELL or state == KOOPA_RED_STATE_RESET_AFTER_KICKED)
 	{
 		left = x - KOOPA_RED_BBOX_WIDTH / 2;
 		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
@@ -453,6 +453,12 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else //isTurtleshell and Not Checkfall
 				if(!wasKicked && state != KOOPA_RED_STATE_BE_HELD)
 				{
+					if (state == KOOPA_RED_STATE_RESET_AFTER_KICKED) {
+						SetState(KOOPA_RED_STATE_ISTURTLESHELL);
+						y = y - 8;
+					}
+
+					else {
 						if (!mario->GetIsHolding() && !wasHeld && !isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
 						{
 							//count_start = GetTickCount64();
@@ -460,11 +466,11 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							DebugOut(L">>> RETURN >>> \n");
 
 						}
-					    if (!mario->GetIsHolding() && !wasHeld && isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
-					    {
+						if (!mario->GetIsHolding() && !wasHeld && isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
+						{
 
-							
-								//count_start = GetTickCount64();
+
+							//count_start = GetTickCount64();
 							SetState(KOOPA_RED_STATE_WALKING);
 
 							count_start = GetTickCount64();
@@ -476,6 +482,7 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 							y = y - KOOPA_RED_BBOX_HEIGHT / 2;
 							DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
 						}
+					}
 				}
 
 			if (state == KOOPA_RED_STATE_BE_HELD)
@@ -813,6 +820,14 @@ void CRed_Koopa::SetState(int state)
 		wasKicked = false;
 		//isComback = false;
 		ay = 0;
+		break;
+
+	case KOOPA_RED_STATE_RESET_AFTER_KICKED:
+		isDead = false;
+		isTurtleShell = true;
+		wasKicked = false;
+		isTurn = true;
+		HaveOrNotCheckFall = false;
 		break;
 
 	}
