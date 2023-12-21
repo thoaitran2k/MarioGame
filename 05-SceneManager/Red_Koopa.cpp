@@ -36,7 +36,9 @@ CRed_Koopa::CRed_Koopa(float x, float y,int typeKoopa) :CGameObject(x, y)
 	wasKicked = false;
 	isDead = false;
 	wasHeld = false;
+	TailAttack = false;
 	time_rs = -1;
+	timeWhiped = -1;
 	
 	newkoopa = NULL;
 	
@@ -76,7 +78,7 @@ void CRed_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bo
 		right = left + KOOPA_RED_BBOX_WIDTH;
 		bottom = top + KOOPA_RED_BBOX_HEIGHT + 4;
 	}
-	else if(state == KOOPA_RED_STATE_ISTURTLESHELL or state == KOOPA_RED_STATE_RESET_AFTER_KICKED)
+	else if(state == KOOPA_RED_STATE_ISTURTLESHELL or state == KOOPA_RED_STATE_RESET_AFTER_KICKED or state == KOOPA_RED_STATE_TURTLESHELL_UPSIDE_TAIL_ATTACK)
 	{
 		left = x - KOOPA_RED_BBOX_WIDTH / 2;
 		top = y - KOOPA_RED_BBOX_HEIGHT / 2;
@@ -457,7 +459,15 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 						SetState(KOOPA_RED_STATE_ISTURTLESHELL);
 						y = y - 8;
 					}
-
+					else
+					if (state == KOOPA_RED_STATE_TURTLESHELL_UPSIDE_TAIL_ATTACK)
+					{
+						vx = 0.06f * LeftOrRightMarrio();
+						if (GetTickCount64() - timeWhiped > 450) {
+							SetState(KOOPA_RED_STATE_ISTURTLESHELL);
+							y = y - 8;
+						}
+					}
 					else {
 						if (!mario->GetIsHolding() && !wasHeld && !isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
 						{
@@ -640,20 +650,27 @@ void CRed_Koopa::Render()
 			switch (state)
 			{
 			case KOOPA_RED_STATE_ISTURTLESHELL:
-				aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
+				if (TailAttack) aniId = ID_ANI_RED_KOOPA_TURTLESHELL_UPSIDE;
+				else aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
 				break;
 
 			case KOOPA_RED_STATE_BE_HELD:
+				if (TailAttack) aniId = ID_ANI_RED_KOOPA_TURTLESHELL_UPSIDE;
+				else 
 				aniId = ID_ANI_KOOPA_RED_TURTLESHELL;
 				break;
 
 			case KOOPA_RED_STATE_TO_RETURN:
-				aniId = ID_ANI_RED_KOOPA_COMBACK;
+				if (TailAttack) aniId = ID_ANI_RED_KOOPA_COMBACK_UPSIDE;
+				else aniId = ID_ANI_RED_KOOPA_COMBACK;
 				break;
-			default: if (vx > 0)
-				aniId = ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT;
-				   else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
-
+			default: 
+				if (TailAttack) aniId = ID_ANI_RED_KOOPA_KICKED_UPSIDE;
+				else {
+					if (vx > 0)
+						aniId = ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT;
+					else if (vx < 0) aniId = ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT;
+				}
 				break;
 			}
 			}
@@ -721,6 +738,23 @@ void CRed_Koopa::SetState(int state)
 		//ay = 0;
 		break;
 
+	case KOOPA_RED_STATE_TURTLESHELL_UPSIDE_TAIL_ATTACK:
+		TailAttack = true;
+		ResetKP();
+		timeWhiped = GetTickCount64();
+		ResetCheck();
+		isTurn = false;
+		isKicked = true;
+		wasKicked = false;
+		isTurtleShell = true;
+		HaveOrNotCheckFall = false;
+		isComback = true;
+		isDead = false;
+		y += (KOOPA_RED_BBOX_HEIGHT - KOOPA_RED_BBOX_HEIGHT_TURTLESHELL) / 2;
+		//vx = 0;
+		//vy = 0;
+		break;
+
 	case KOOPA_RED_STATE_TO_RETURN:
 
 		comback_time = GetTickCount64();
@@ -752,6 +786,7 @@ void CRed_Koopa::SetState(int state)
 		
 		break;
 	case KOOPA_RED_STATE_WALKING:
+		TailAttack = false;
 		if (typeKoopa == 1)
 			vx = KOOPA_RED_WALKING_SPEED;
 		else if (typeKoopa == 2)

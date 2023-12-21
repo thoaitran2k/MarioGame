@@ -17,6 +17,10 @@
 
 #include "GameEffects.h"
 
+#include "Green_Koopa.h"
+
+#include "Red_Koopa.h"
+
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	//this->vx = vx;
 	SetState(WHIP_STATE_DELETE);
@@ -76,7 +80,7 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 	//if (dynamic_cast<CMario*>(e->obj)) return;
 	//if (e->obj->IsBlocking()) return;
-	if (dynamic_cast<CRed_Koopa*>(e->obj)) return;
+	//if (dynamic_cast<CRed_Koopa*>(e->obj)) return;
 	if (dynamic_cast<CCheckFall*>(e->obj)) return;
 	
 
@@ -104,7 +108,74 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 	else if (dynamic_cast<CGreen_Plant*>(e->obj))
 		OnCollisionWithGreenPlant(e);
+
+	else if (dynamic_cast<CGreen_Koopa*>(e->obj))
+		OnCollisionWithGreen_Koopa(e);
+
+	else if (dynamic_cast<CRed_Koopa*>(e->obj))
+		OnCollisionWithRed_Koopa(e);
 		
+}
+
+void CTailWhipping::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e) {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CRed_Koopa* rkpa = dynamic_cast<CRed_Koopa*>(e->obj);
+	if (e->nx != 0)
+	{
+		if (rkpa->GetIsTurtleShell())
+		{
+			if (!rkpa->GETwasKicked()) {
+
+
+				rkpa->SetState(KOOPA_RED_STATE_TURTLESHELL_UPSIDE_TAIL_ATTACK);
+				//gkpa->SetCombackTimes(-1);
+				rkpa->SetVy(-0.47f);
+				//gkpa->SetX(mario->GetX()+15);
+
+			}
+		}
+		else {
+
+			rkpa->SetState(KOOPA_RED_STATE_TURTLESHELL_UPSIDE_TAIL_ATTACK);
+			rkpa->SetVy(-0.47f);
+			//gkpa->SetX(mario->GetX() + 15);
+			//gkpa->SetX(gkpa->GetX() + 5);
+			//gkpa->SetVx(0.1f * gkpa->LeftOrRightMarrio());
+
+		}
+	}
+
+}
+
+
+void CTailWhipping::OnCollisionWithGreen_Koopa(LPCOLLISIONEVENT e) {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CGreen_Koopa* gkpa = dynamic_cast<CGreen_Koopa*>(e->obj);
+	if (e->nx != 0)
+	{
+		if (gkpa->GetIsTurtleShell())
+		{
+			if (!gkpa->GETwasKicked()) {
+				
+				
+				gkpa->SetState(KOOPA_GREEN_STATE_BE_WHIPED);
+				//gkpa->SetCombackTimes(-1);
+				gkpa->SetVy(-0.22f);
+				//gkpa->SetX(mario->GetX()+15);
+				
+			}
+		}
+		else {
+			
+			gkpa->SetState(KOOPA_GREEN_STATE_BE_WHIPED);
+			gkpa->SetVy(-0.22f);
+			//gkpa->SetX(mario->GetX() + 15);
+			//gkpa->SetX(gkpa->GetX() + 5);
+			//gkpa->SetVx(0.1f * gkpa->LeftOrRightMarrio());
+
+		}
+	}
+
 }
 
 void CTailWhipping::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {

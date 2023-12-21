@@ -420,9 +420,6 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 				}
 			}
-
-
-
 			else
 			{
 				if(untouchable==0)
@@ -1409,22 +1406,29 @@ void CMario::SetState(int state)
 		timing = GetTickCount64();
 		if (level != MARIO_LEVEL_RACOON || isSitting) return;
 		CreateWhippingofTail();
-		ax = 0;
+		//if (nx > 0)
+			//ax = -0.0003;
+		//else ax = 0.0003;
+		//ax = 0;
+		//if (abs(vx) == maxVx) vx = maxVx;
 		//nx = 0;
 		//vx = 0;
+		//nx = 0;
+		ax = 0;
 		break;
 
 	case MARIO_STATE_ATTACK_LEFT:
 		if (level != MARIO_LEVEL_RACOON || isSitting) return;
-		maxVx = -0.01f;
-		ax = -MARIO_ACCEL_WALK_X;
+		maxVx = -0.05;
+		ax = -0.00015;
+		
 		//vx = 0;
 		nx = -1;
 		break;
 	case MARIO_STATE_ATTACK_RIGHT:
 		if (level != MARIO_LEVEL_RACOON || isSitting) return;
-		maxVx = 0.01f;
-		ax = MARIO_ACCEL_WALK_X;
+		maxVx = 0.05;
+		ax = 0.00015;
 		//vx = 0;
 		nx = 1;
 		break;

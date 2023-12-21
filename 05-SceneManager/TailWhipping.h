@@ -31,6 +31,8 @@ protected:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithGreenPlant(LPCOLLISIONEVENT e);
+	void OnCollisionWithGreen_Koopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e);
 
 
 public:

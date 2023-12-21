@@ -45,7 +45,9 @@ CGreen_Koopa::CGreen_Koopa(float x, float y, int type) :CGameObject(x, y)
 	wasKicked = false;
 	isDead = false;
 	wasHeld = false;
+	KickByTail = false;
 	time_rs = -1;
+	timeisWhiped = -1;
 	
 	//isheld_time = -1;
 	//collis = 1;
@@ -58,41 +60,41 @@ CGreen_Koopa::CGreen_Koopa(float x, float y, int type) :CGameObject(x, y)
 void CGreen_Koopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 
-	if (state == KOOPA_GREEN_STATE_WALKING)
-	{
+	//if (state == KOOPA_GREEN_STATE_WALKING)
+	//{
+	//	left = x - KOOPA_GREEN_BBOX_WIDTH / 2;
+	//	top = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
+	//	right = left + KOOPA_GREEN_BBOX_WIDTH;
+	//	bottom = top + KOOPA_GREEN_BBOX_HEIGHT + 1;
+	//}
+	//else if (state == KOOPA_GREEN_STATE_JUMP)
+	//{
+	//	left = x - 8;
+	//	top = y - KOOPA_GREEN_BBOX_HEIGHT / 3;
+	//	right = left + KOOPA_GREEN_BBOX_WIDTH;
+	//	bottom = top + KOOPA_GREEN_BBOX_HEIGHT + 1;
+	//}
+	//else if (/*state == KOOPA_GREEN_STATE_ISDEFEND || */state == KOOPA_GREEN_WALKING_STATE_TURN)
+	//{
+	//	left = x - KOOPA_GREEN_BBOX_WIDTH / 2;
+	//	top = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
+	//	right = left + KOOPA_GREEN_BBOX_WIDTH;
+	//	bottom = top + KOOPA_GREEN_BBOX_HEIGHT - 6;
+	//}
+	//else if (state == KOOPA_GREEN_STATE_ISTURTLESHELL)
+	//{
+	//	left = x - KOOPA_GREEN_BBOX_WIDTH / 2;
+	//	top = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
+	//	right = left + KOOPA_GREEN_BBOX_WIDTH;
+	//	bottom = top + KOOPA_GREEN_BBOX_HEIGHT-6;
+	//}
+	//else
+	//{
 		left = x - KOOPA_GREEN_BBOX_WIDTH / 2;
 		top = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
 		right = left + KOOPA_GREEN_BBOX_WIDTH;
-		bottom = top + KOOPA_GREEN_BBOX_HEIGHT + 1;
-	}
-	else if (state == KOOPA_GREEN_STATE_JUMP)
-	{
-		left = x - 8;
-		top = y - KOOPA_GREEN_BBOX_HEIGHT / 3;
-		right = left + KOOPA_GREEN_BBOX_WIDTH;
-		bottom = top + KOOPA_GREEN_BBOX_HEIGHT + 1;
-	}
-	else if (/*state == KOOPA_GREEN_STATE_ISDEFEND || */state == KOOPA_GREEN_WALKING_STATE_TURN)
-	{
-		left = x - KOOPA_GREEN_BBOX_WIDTH / 2;
-		top = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
-		right = left + KOOPA_GREEN_BBOX_WIDTH;
-		bottom = top + KOOPA_GREEN_BBOX_HEIGHT - 6;
-	}
-	else if (state == KOOPA_GREEN_STATE_ISTURTLESHELL)
-	{
-		left = x - KOOPA_GREEN_BBOX_WIDTH / 2;
-		top = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
-		right = left + KOOPA_GREEN_BBOX_WIDTH;
-		bottom = top + KOOPA_GREEN_BBOX_HEIGHT-6;
-	}
-	else
-	{
-		left = x - KOOPA_GREEN_BBOX_WIDTH / 2;
-		top = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
-		right = left + KOOPA_GREEN_BBOX_WIDTH;
-		bottom = top + KOOPA_GREEN_BBOX_HEIGHT - 7;
-	}
+		bottom = top + KOOPA_GREEN_BBOX_HEIGHT;
+	//}
 
 }
 
@@ -332,22 +334,36 @@ void CGreen_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else //isTurtleshell and Not Checkfall
 					if (!wasKicked && state != KOOPA_GREEN_STATE_BE_HELD)
 					{
-						if (!mario->GetIsHolding() && !wasHeld && !isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
-						{
-							//count_start = GetTickCount64();
-							y = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
-							SetState(KOOPA_GREEN_STATE_TO_RETURN);
-							DebugOut(L">>> RETURN >>> \n");
+						if (state == KOOPA_GREEN_STATE_BE_WHIPED) {
+							vx = 0.03f * LeftOrRightMarrio();
+							//if (abs(vx) == 0.04f) {
+								//vx = 0;
+							if (GetTickCount64() - timeisWhiped > 1250) {
+								SetState(KOOPA_GREEN_STATE_ISTURTLESHELL);
+								y = y - 8;
+							}
+							//}
 
 						}
-						if (!mario->GetIsHolding() && !wasHeld && isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
+						else
 						{
+							if (!mario->GetIsHolding() && !wasHeld && !isTurn && GetTickCount64() - count_start > TURTLE_SHELL_TOTURN_KOOPA)
+							{
+								//count_start = GetTickCount64();
+								y = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
+								SetState(KOOPA_GREEN_STATE_TO_RETURN);
+								DebugOut(L">>> RETURN >>> \n");
 
-							SetState(KOOPA_GREEN_STATE_WALKING);
-							count_start = GetTickCount64();
-							vx = -KOOPA_GREEN_WALKING_SPEED;
-							y = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
-							DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
+							}
+							if (!mario->GetIsHolding() && !wasHeld && isTurn && GetTickCount64() - comback_time > TIME_COMBACK_KOOPA)
+							{
+
+								SetState(KOOPA_GREEN_STATE_WALKING);
+								count_start = GetTickCount64();
+								vx = -KOOPA_GREEN_WALKING_SPEED;
+								y = y - KOOPA_GREEN_BBOX_HEIGHT / 2;
+								DebugOut(L">>> HOI SINH TU MAI RUA >>> \n");
+							}
 						}
 					}
 
@@ -447,19 +463,30 @@ void CGreen_Koopa::Render()
 			switch (state)
 			{
 			case KOOPA_GREEN_STATE_ISTURTLESHELL:
-				aniId = ID_ANI_KOOPA_GREEN_TURTLESHELL;
+				if (KickByTail) aniId = ID_ANI_GREEN_TURTLESHELL_UPSIDE;
+				else aniId = ID_ANI_KOOPA_GREEN_TURTLESHELL;
+				break;
+
+			case KOOPA_GREEN_STATE_BE_WHIPED:
+				aniId = ID_ANI_GREEN_TURTLESHELL_UPSIDE;
 				break;
 
 			case KOOPA_GREEN_STATE_BE_HELD:
-				aniId = ID_ANI_KOOPA_GREEN_TURTLESHELL;
+				if (KickByTail) aniId = ID_ANI_GREEN_TURTLESHELL_UPSIDE;
+				else aniId = ID_ANI_KOOPA_GREEN_TURTLESHELL;
 				break;
 
 			case KOOPA_GREEN_STATE_TO_RETURN:
-				aniId = ID_ANI_GREEN_KOOPA_COMBACK;
+				if (KickByTail) aniId = ID_ANI_GREEN_TURTLESHELL_UPSIDE_COMBACK;
+				else aniId = ID_ANI_GREEN_KOOPA_COMBACK;
 				break;
-			default: if (vx > 0)
-				aniId = ID_ANI_KOOPA_GREEN_ISKICKED_LEFT_TO_RIGHT;
-				   else if (vx < 0) aniId = ID_ANI_KOOPA_GREEN_ISKICKED_RIGHT_TO_LEFT;
+			default: 
+				if (KickByTail) aniId = ID_ANI_GREEN_TURTLESHELL_UPSIDE_ISKICKED;
+				else {
+					if (vx > 0)
+						aniId = ID_ANI_KOOPA_GREEN_ISKICKED_LEFT_TO_RIGHT;
+					else if (vx < 0) aniId = ID_ANI_KOOPA_GREEN_ISKICKED_RIGHT_TO_LEFT;
+				}
 
 				break;
 			}
@@ -535,6 +562,24 @@ void CGreen_Koopa::SetState(int state)
 		//ay = 0;
 		break;
 
+	case KOOPA_GREEN_STATE_BE_WHIPED:
+		KickByTail = true;
+		Jump = false;
+		ResetKP();
+		timeisWhiped = GetTickCount64();
+		ResetCheck();
+		isTurn = false;
+		isKicked = true;
+		wasKicked = false;
+		isTurtleShell = true;
+		HaveOrNotCheckFall = false;
+		isComback = true;
+		isDead = false;
+		y += (KOOPA_GREEN_BBOX_HEIGHT - KOOPA_GREEN_BBOX_HEIGHT_TURTLESHELL) / 2;
+		//ax = 0.06f;
+		//vy = 0;
+		break;
+
 	case KOOPA_GREEN_STATE_TO_RETURN:
 		Jump = false;
 		comback_time = GetTickCount64();
@@ -562,6 +607,7 @@ void CGreen_Koopa::SetState(int state)
 
 		break;
 	case KOOPA_GREEN_STATE_WALKING:
+		KickByTail = false;
 		Jump = false;
 		vx = -KOOPA_GREEN_WALKING_SPEED;
 		isTurtleShell = false;
@@ -631,6 +677,7 @@ void CGreen_Koopa::SetState(int state)
 		break;
 
 	case KOOPA_GREEN_STATE_FALL:
+		Jump = true;
 		isDead = false;
 		vy = 0.04f;
 			//vy = 0.06f;

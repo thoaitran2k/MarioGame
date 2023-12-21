@@ -46,6 +46,8 @@
 
 #define KOOPA_RED_STATE_RESET_AFTER_KICKED 482
 
+#define KOOPA_RED_STATE_TURTLESHELL_UPSIDE_TAIL_ATTACK 483
+
 //Ani_id
 #define ID_ANI_KOOPA_RED_WALKING_RIGHT 6101
 #define ID_ANI_KOOPA_RED_WALKING_LEFT 6102
@@ -53,6 +55,12 @@
 #define ID_ANI_KOOPA_RED_ISKICKED_LEFT_TO_RIGHT 6104
 #define ID_ANI_KOOPA_RED_ISKICKED_RIGHT_TO_LEFT 6401
 #define ID_ANI_RED_KOOPA_COMBACK 6106
+
+//UPSIDE
+#define ID_ANI_RED_KOOPA_COMBACK_UPSIDE 6108
+#define ID_ANI_RED_KOOPA_KICKED_UPSIDE 6107
+#define ID_ANI_RED_KOOPA_TURTLESHELL_UPSIDE 6105
+
 
 //GREEN_WALKING Ani_id
 #define ID_ANI_KOOPA_GREEN_WALKING_RIGHT 6001
@@ -72,6 +80,8 @@ protected:
 	float startY;
 
 	bool KoopaOnGlassActive;
+
+	bool TailAttack;
 
 	
 
@@ -103,6 +113,7 @@ protected:
 	ULONGLONG time_delete;
 	ULONGLONG time_rs;
 	ULONGLONG isheld_time;
+	ULONGLONG timeWhiped;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

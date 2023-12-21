@@ -100,6 +100,8 @@
 #define KOOPA_GREEN_STATE_BE_HELD 478
 #define KOOPA_GREEN_STATE_JUMP 500
 #define KOOPA_GREEN_STATE_FALL 520
+#define KOOPA_GREEN_STATE_BE_WHIPED 530
+
 
 //Ani_id
 #define ID_ANI_KOOPA_GREEN_WALKING_RIGHT 6001
@@ -110,6 +112,12 @@
 #define ID_ANI_GREEN_KOOPA_COMBACK 6006
 #define ID_ANI_GREEN_WING_RIGHT 6009
 #define ID_ANI_GREEN_WING_LEFT 6010
+
+//UPSIDE
+#define ID_ANI_GREEN_TURTLESHELL_UPSIDE 6030
+#define ID_ANI_GREEN_TURTLESHELL_UPSIDE_COMBACK 6060
+#define ID_ANI_GREEN_TURTLESHELL_UPSIDE_ISKICKED 6007
+
 
 
 class CGreen_Koopa : public CGameObject
@@ -147,6 +155,8 @@ protected:
 	bool Jump;
 	bool Fall;
 
+	bool KickByTail;
+
 	int type_koopa;
 	//int collis;
 
@@ -156,6 +166,7 @@ protected:
 	ULONGLONG time_rs;
 	ULONGLONG isheld_time;
 	ULONGLONG timeFly;
+	ULONGLONG timeisWhiped;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -163,7 +174,7 @@ protected:
 
 
 
-	int LeftOrRightMarrio();
+	
 
 
 
@@ -200,6 +211,8 @@ protected:
 
 
 public:
+
+
 	ULONGLONG GetTimeHold() { return isheld_time; }
 
 	ULONGLONG GetTimeComback() { return comback_time; }
@@ -208,13 +221,19 @@ public:
 
 	ULONGLONG GetCount_time() { return count_start; }
 
+	void SetTailKick(bool b) { b = KickByTail; }
+
+	bool GetTailKick() { return KickByTail;}
+
+	void SetCombackTimes(ULONGLONG b) { b = comback_time; }
+
 	bool GetIsJump() { return Jump; }
 	bool GetIsFall() { return Fall; }
 
 	void SetJump(bool b) { b = Jump; }
 	void SetFall(bool b) { b = Fall; }
 
-
+	int LeftOrRightMarrio();
 
 	void SetTimeHold(ULONGLONG b) { b = isheld_time; }
 
