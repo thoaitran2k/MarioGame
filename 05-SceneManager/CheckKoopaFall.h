@@ -30,6 +30,9 @@ protected:
 	float ay;
 
 	bool OnTheBox;
+	
+
+
 	bool isOnPlatformCheck;
 
 	int model;
@@ -66,6 +69,8 @@ public:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithPlatForm(LPCOLLISIONEVENT e);
+
+	void OnCollisionWithBackGround(LPCOLLISIONEVENT e);
 	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBox(LPCOLLISIONEVENT e);
 	CCheckFall(float x, float y, int model);

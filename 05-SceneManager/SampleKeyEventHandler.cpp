@@ -34,6 +34,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 				}
 				else mario->SetState(RACOON_STATE_FLY);
 			}
+			else return;
 		}
 		
 
@@ -102,8 +103,16 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 
 				if (mario->GetState() == RACOON_STATE_FLY_DOWN_RELEASE)
 
-					mario->SetVy(-0.2);
+					mario->SetVy(-0.07);
+				if (mario->GetNx() != 0) {
+
+					if (mario->GetNx() > 0) mario->SetVx(0.03f);
+					else mario->SetVx(-0.03f);
+				}
+				else return;
 			}
+
+			else return;
 
 		//}
 		//else {

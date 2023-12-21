@@ -34,7 +34,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	
+	if ((state == RACOON_STATE_FLY_DOWN_RELEASE || state == RACOON_STATE_FLY) && !isOnPlatform) {
+		ay = 0.0014f;
+	}
+	else ay = MARIO_GRAVITY;
 	
 	/*if (state == MARIO_STATE_RELEASE_JUMP && !isOnPlatform)
 	{
@@ -1325,6 +1328,7 @@ void CMario::SetState(int state)
 		break;
 
 	case RACOON_STATE_FLY:
+		if (level != 3) return;
 		ay = MARIO_GRAVITY;
 		Fly = true;
 		//y += 6;
@@ -1343,9 +1347,12 @@ void CMario::SetState(int state)
 		break;
 
 	case RACOON_STATE_FLY_DOWN_RELEASE:
+		if (level != 3) return;
 		if (isOnPlatform) return;
 		else {
 			if (vy < 0) vy += 0.15 / 2;
+			/*if (vx > 0) x += 2;
+			else if (vx < 0) x -= 2;*/
 
 			timing = GetTickCount64();
 			Fly = false;

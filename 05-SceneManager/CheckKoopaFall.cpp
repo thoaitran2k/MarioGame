@@ -78,9 +78,12 @@ void CCheckFall::OnCollisionWith(LPCOLLISIONEVENT e)
 		this->OnCollisionWithBox(e);
 	else if (dynamic_cast<CglassBrick*>(e->obj))
 		OnCollisionWithGlassBrick(e);
+
 }
 
 void CCheckFall::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
+
+	
 
 	CglassBrick* glassBrick = dynamic_cast<CglassBrick*>(e->obj);
 	if (e->ny != 0)
@@ -176,6 +179,7 @@ void CCheckFall::SetState(int state)
 		else if (model == 2)
 		{
 	case SMALL_STATE_LEFT_KOOPA:
+		
 		vx = -SMALL_SPEED_PREVIOUS_KOOPA;
 		ay = 0.012f;
 		vy = 0;

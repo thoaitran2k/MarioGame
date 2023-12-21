@@ -28,10 +28,10 @@ GameEffect.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-#0	150	320
+0	150	320
 #0	1923	300
 #0	1234	300
-0	480	320
+#0	480	320
 #0	1780	320
 #0	2150	320
 #0	1528	110
