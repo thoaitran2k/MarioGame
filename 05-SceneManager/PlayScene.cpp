@@ -277,6 +277,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y, GOOMBA_BASIC); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y, MODEL_BASIC); break;
 	case OBJECT_TYPE_BRICK_2: obj = new CBrick(x, y, MODEL_BASIC_2); break;
+	case OBJECT_TYPE_BRICK_WHITE_SMILE: obj = new CBrick(x, y, MODEL_WHITE_SMILE); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BRICK_Q_COIN: obj = new CBrickQuestion(x, y, QUESTION_BRICK_COIN); break;
 	case OBJECT_TYPE_BRICK_Q_ITEM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_NOT_COIN); break;
@@ -288,6 +289,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PARA_GOOMBA: obj = new CPara_Goomba(x, y); break;
 	case OBJECT_TYPE_PIPE_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_PIPE); break;
 	case OBJECT_TYPE_PIPE_M_EMPTY: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_M_PIPE); break;
+	case OBJECT_TYPE_PIPE_PORTAL: obj = new CPipePlantShoot(x, y, MODEL_EMPTY_PORTAL_PIPE); break;
+	case OBJECT_TYPE_PIPE_NOTACTIVE: obj = new CPipePlantShoot(x, y, 6); break;
 	case OBJECT_TYPE_KOOPA_GREEN_WALKING: obj = new CGreen_Koopa(x, y,1); break;
 	case OBJECT_TYPE_GREEN_KOOPA_INITI_WALKING: obj = new CGreen_Koopa(x, y, 2); break;
 	case OBJECT_TYPE_RED_KOOPA_WALKING: obj = new CRed_Koopa(x, y,1); break;
@@ -489,9 +492,13 @@ void CPlayScene::Update(DWORD dt)
 
 
 
-	//if(mario->GetLevel() != 3 )
+	if (mario->GetY()<195)
+		CGame::GetInstance()->SetCamPos(cx, 55);
 
+	else
 	CGame::GetInstance()->SetCamPos(cx, 235);
+
+	
 
 	//else CGame::GetInstance()->SetCamPos(cx, cy-50);
 
