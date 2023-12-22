@@ -45,6 +45,9 @@
 #define MARIO_STATE_ATTACK_LEFT		690
 #define MARIO_STATE_ATTACK_RIGHT	700
 
+#define MARIO_STATE_DOWN_PIPE		710
+#define MARIO_STATE_UP_PIPE			720
+
 #define RACOON_STATE_FLY_DOWN_RELEASE	800
 
 #define RACOON_STATE_FLY	810
@@ -218,11 +221,17 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
+	bool EnterPipe;
+	bool StandOnPipe;
+	bool HitHeadPipe;
+	float rangeEnterPipe;
+
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	ULONGLONG timing;
 	BOOLEAN isOnPlatform;
+	ULONGLONG timedownupPipe;
 
 	CTailWhipping* tail;
 	
@@ -240,7 +249,8 @@ class CMario : public CGameObject
 	void OnCollisionWithPlantShootRed(LPCOLLISIONEVENT e);
 	void OnCollisionWithGreenPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
-	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);
+	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);	
+	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	
 
 
@@ -284,9 +294,14 @@ public:
 		Kicking = false;
 		Holding = false;
 		isHold = false;
+		HitHeadPipe = false;
 		TailAttack = false;
 		Fly = false;
+		timedownupPipe = -1;
 		tail = NULL;
+		rangeEnterPipe = 0;
+		EnterPipe = false;
+		StandOnPipe = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 
@@ -346,7 +361,15 @@ public:
 
 	bool GetIsOnPlatform() { return isOnPlatform; }
 
+	bool GetUpPipe() { return HitHeadPipe; }
+
 	void SetPositionPlayer(float x, float y) { this->x = x; this->y = y; }
+
+	bool GetEnterPipe() { return EnterPipe; }
+
+	bool GetIsStandOnPipi() { return StandOnPipe; }
+
+	float GetRangeEnterPipe() { return rangeEnterPipe; }
 
 	//set
 	void SetHolding(bool b) { Holding = b; }
@@ -360,4 +383,10 @@ public:
 	void CreatEffectMario(int effect);
 
 	void SetRacoonFlying();
+
+	void SetEnterPipe(bool b) { b = EnterPipe; }
+
+	void SetStandOnPipe(bool b) { b = StandOnPipe; }
+
+
 };

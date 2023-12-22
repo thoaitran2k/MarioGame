@@ -67,6 +67,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	}
 
+	if (EnterPipe) {
+		//ay = 0.0015f;
+		if (vy > 0) {
+			if (abs(y-rangeEnterPipe)>0)
+				SetPositionPlayer(3048, 450);
+		}
+		
+	}
+
+	HitHeadPipe = false;
+	StandOnPipe = false;
+	EnterPipe = false;
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -218,9 +230,30 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGlassBrick(e);
 	else if (dynamic_cast<CButtonP*>(e->obj))
 		OnCollisionWithButtonP(e);
+	else if (dynamic_cast<CPipePlantShoot*>(e->obj))
+		OnCollisionWithPipe(e);
 
 
 	
+}
+
+void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e) {
+	CPipePlantShoot* pipe = dynamic_cast<CPipePlantShoot*>(e->obj);
+	if (e->ny != 0) {
+		if (e->ny < 0) {
+			if (pipe->GetModel() == MODEL_EMPTY_PORTAL_PIPE)
+				StandOnPipe = true;
+				//SetPositionPlayer(2336, 372);
+		}
+		else if (e->ny > 0)
+		{
+			if (pipe->GetModel() == 7)
+				HitHeadPipe = true;
+				//SetPositionPlayer(2336, 372);
+		}
+	}
+	
+
 }
 
 void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e) {
@@ -1295,6 +1328,8 @@ void CMario::SetState(int state)
 
 	else if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 250)) return;
 
+	//else if ((this->state == MARIO_STATE_DOWN_PIPE) && (GetTickCount64() - timedownupPipe < 1500)) return;
+
 	//else if (this->state == RACOON_STATE_FLY_DOWN_RELEASE && (GetTickCount64() - timing < 200)) return;
 
 	//else if (this->state == RACOON_STATE_FLY) return;
@@ -1465,7 +1500,24 @@ void CMario::SetState(int state)
 		vx = 0.0f;
 		break;
 
+	case MARIO_STATE_DOWN_PIPE:
+		 EnterPipe = true;
+		//timedownupPipe = GetTickCount64();
+		vx = 0;
+		ay = 0;
+		rangeEnterPipe = y;
+		vy = 0.002f;
+		y = y + 1;
+		break;
 
+	case MARIO_STATE_UP_PIPE:
+		SetPositionPlayer(2336, 372);
+		vx = 0;
+		ay = 0;
+		rangeEnterPipe = y;
+		vy = -0.002f;
+		y = y - 1;
+		break;
 
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_DEFLECT_SPEED;

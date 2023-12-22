@@ -14,8 +14,22 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_DOWN:
-		mario->SetState(MARIO_STATE_SIT);
+		if (!mario->GetIsStandOnPipi())
+			mario->SetState(MARIO_STATE_SIT);
+		else { 
+			mario->SetState(MARIO_STATE_DOWN_PIPE);
+			//mario->SetEnterPipe(true);
+			//mario->SetY(mario->GetY() + 1); 
+			//mario->SetVy(0.0005f);
+		}
 		break;
+
+	/*case DIK_UP:
+		if (!mario->GetIsStandOnPipi()) return;
+		else {
+			mario->SetState(MARIO_STATE_UP_PIPE);
+		}
+		break;*/
 	case DIK_S:
 
 		if (mario->GetIsOnPlatform()) {
@@ -159,9 +173,22 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
+	if (game->IsKeyDown(DIK_UP))
+	{
+		if (mario->GetUpPipe())
+		{
+			if(game->IsKeyDown(DIK_S))
+			
+				mario->SetState(MARIO_STATE_UP_PIPE);
+			
+		}
+			
+	}
 	//if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_HOLDING);
 	if (!mario->GetIsHolding())
 	{
+		
+
 		if (game->IsKeyDown(DIK_RIGHT))
 		{
 
