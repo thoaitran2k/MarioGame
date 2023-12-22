@@ -18,7 +18,7 @@
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0007f
 
-#define MARIO_JUMP_SPEED_Y		0.55f
+#define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
 
 #define MARIO_GRAVITY			0.0019f
@@ -346,6 +346,7 @@ public:
 
 	bool GetIsOnPlatform() { return isOnPlatform; }
 
+	void SetPositionPlayer(float x, float y) { this->x = x; this->y = y; }
 
 	//set
 	void SetHolding(bool b) { Holding = b; }
@@ -358,5 +359,5 @@ public:
 
 	void CreatEffectMario(int effect);
 
-	void SetFly(bool b) { b = Fly; }
+	void SetRacoonFlying();
 };

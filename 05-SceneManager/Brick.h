@@ -7,6 +7,7 @@
 #define ID_ANI_BRICK 10000
 #define ID_ANI_BRICK_2 10002
 #define ID_ANI_BRICK_WHITE_SMILE 10003
+#define ID_ANI_BRICK_BLUE_HIDDEN_MAP 10004
 
 #define BRICK_WIDTH 16
 #define BRICK_BBOX_WIDTH 16
@@ -15,6 +16,7 @@
 #define MODEL_BASIC	1
 #define MODEL_BASIC_2 2
 #define MODEL_WHITE_SMILE 3
+#define MODEL_BLUE 4
 
 #define modehithox 77
 

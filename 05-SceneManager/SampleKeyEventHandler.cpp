@@ -18,23 +18,14 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_S:
 
-		
-		mario->SetState(MARIO_STATE_JUMP);
-
-		if (mario->GetState() == MARIO_STATE_JUMP) {
-			if (mario->GetLevel() == 3) {
-
-				if (!mario->GetIsOnPlatform()) {
-
-					mario->SetState(RACOON_STATE_FLY_DOWN_RELEASE);
-
-					mario->SetVy(-0.42);
-					mario->SETay(0.001);
-
-				}
-				else mario->SetState(RACOON_STATE_FLY);
+		if (mario->GetIsOnPlatform()) {
+			mario->SetState(MARIO_STATE_JUMP);
+		}
+		else{
+			if (mario->GetLevel() == 3)
+			{
+				mario->SetState(RACOON_STATE_FLY);
 			}
-			else return;
 		}
 		
 
@@ -54,6 +45,15 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
+		break;
+	case DIK_7:
+		mario->SetPositionPlayer(3048, 540); // XUONG MAP AN
+		break;
+	case DIK_8:
+		mario->SetPositionPlayer(2273, 90); // XUONG MAP AN
+		break;
+	case DIK_9:
+		mario->SetPositionPlayer(1884, 540); // XUONG MAP AN
 		break;
 	case DIK_A:
 		//if (mario->GetIsHolding()) mario->SetHolding(false);
@@ -100,12 +100,22 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		//if (mario->GetLevel() != 3) {
 			mario->SetState(MARIO_STATE_RELEASE_JUMP);
 
+			if (mario->GetState() == MARIO_STATE_RELEASE_JUMP) {
+
+				if (mario->GetVx() != 0) {
+					if (mario->GetNx() > 0) mario->SetVx(0.03f);
+					else  mario->SetVx(-0.03f);
+				}
+				else mario->SetVx(0);
+			}
+			
+			/*mario->SETay(-0.02f);
 			if (mario->GetLevel() == 3) {
 
 				if (mario->GetState() == RACOON_STATE_FLY_DOWN_RELEASE)
 				{
-					mario->SetVy(-0.07);
-					if (mario->GetNx() != 0) {
+					mario->SetVy(-0.0f);
+					if (mario->GetVx() != 0) {
 
 						if (mario->GetNx() > 0) mario->SetVx(0.03f);
 						else mario->SetVx(-0.03f);
@@ -114,7 +124,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 				}
 			}
 
-			else return;
+			else return;*/
 
 		//}
 		//else {
@@ -173,21 +183,20 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		else
 			mario->SetState(MARIO_STATE_IDLE);
 	}
-
 	else if (mario->GetState() == MARIO_STATE_ATTACK)
 	{
 		if (game->IsKeyDown(DIK_RIGHT))
 		{
 			
-			if (game->IsKeyDown(DIK_A))
-			mario->SetState(MARIO_STATE_ATTACK_RIGHT);
-			else
+			//if (game->IsKeyDown(DIK_A))
+			//mario->SetState(MARIO_STATE_ATTACK_RIGHT);
+			//else
 				mario->SetState(MARIO_STATE_WALKING_RIGHT);
 		}
 		else if (game->IsKeyDown(DIK_LEFT)) {
-			if (game->IsKeyDown(DIK_A))
-			mario->SetState(MARIO_STATE_ATTACK_LEFT);
-				else
+			//if (game->IsKeyDown(DIK_A))
+			//mario->SetState(MARIO_STATE_ATTACK_LEFT);
+				//else
 				mario->SetState(MARIO_STATE_WALKING_LEFT);
 		}
 		else

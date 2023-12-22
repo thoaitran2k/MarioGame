@@ -8,6 +8,7 @@
 #define ID_ANI_EMPTY_M_PIPE 204
 #define ID_ANI_EMPTY_PORTAL_PIPE 205
 #define ID_ANI_EMPTY_PIPE_NOTACTIVE 206
+#define ID_ANI_PIPE_HIDDEN_MAP 207
 
 #define PIPE_BBOX_WIDTH 32
 #define PIPE_BBOX_L_HEIGHT 48
@@ -20,6 +21,7 @@
 #define MODEL_EMPTY_M_PIPE 4
 #define MODEL_EMPTY_PORTAL_PIPE 5 //PORTAL
 #define MODE_6	6
+#define MODE_HIDEN_MAP	7
 
 
 class CPipePlantShoot : public CGameObject {

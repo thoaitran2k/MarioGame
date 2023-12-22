@@ -11,6 +11,8 @@ void CBrick::Render()
 
 	else if (model == 3) { aniId = ID_ANI_BRICK_WHITE_SMILE; }
 
+	else if (model == 4) { aniId = ID_ANI_BRICK_BLUE_HIDDEN_MAP; }
+
 
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -35,6 +37,13 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 		b = t + BRICK_BBOX_HEIGHT;
 	}
 	else if(model == 3)
+	{
+		l = x - BRICK_BBOX_WIDTH / 2;
+		t = y - BRICK_BBOX_HEIGHT / 2;
+		r = l + BRICK_BBOX_WIDTH;
+		b = t + BRICK_BBOX_HEIGHT;
+	}
+	else if (model == 4)
 	{
 		l = x - BRICK_BBOX_WIDTH / 2;
 		t = y - BRICK_BBOX_HEIGHT / 2;

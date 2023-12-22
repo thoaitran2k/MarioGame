@@ -136,8 +136,16 @@ void CPlayScene::_ParseSection_MAP(string line)
 
 	CGameObject* obj = NULL;
 
-
+	//switch (object_type)
+	//{
+	
+	//case OBJECT_TYPE_MAP:
 	obj = new CMap(x, y);
+
+	//case OBJECT_TYPE_HIDEN_MAP: obj = new CMap(x, y, 2); break;
+	//}
+
+	
 
 	// General object setup
 	obj->SetPosition(x, y);
@@ -278,11 +286,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y, MODEL_BASIC); break;
 	case OBJECT_TYPE_BRICK_2: obj = new CBrick(x, y, MODEL_BASIC_2); break;
 	case OBJECT_TYPE_BRICK_WHITE_SMILE: obj = new CBrick(x, y, MODEL_WHITE_SMILE); break;
+	case OBJECT_TYPE_BRICK_BLUE_HIDDEN_MAP: obj = new CBrick(x, y, MODEL_BLUE); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_BRICK_Q_COIN: obj = new CBrickQuestion(x, y, QUESTION_BRICK_COIN); break;
 	case OBJECT_TYPE_BRICK_Q_ITEM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_NOT_COIN); break;
 	//case OBJECT_TYPE_BRICK_Q_ITEM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_NOT_COIN); break;
 	case OBJECT_TYPE_LONG_PIPE: obj = new CPipePlantShoot(x, y, MODEL_L_PIPE); break;
+	case OBJECT_TYPE_HIDEN_MAP_PIPE: obj = new CPipePlantShoot(x, y, MODE_HIDEN_MAP); break;
 	case OBJECT_TYPE_PLANT_SHOOT_RED: obj = new CPlantShootRed(x, y); break;
 	case OBJECT_TYPE_GREEN_PLANT_SHOOT: obj = new CGreen_Plant(x, y, PLANT_TYPE_SHOOT); break;
 	case OBJECT_TYPE_GREEN_PLANT_NOT_SHOOT: obj = new CGreen_Plant(x, y, PLANT_TYPE_NOT_SHOOT); break;
@@ -495,8 +505,12 @@ void CPlayScene::Update(DWORD dt)
 	if (mario->GetY()<195)
 		CGame::GetInstance()->SetCamPos(cx, 55);
 
+	else if(mario->GetY()>408 && mario->GetX()>2870)
+		CGame::GetInstance()->SetCamPos(cx, 424);
+
+
 	else
-	CGame::GetInstance()->SetCamPos(cx, 235);
+	CGame::GetInstance()->SetCamPos(cx, 230);
 
 	
 

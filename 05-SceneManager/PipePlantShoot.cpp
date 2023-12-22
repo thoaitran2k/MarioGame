@@ -45,6 +45,7 @@ void CPipePlantShoot::Render()
 	else if (model == MODEL_EMPTY_M_PIPE) aniId = ID_ANI_EMPTY_M_PIPE;
 	else if (model == MODEL_EMPTY_PORTAL_PIPE) aniId = ID_ANI_EMPTY_PORTAL_PIPE;
 	else if (model == 6) aniId = 206;
+	else if (model == 7) aniId = 207;
 	else aniId = ID_ANI_EMPTY_PIPE;
 
 	animations->Get(aniId)->Render(x, y);
