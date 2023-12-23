@@ -26,8 +26,7 @@
 #include "glassBrick.h"
 #include "FragGlass.h"
 #include "GameEffects.h"
-
-
+#include "HUD_1.h"
 
 
 
@@ -309,6 +308,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GLASS_BRICK_NORMAL: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_NORMAL); break;
 	case OBJECT_TYPE_GLASS_BRICK_CONTAIN_BUTTON_P: obj = new CglassBrick(x, y, GLASS_BRICK_MODEL_CONTAIN_BUTTON); break;
 	case OBJECT_TYPE_FRAG_GLASS_BRICK: obj = new CFragGlass(x, y, 0,0); break;
+	//case OBJECT_TYPE_HUD_DISPLAY: obj = new CHUD_1(x, y); break;
 	//case OBJECT_TYPE_NEW_RED_KOOPA: obj = new CRed_Koopa(x, y, 2); break;
 
 	

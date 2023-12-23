@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Animation.h"
+#include "Animations.h"
 #include "Sprite.h"
 #include "Mario.h"
 
@@ -63,22 +65,26 @@
 #define CARD_WIDTH 24
 
 
-class CHUD_1
+class CHUD_1:public CGameObject
 {
-protected:
+	static CHUD_1* __instance;
 	float x;
 	float y;
 
 public:
 	//CHUD_1(float x, float y);
-	CHUD_1(float x, float y) {
+	CHUD_1(float x, float y) : CGameObject(x,y) {
 		this->x = x;
 		this->y = y;
+		LoadHUD();
 	}
 
 	void AniNumber(int n, float Xnumber, float Ynumber);
 	void AniCard(int n, float Xcard, float Ycard);
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}
+	static CHUD_1* GetInstance();
+	void LoadHUD();
+	void RenderBoundingBox();
 };
 
