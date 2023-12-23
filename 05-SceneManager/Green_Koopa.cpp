@@ -294,7 +294,7 @@ void CGreen_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				SetState(KOOPA_GREEN_STATE_JUMP);
 				vx = -KOOPA_GREEN_WALKING_SPEED;
-				y = y - 2.5;
+				y = y - 3;
 
 				if (y > 650) isDeleted = true;
 

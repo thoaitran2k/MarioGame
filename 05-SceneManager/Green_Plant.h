@@ -89,6 +89,7 @@ public:
 
 	bool GETUp() { return isUpping; }
 	bool GETDown() { return isDowning; }
+	int GetType() { return type; }
 	bool StateActive() { return IsActive; }
 
 

@@ -205,10 +205,15 @@ void CTailWhipping::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
-	attack = true;
-	e->obj->Delete();
-	CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
-	scene->AddObject(plusscore100);
+	CGreen_Plant* g_plant = dynamic_cast<CGreen_Plant*>(e->obj);
+
+	if (g_plant->GetType() == 2) {
+		attack = true;
+		e->obj->Delete();
+		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+		scene->AddObject(plusscore100);
+	}
+	else return;
 	
 }
 
