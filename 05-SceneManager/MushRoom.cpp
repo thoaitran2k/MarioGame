@@ -69,7 +69,8 @@ void CMushRoom::Render()
 	int aniId = -1;
 
 	if (mode_mushroom == MODE_RED) aniId = ID_ANI_MUSHROOM;
-	else aniId = ID_ANI_MUSHROOM_GREEN;
+	
+	else if(mode_mushroom == MODE_GREEN) aniId = ID_ANI_MUSHROOM_GREEN;
 
 
 	CAnimations* animations = CAnimations::GetInstance();

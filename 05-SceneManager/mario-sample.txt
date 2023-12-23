@@ -29,3 +29,6 @@ height	240
 120	textures\enemies_2.png
 130	textures\misc_4.png
 140	textures\misc_5.png
+150	textures\hud_source.png
+180	textures\gameover.png
+190	textures\dialogs.png

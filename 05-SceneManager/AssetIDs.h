@@ -19,6 +19,9 @@
 #define ID_TEX_ENEMIES_2 120
 #define ID_TEX_MISC_4 130
 #define ID_TEX_MISC_5 140
+#define ID_TEX_HUD_1 150
+#define ID_TEX_HUD_2 180
+#define ID_TEX_HUD_3 190
 
 
 
@@ -47,6 +50,7 @@
 
 
 #define OBJECT_TYPE_MUSHROOM	17
+#define OBJECT_TYPE_MUSHROOM_GREEN	18
 #define OBJECT_TYPE_PLATFORM	5
 
 #define OBJECT_TYPE_MAP	99

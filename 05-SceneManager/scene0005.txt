@@ -18,6 +18,7 @@ Boxs.txt
 leaf.txt
 green_plant.txt
 GameEffect.txt
+hud.txt
 [MAP]
 #MAP
 99	1408	216
@@ -397,7 +398,7 @@ GameEffect.txt
 115	3022	601
 115	3022	617
 
-115	3054	441
+
 115	3070	441
 115	3086	441
 115	3102	441

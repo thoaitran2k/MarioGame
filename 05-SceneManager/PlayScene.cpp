@@ -282,12 +282,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
+
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y, GOOMBA_BASIC); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y, MODEL_BASIC); break;
 	case OBJECT_TYPE_BRICK_2: obj = new CBrick(x, y, MODEL_BASIC_2); break;
 	case OBJECT_TYPE_BRICK_WHITE_SMILE: obj = new CBrick(x, y, MODEL_WHITE_SMILE); break;
 	case OBJECT_TYPE_BRICK_BLUE_HIDDEN_MAP: obj = new CBrick(x, y, MODEL_BLUE); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_MUSHROOM_GREEN: obj = new CMushRoom(x, y, MODE_GREEN);
 	case OBJECT_TYPE_BRICK_Q_COIN: obj = new CBrickQuestion(x, y, QUESTION_BRICK_COIN); break;
 	case OBJECT_TYPE_BRICK_Q_ITEM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_NOT_COIN); break;
 	//case OBJECT_TYPE_BRICK_Q_ITEM: obj = new CBrickQuestion(x, y, QUESTION_BRICK_NOT_COIN); break;
@@ -510,7 +512,7 @@ void CPlayScene::Update(DWORD dt)
 
 
 	else
-	CGame::GetInstance()->SetCamPos(cx, 230);
+	CGame::GetInstance()->SetCamPos(cx, 270);
 
 	
 

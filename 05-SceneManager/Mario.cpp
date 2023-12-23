@@ -916,7 +916,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			}
 			else if (level == MARIO_LEVEL_RACOON)
 			{
-				CMushRoom* mushroomgreen = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), 2);
+				CMushRoom* mushroomgreen = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), MODE_GREEN);
 				scene->AddObject(mushroomgreen);
 				questionBrick->SetState(BRICK_Q_STATE_EMPTY);
 				questionBrick->SetState(BRICK_Q_STATE_UP);
