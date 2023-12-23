@@ -745,7 +745,7 @@ void CRed_Koopa::SetState(int state)
 		ResetCheck();
 		isTurn = false;
 		isKicked = true;
-		wasKicked = false;
+		//wasKicked = false;
 		isTurtleShell = true;
 		HaveOrNotCheckFall = false;
 		isComback = true;

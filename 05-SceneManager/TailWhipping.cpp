@@ -21,6 +21,8 @@
 
 #include "Red_Koopa.h"
 
+#include "Para_Goomba.h"
+
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	//this->vx = vx;
 	SetState(WHIP_STATE_DELETE);
@@ -114,7 +116,27 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 	else if (dynamic_cast<CRed_Koopa*>(e->obj))
 		OnCollisionWithRed_Koopa(e);
-		
+
+	else if (dynamic_cast<CPara_Goomba*>(e->obj))
+		OnCollisionWithPara_Goomba(e);
+
+}
+
+void CTailWhipping::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e) {
+	attack = true;
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CPara_Goomba* pr_goomba = dynamic_cast<CPara_Goomba*>(e->obj);
+
+	
+	if (pr_goomba->GetState() != GOOMBA_RED_STATE_DIE && pr_goomba->GetState() != GOOMBA_RED_STATE_BE_WHIPED) {
+		pr_goomba->SetState(GOOMBA_RED_STATE_BE_WHIPED);
+		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+		scene->AddObject(plusscore100);
+		//mario->CreatEffectMario(1);
+	}
+	
 }
 
 void CTailWhipping::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e) {
@@ -133,6 +155,7 @@ void CTailWhipping::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e) {
 				//gkpa->SetX(mario->GetX()+15);
 
 			}
+			else return;
 		}
 		else {
 

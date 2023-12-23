@@ -26,6 +26,7 @@
 #define GOOMBA_RED_STATE_DIE 300
 #define GOOMBA_RED_STATE_WALKING 400
 #define GOOMBA_RED_STATE_FALL 500
+#define GOOMBA_RED_STATE_BE_WHIPED 600
 
 //times
 #define TIME_WALKING 2000
@@ -57,6 +58,7 @@ protected:
 	ULONGLONG count_start;
 	ULONGLONG die_start_red_goomba;
 	ULONGLONG time_appear;
+	ULONGLONG time_whip;
 
 
 	bool isOnPlatForm;

@@ -33,6 +33,8 @@ protected:
 	void OnCollisionWithGreenPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithGreen_Koopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e);
+
 
 
 public:
