@@ -5,7 +5,7 @@
 CHUD_1* CHUD_1::__instance = NULL;
 
 CHUD_1* hud = NULL;
-vector<LPGAMEOBJECT> objects;
+//vector<LPGAMEOBJECT> objects;
 
 CHUD_1* CHUD_1::GetInstance() {
 	if (__instance == NULL) __instance = new CHUD_1(0, 0);
@@ -13,6 +13,7 @@ CHUD_1* CHUD_1::GetInstance() {
 }
 
 void CHUD_1::Render() {
+
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	CAnimations::GetInstance()->Get(ID_ANI_BLACK_RECTANGEL)->Render(x, y);
@@ -21,6 +22,27 @@ void CHUD_1::Render() {
 
 	AniNumber(1, x + POSITION_WORLD_X, y - ADJUST_Y_POWER_POSITION);
 
+	//point
+	AniNumber(1, x + POSITION_SCORE_X, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(2, x + POSITION_SCORE_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(3, x + POSITION_SCORE_X + DISTANCE_NUMBER * 2, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(4, x + POSITION_SCORE_X + DISTANCE_NUMBER * 3, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(5, x + POSITION_SCORE_X + DISTANCE_NUMBER * 4, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(6, x + POSITION_SCORE_X + DISTANCE_NUMBER * 5, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(7, x + POSITION_SCORE_X + DISTANCE_NUMBER * 6, y - ADJUST_Y_POWER_POSITION_UNDER);
+
+	//times
+	AniNumber(1, x + POSITION_CLOCK_X, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(0, x + POSITION_CLOCK_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(0, x + POSITION_CLOCK_X + DISTANCE_NUMBER * 2, y - ADJUST_Y_POWER_POSITION_UNDER);
+
+	//Coin
+	int coin; 
+	coin = mario->GetCoin();
+	if (coin / 10 > 0) {
+		AniNumber(coin / 10, x + POSITION_COIN_X, y - ADJUST_Y_POWER_POSITION);
+	}
+	AniNumber(coin % 10, x + POSITION_COIN_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION);
 	
 }
 
@@ -42,11 +64,18 @@ void CHUD_1::AniCard(int n, float Xcard, float Ycard) {
 
 }
 
-void CHUD_1::LoadHUD() {
-	hud = new CHUD_1(1209, 408);
-	objects.push_back(hud);
+
+void CHUD_1::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	float cx, cy;
+	//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	CGame::GetInstance()->GetCamPos(cx, cy);
+	x = cx+150.0;
+	y = cy+187.0;
 }
 
 void CHUD_1::RenderBoundingBox() {
 	
 }
+

@@ -66,6 +66,15 @@ void CPlayScene::AddObject(LPGAMEOBJECT object)
 
 #define MAX_SCENE_LINE 1024
 
+void CPlayScene::LoadHUD() {
+	
+	CHUD_1* hud = CHUD_1::GetInstance();
+	
+
+	objects.push_back(hud);
+}
+
+
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
 	vector<string> tokens = split(line);
@@ -141,6 +150,8 @@ void CPlayScene::_ParseSection_MAP(string line)
 	//case OBJECT_TYPE_MAP:
 	obj = new CMap(x, y);
 
+	
+
 	//case OBJECT_TYPE_HIDEN_MAP: obj = new CMap(x, y, 2); break;
 	//}
 
@@ -162,6 +173,7 @@ CGameObject* CPlayScene::CreateObjectAndReturn(int id, float x, float y, float v
 	int object_type = id;
 
 	CGameObject* obj = NULL;
+	LoadHUD();
 
 	switch (object_type)
 	{
@@ -498,7 +510,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	if (cy > 410) cy = 450;
 
-	//CGame::GetInstance()->SetCamPos(cx,cy);
+	CGame::GetInstance()->SetCamPos(cx,cy);
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
@@ -508,11 +520,11 @@ void CPlayScene::Update(DWORD dt)
 		CGame::GetInstance()->SetCamPos(cx, 55);
 
 	else if(mario->GetY()>408 && mario->GetX()>2870)
-		CGame::GetInstance()->SetCamPos(cx, 424);
+		CGame::GetInstance()->SetCamPos(cx, 444);
 
 
 	else
-	CGame::GetInstance()->SetCamPos(cx, 270);
+	CGame::GetInstance()->SetCamPos(cx, 263);
 
 	
 

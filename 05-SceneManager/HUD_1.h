@@ -7,8 +7,8 @@
 
 #define FONT_BBOX_WIDTH	8
 #define DEFAULT_TIME	300
-#define ID_ANI_HUD 130000
-#define ID_ANI_BLACK_RECTANGEL 130001
+#define ID_ANI_HUD 98766
+#define ID_ANI_BLACK_RECTANGEL 98765
 #define ID_ANI_POWER_HUD 130002
 #define ID_ANI_POWER_HUD_MAX 130003
 #define ID_ANI_M_SYMBOL 130005
@@ -76,7 +76,6 @@ public:
 	CHUD_1(float x, float y) : CGameObject(x,y) {
 		this->x = x;
 		this->y = y;
-		LoadHUD();
 	}
 
 	void AniNumber(int n, float Xnumber, float Ynumber);
@@ -84,7 +83,7 @@ public:
 	virtual void Render();
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom) {}
 	static CHUD_1* GetInstance();
-	void LoadHUD();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void RenderBoundingBox();
 };
 

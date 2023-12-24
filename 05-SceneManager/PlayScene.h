@@ -46,6 +46,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+	void LoadHUD();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 
