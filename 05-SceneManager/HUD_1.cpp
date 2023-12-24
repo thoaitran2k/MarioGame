@@ -24,12 +24,36 @@ void CHUD_1::Render() {
 
 	AniNumber(1, x + POSITION_WORLD_X, y - ADJUST_Y_POWER_POSITION);
 
+	
+
+
 
 	//SPEEDS MARIO
+	int mark;
+	mark = mario->GetMarkFly();
 
-	CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION, y - ADJUST_Y_POWER_POSITION);
-	CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN, y - ADJUST_Y_POWER_POSITION);
-	CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN * 2, y - ADJUST_Y_POWER_POSITION);
+	if (mark > 1) {
+		CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION, y - ADJUST_Y_POWER_POSITION);
+	}
+	if (mark > 2) {
+		CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN, y - ADJUST_Y_POWER_POSITION);
+	}
+	if (mark > 3) {
+		CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN * 2, y - ADJUST_Y_POWER_POSITION);
+	}
+	if (mark > 4){
+		CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN * 3, y - ADJUST_Y_POWER_POSITION);
+	}
+	if (mark > 5) {
+		CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN * 4, y - ADJUST_Y_POWER_POSITION);
+	}
+	if (mark > 6) {
+		CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN * 5, y - ADJUST_Y_POWER_POSITION);
+	}
+	if (mark >= 7) {
+		CAnimations::GetInstance()->Get(ID_ANI_P)->Render(x - ADJUST_X_POWER_POSITION_MAX, y - ADJUST_Y_POWER_POSITION);
+	}
+	
 
 
 	//point
@@ -53,6 +77,9 @@ void CHUD_1::Render() {
 		AniNumber(coin / 10, x + POSITION_COIN_X, y - ADJUST_Y_POWER_POSITION);
 	}
 	AniNumber(coin % 10, x + POSITION_COIN_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION);
+
+	//M
+	CAnimations::GetInstance()->Get(ID_ANI_M_SYMBOL)->Render(x + POSITION_M_SYMBOL_X, y - ADJUST_Y_POWER_POSITION_UNDER - 1);
 	
 }
 

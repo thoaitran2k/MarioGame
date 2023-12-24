@@ -58,10 +58,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if ((!Run) || abs(vx) < 0.0001f)
+	if ((!Run) || abs(vx) < 0.0001f )
 	{
 		if (GetTickCount64() - stop_speed > 250) {
-			if (markFly > 0 && !Fly && GetTickCount64() - time_relase_fly_high>4000) markFly--;
+			if (markFly > 0 && GetTickCount64() - time_relase_fly_high > 4000) markFly--;
 			stop_speed = GetTickCount64();
 		}
 
@@ -71,7 +71,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else {
 		if (GetTickCount64() - start_prepare > 300) {
 			if (GetTickCount64() - start_speed > 150) {
-				if (markFly < 7) markFly++;
+				if (markFly < 8) markFly++;
 
 				start_speed = GetTickCount64();
 			}
@@ -86,12 +86,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (isOnPlatform) {
 			Fly = false;
 			ay = MARIO_GRAVITY;
+			
 		}
 		else {
-			if (markFly >= 5) {
+			time_relase_fly_high = GetTickCount64();
+			if (markFly >= 6) {
 				ay = 0;
 				FlyHigh = true;
-				time_relase_fly_high = GetTickCount64();
+				
+				
 				//vy = -0.24f;
 				//FlyHigh = true;
 				//ay = MARIO_GRAVITY;
@@ -1279,7 +1282,7 @@ int CMario::GetAniIdRacoon() {
 							if (ax < 0)
 								aniId = ID_ANI_RACOON_BRACE_RIGHT;
 							else if (ax == MARIO_ACCEL_RUN_X) {
-								if(markFly == 7)
+								if(markFly == 8)
 								aniId = ID_ANI_RACOON_RUNNING_RIGHT;
 								else aniId = ID_ANI_RACOON_WALKING_RIGHT;
 							}
@@ -1291,7 +1294,7 @@ int CMario::GetAniIdRacoon() {
 							if (ax > 0)
 								aniId = ID_ANI_RACOON_BRACE_LEFT;
 							else if (ax == -MARIO_ACCEL_RUN_X) {
-								if(markFly == 7)
+								if(markFly == 8)
 								aniId = ID_ANI_RACOON_RUNNING_LEFT;
 								else aniId = ID_ANI_RACOON_WALKING_LEFT;
 							}
@@ -1473,6 +1476,7 @@ void CMario::SetState(int state)
 		Fly = true;
 		isOnPlatform = false;
 		SetRacoonFlying();
+		
 		//y += 6;
 		//ay = 0.00001f;
 		//vy = -0.3f;

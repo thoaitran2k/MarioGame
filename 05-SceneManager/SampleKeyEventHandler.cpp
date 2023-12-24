@@ -39,6 +39,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			if (mario->GetLevel() == 3)
 			{
 				mario->SetState(RACOON_STATE_FLY);
+				//mario->SetTimeFlyHigh(GetTickCount64());
 			}
 		}
 
@@ -191,7 +192,7 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 			
 	}
 
-	if (mario->GetMarkRuning() == 7)
+	if (mario->GetMarkFly() == 7)
 	{
 		if (game->IsKeyDown(DIK_RIGHT))
 		{

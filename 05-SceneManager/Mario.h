@@ -307,6 +307,7 @@ public:
 		Fly = false;
 		FlyHigh = false;
 		timedownupPipe = -1;
+		time_relase_fly_high = -1;
 		tail = NULL;
 		rangeEnterPipe = 0;
 		EnterPipe = false;
@@ -362,7 +363,7 @@ public:
 	//get
 	bool GetIsHolding() { return Holding; }
 
-	int GetMarkRuning() { return markFly; }
+	int GetMarkFly() { return markFly; }
 
 	bool GetIsHold() { return isHold; }
 
@@ -385,6 +386,8 @@ public:
 	bool GetFlyHigh() { return FlyHigh; }
 
 	//set
+	void SetTimeFlyHigh(ULONGLONG b) { b = time_relase_fly_high; }
+
 	void SetHolding(bool b) { Holding = b; }
 
 	void SetIsHold(bool b) { isHold = b; }
