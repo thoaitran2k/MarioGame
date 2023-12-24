@@ -14,6 +14,8 @@ CHUD_1* CHUD_1::GetInstance() {
 
 void CHUD_1::Render() {
 
+
+
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
 	CAnimations::GetInstance()->Get(ID_ANI_BLACK_RECTANGEL)->Render(x, y);
@@ -21,6 +23,14 @@ void CHUD_1::Render() {
 	CAnimations::GetInstance()->Get(ID_ANI_HUD)->Render(x, y);
 
 	AniNumber(1, x + POSITION_WORLD_X, y - ADJUST_Y_POWER_POSITION);
+
+
+	//SPEEDS MARIO
+
+	CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION, y - ADJUST_Y_POWER_POSITION);
+	CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN, y - ADJUST_Y_POWER_POSITION);
+	CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN * 2, y - ADJUST_Y_POWER_POSITION);
+
 
 	//point
 	AniNumber(1, x + POSITION_SCORE_X, y - ADJUST_Y_POWER_POSITION_UNDER);
@@ -67,12 +77,19 @@ void CHUD_1::AniCard(int n, float Xcard, float Ycard) {
 
 void CHUD_1::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	float cx, cy;
+	float cx = 0.0f;
+	float cy = 0.0f;
 	//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CGame* game = CGame::GetInstance();
+	
 
 	CGame::GetInstance()->GetCamPos(cx, cy);
-	x = cx+150.0;
-	y = cy+187.0;
+	x = cx + 150.0f;
+	y = cy + 187.0f;
+
+	//x = cx;
+	//y = cy;
+
 }
 
 void CHUD_1::RenderBoundingBox() {

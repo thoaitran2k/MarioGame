@@ -106,6 +106,11 @@ public:
 
 	void SetCamPos(float x, float y) { cam_x = x; cam_y = y; }
 	void GetCamPos(float& x, float& y) { x = cam_x; y = cam_y; }
+	//void GetCamPosRender(float cx, float cy) { cx = cam_x; cy = cam_y; }
+	float GetCameraX() { return cam_x; }
+	float GetCameraY() { return cam_y; }
+
+
 
 	LPSCENE GetCurrentScene() { return scenes[current_scene]; }
 	void Load(LPCWSTR gameFile);

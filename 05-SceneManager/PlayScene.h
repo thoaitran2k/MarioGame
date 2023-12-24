@@ -15,6 +15,8 @@ class CPlayScene: public CScene
 {
 protected: 
 	// A play scene has to have player, right? 
+
+	//CHUD_1* hud = NULL;
 	LPGAMEOBJECT player;					
 
 	vector<LPGAMEOBJECT> objects;

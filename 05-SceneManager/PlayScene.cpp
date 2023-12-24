@@ -69,7 +69,10 @@ void CPlayScene::AddObject(LPGAMEOBJECT object)
 void CPlayScene::LoadHUD() {
 	
 	CHUD_1* hud = CHUD_1::GetInstance();
+
+	//CGame* game = CGame::GetInstance();
 	
+	//hud = new CHUD_1(game->GetCameraX() + 150.0, game->GetCameraY() + 187.0);
 
 	objects.push_back(hud);
 }
@@ -539,15 +542,19 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	CGame* game = CGame::GetInstance();
 	if (MapObjects)
 	{
 		MapObjects->Render();
 	}
-	
+
+
+
 
 	for (int i = 0; i < objects.size(); i++)
 		objects[i]->Render();
 }
+
 
 /*
 *	Clear all objects from this scene

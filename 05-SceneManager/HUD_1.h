@@ -74,8 +74,8 @@ class CHUD_1:public CGameObject
 public:
 	//CHUD_1(float x, float y);
 	CHUD_1(float x, float y) : CGameObject(x,y) {
-		this->x = x;
-		this->y = y;
+		this->x = 0.0f;
+		this->y = 0.0f;
 	}
 
 	void AniNumber(int n, float Xnumber, float Ynumber);
