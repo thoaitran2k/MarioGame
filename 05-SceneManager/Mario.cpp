@@ -50,7 +50,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	*/
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
-	if (state != MARIO_STATE_DIE) CountDownTimes();
+
+
+	if(state != MARIO_STATE_DIE) CountDownTimes();
+	//CountDownTimeGame();
 
 
 	// reset untouchable timer if untouchable time has passed
@@ -123,11 +126,30 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-void CMario::CountDownTimes() {
+//void CMario::CountDownTimeGame() {
+//	if (clocktime > 4) {
+//		if (GetTickCount64() - count_seconds > 10) {
+//			clocktime -= 4;
+//			//score += 50 * TIME_DOWN_END_SCENE;
+//			count_seconds = GetTickCount64();
+//		}
+//	}
+//	else {
+//		//score += clock * 50;
+//		clocktime = 0;
+//		//isEndScene = true;
+//		//isClockVeryFast = false;
+//		//SetState(MARIO_STATE_CHANGE_WORLD_MAP);
+//	}
+//}
+
+void CMario::CountDownTimes() 
+{
 	if (clocktime > 0) {
-		if (GetTickCount64() - count_seconds > 1000)
-			clocktime--;
-		count_seconds = GetTickCount64();
+		if (GetTickCount64() - count_seconds > 1000) {
+			clocktime --;
+			count_seconds = GetTickCount64();
+		}
 	}
 	else { 
 		clocktime = 0; 

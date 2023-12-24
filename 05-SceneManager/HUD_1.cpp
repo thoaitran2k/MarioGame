@@ -67,10 +67,13 @@ void CHUD_1::Render() {
 	AniNumber(7, x + POSITION_SCORE_X + DISTANCE_NUMBER * 6, y - ADJUST_Y_POWER_POSITION_UNDER);
 
 	//times
+
+
 	int times = mario->GetTimeGame();
+
 	AniNumber(times/100, x + POSITION_CLOCK_X, y - ADJUST_Y_POWER_POSITION_UNDER);
-	AniNumber((times/100)%10, x + POSITION_CLOCK_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION_UNDER);
-	AniNumber(times/10, x + POSITION_CLOCK_X + DISTANCE_NUMBER * 2, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber((times/10)%10, x + POSITION_CLOCK_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(times%10, x + POSITION_CLOCK_X + DISTANCE_NUMBER * 2, y - ADJUST_Y_POWER_POSITION_UNDER);
 
 	//Coin
 	int coin; 
@@ -99,10 +102,64 @@ void CHUD_1::AniNumber(int n, float Xnumber, float Ynumber) {
 
 }
 
+//int CHUD_1::getAniId(int num) {
+//	switch (num)
+//	{
+//	case 0:
+//		return ID_ANI_0;
+//	case 1:
+//		return ID_ANI_1;
+//	case 2:
+//		return ID_ANI_2;
+//	case 3:
+//		return ID_ANI_3;
+//	case 4:
+//		return ID_ANI_4;
+//	case 5:
+//		return ID_ANI_5;
+//	case 6:
+//		return ID_ANI_6;
+//	case 7:
+//		return ID_ANI_7;
+//	case 8:
+//		return ID_ANI_8;
+//	case 9:
+//		return ID_ANI_9;
+//	default:
+//		return 0;
+//	}
+//}
+
 void CHUD_1::AniCard(int n, float Xcard, float Ycard) {
 
 }
 
+//void CHUD_1::WriteTimes() {
+//
+//	timesgame.clear();
+//
+//	if (count_down_time >= 1 && count_start != -1) {
+//		if (GetTickCount64() - count_start > 1000)
+//		{
+//			count_start = GetTickCount64();
+//			count_down_time--;
+//		}
+//	}
+//
+//	int times = this->count_down_time;
+//
+//	for (int i = 2; i >= 0; i--)
+//	{
+//		if (i == 0) {
+//			timesgame.push_back(times % 10);
+//		}
+//		else {
+//			int time = (int)(times / pow(10, i));
+//			timesgame.push_back(times);
+//			times = times - (int)(time * pow(10, i));
+//		}
+//	}
+//}
 
 void CHUD_1::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {

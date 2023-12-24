@@ -308,8 +308,8 @@ public:
 		HitHeadPipe = false;
 		TailAttack = false;
 		Fly = false;
-		clocktime = 400;
-		count_seconds = -1;
+		clocktime = 300;
+		//count_seconds = GetTickCount64();
 		FlyHigh = false;
 		timedownupPipe = -1;
 		time_relase_fly_high = -1;
@@ -348,6 +348,8 @@ public:
 	void SetCoin(int coin) { this->coin = coin; }
 
 	void CountDownTimes();
+
+	//void CountDownTimeGame();
 
 
 	int IsCollidable()

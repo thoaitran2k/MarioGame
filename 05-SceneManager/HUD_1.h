@@ -70,12 +70,16 @@ class CHUD_1:public CGameObject
 	static CHUD_1* __instance;
 	float x;
 	float y;
+	vector<int> timesgame;
+	ULONGLONG count_start;
+	int count_down_time = 0;
 
 public:
 	//CHUD_1(float x, float y);
 	CHUD_1(float x, float y) : CGameObject(x,y) {
 		this->x = 0.0f;
 		this->y = 0.0f;
+		count_start = -1;
 	}
 
 	void AniNumber(int n, float Xnumber, float Ynumber);
@@ -85,5 +89,7 @@ public:
 	static CHUD_1* GetInstance();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void RenderBoundingBox();
+	/*void WriteTimes();
+	int getAniId(int num);*/
 };
 
