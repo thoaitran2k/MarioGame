@@ -15,8 +15,8 @@
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 
-#define MARIO_ACCEL_WALK_X	0.0005f
-#define MARIO_ACCEL_RUN_X	0.0007f
+#define MARIO_ACCEL_WALK_X	0.0003f
+#define MARIO_ACCEL_RUN_X	0.0004f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
@@ -215,12 +215,15 @@ class CMario : public CGameObject
 
 	int effect;
 
+	int markRun;
+
 	bool Fly;
 
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
+	bool Run;
 	bool EnterPipe;
 	bool StandOnPipe;
 	bool HitHeadPipe;
@@ -232,6 +235,10 @@ class CMario : public CGameObject
 	ULONGLONG timing;
 	BOOLEAN isOnPlatform;
 	ULONGLONG timedownupPipe;
+	ULONGLONG start_speed;
+	ULONGLONG stop_speed;
+	ULONGLONG start_prepare;
+	ULONGLONG time_relase_fly_high;
 
 	CTailWhipping* tail;
 	
@@ -353,6 +360,8 @@ public:
 	//get
 	bool GetIsHolding() { return Holding; }
 
+	int GetMarkRuning() { return markRun; }
+
 	bool GetIsHold() { return isHold; }
 
 	bool GetAttack() { return TailAttack; }
@@ -387,6 +396,8 @@ public:
 	void SetEnterPipe(bool b) { b = EnterPipe; }
 
 	void SetStandOnPipe(bool b) { b = StandOnPipe; }
+
+	void SetFlyTF(bool b) { b = Fly; }
 
 
 };

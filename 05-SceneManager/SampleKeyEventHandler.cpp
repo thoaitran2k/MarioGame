@@ -67,7 +67,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetPositionPlayer(2273, 90); // XUONG MAP AN
 		break;
 	case DIK_9:
-		mario->SetPositionPlayer(1884, 540); // XUONG MAP AN
+		mario->SetPositionPlayer(1884, 540);// XUONG MAP AN
+		break;
+	case DIK_5:
+		mario->SetPositionPlayer(800, 380);
 		break;
 	case DIK_A:
 		//if (mario->GetIsHolding()) mario->SetHolding(false);
@@ -117,8 +120,8 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 			if (mario->GetState() == MARIO_STATE_RELEASE_JUMP) {
 
 				if (mario->GetVx() != 0) {
-					if (mario->GetNx() > 0) mario->SetVx(0.03f);
-					else  mario->SetVx(-0.03f);
+					if (mario->GetNx() > 0) mario->SetVx(0.1f);
+					else  mario->SetVx(-0.1f);
 				}
 				else mario->SetVx(0);
 			}
@@ -183,6 +186,15 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 			
 		}
 			
+	}
+
+	if (mario->GetMarkRuning() == 7)
+	{
+		if (game->IsKeyDown(DIK_RIGHT))
+		{
+			if (!game->IsKeyDown(DIK_S))
+				mario->SetFlyTF(false);
+		}
 	}
 	//if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_HOLDING);
 	if (!mario->GetIsHolding())
