@@ -30,7 +30,8 @@ hud.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-0	150	320
+0	800	320
+#0	150	320
 #0	1923	300
 #0	1234	300
 #0	480	320
@@ -137,8 +138,8 @@ hud.txt
 
 #GOOMBA
 2	520	380
-2	787	380
-2	830	380
+#2	787	380
+#2	830	380
 
 #BrickQuestion
 
@@ -249,7 +250,7 @@ hud.txt
 #150	1050	373
 #150	780	373
 #PARA_GOOMBA
-160	920	390
+#160	920	390
 
 
 #BOX

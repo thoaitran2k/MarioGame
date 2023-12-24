@@ -41,6 +41,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 				mario->SetState(RACOON_STATE_FLY);
 			}
 		}
+
 		
 
 		//mario->SETay(0.00015f);
@@ -125,6 +126,8 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 				}
 				else mario->SetVx(0);
 			}
+
+
 			
 			/*mario->SETay(-0.02f);
 			if (mario->GetLevel() == 3) {

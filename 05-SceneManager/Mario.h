@@ -215,8 +215,9 @@ class CMario : public CGameObject
 
 	int effect;
 
-	int markRun;
+	int markFly;
 
+	bool FlyHigh;
 	bool Fly;
 
 	float maxVx;
@@ -304,6 +305,7 @@ public:
 		HitHeadPipe = false;
 		TailAttack = false;
 		Fly = false;
+		FlyHigh = false;
 		timedownupPipe = -1;
 		tail = NULL;
 		rangeEnterPipe = 0;
@@ -360,7 +362,7 @@ public:
 	//get
 	bool GetIsHolding() { return Holding; }
 
-	int GetMarkRuning() { return markRun; }
+	int GetMarkRuning() { return markFly; }
 
 	bool GetIsHold() { return isHold; }
 
@@ -380,6 +382,8 @@ public:
 
 	float GetRangeEnterPipe() { return rangeEnterPipe; }
 
+	bool GetFlyHigh() { return FlyHigh; }
+
 	//set
 	void SetHolding(bool b) { Holding = b; }
 
@@ -398,6 +402,8 @@ public:
 	void SetStandOnPipe(bool b) { b = StandOnPipe; }
 
 	void SetFlyTF(bool b) { b = Fly; }
+
+	void SetFlyHigh(bool b) { b = FlyHigh; }
 
 
 };
