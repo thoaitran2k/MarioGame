@@ -22,7 +22,8 @@ void CHUD_1::Render() {
 
 	CAnimations::GetInstance()->Get(ID_ANI_HUD)->Render(x, y);
 
-	AniNumber(1, x + POSITION_WORLD_X, y - ADJUST_Y_POWER_POSITION);
+	AniNumber(1, x + POSITION_WORLD_X, y - ADJUST_Y_POWER_POSITION); //MAP 1
+
 
 	
 
@@ -66,9 +67,10 @@ void CHUD_1::Render() {
 	AniNumber(7, x + POSITION_SCORE_X + DISTANCE_NUMBER * 6, y - ADJUST_Y_POWER_POSITION_UNDER);
 
 	//times
-	AniNumber(1, x + POSITION_CLOCK_X, y - ADJUST_Y_POWER_POSITION_UNDER);
-	AniNumber(0, x + POSITION_CLOCK_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION_UNDER);
-	AniNumber(0, x + POSITION_CLOCK_X + DISTANCE_NUMBER * 2, y - ADJUST_Y_POWER_POSITION_UNDER);
+	int times = mario->GetTimeGame();
+	AniNumber(times/100, x + POSITION_CLOCK_X, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber((times/100)%10, x + POSITION_CLOCK_X + DISTANCE_NUMBER, y - ADJUST_Y_POWER_POSITION_UNDER);
+	AniNumber(times/10, x + POSITION_CLOCK_X + DISTANCE_NUMBER * 2, y - ADJUST_Y_POWER_POSITION_UNDER);
 
 	//Coin
 	int coin; 

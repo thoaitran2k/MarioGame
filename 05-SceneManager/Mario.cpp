@@ -50,6 +50,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	*/
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
+	if (state != MARIO_STATE_DIE) CountDownTimes();
+
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -61,7 +63,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if ((!Run) || abs(vx) < 0.0001f )
 	{
 		if (GetTickCount64() - stop_speed > 250) {
-			if (markFly > 0 && GetTickCount64() - time_relase_fly_high > 4000) markFly--;
+			if (markFly > 0 && GetTickCount64() - time_relase_fly_high > 1500) markFly--;
 			stop_speed = GetTickCount64();
 		}
 
@@ -71,7 +73,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else {
 		if (GetTickCount64() - start_prepare > 300) {
 			if (GetTickCount64() - start_speed > 150) {
-				if (markFly < 8) markFly++;
+				if (markFly < 9) markFly++;
 
 				start_speed = GetTickCount64();
 			}
@@ -119,6 +121,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+}
+
+void CMario::CountDownTimes() {
+	if (clocktime > 0) {
+		if (GetTickCount64() - count_seconds > 1000)
+			clocktime--;
+		count_seconds = GetTickCount64();
+	}
+	else { 
+		clocktime = 0; 
+		SetState(MARIO_STATE_DIE);
+	}
+
 }
 
 void CMario::CreatEffectMario(int effect) {

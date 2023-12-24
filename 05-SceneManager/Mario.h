@@ -224,6 +224,8 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 
+
+	int clocktime;   //TIMESGAME
 	bool Run;
 	bool EnterPipe;
 	bool StandOnPipe;
@@ -240,6 +242,7 @@ class CMario : public CGameObject
 	ULONGLONG stop_speed;
 	ULONGLONG start_prepare;
 	ULONGLONG time_relase_fly_high;
+	ULONGLONG count_seconds;
 
 	CTailWhipping* tail;
 	
@@ -305,6 +308,8 @@ public:
 		HitHeadPipe = false;
 		TailAttack = false;
 		Fly = false;
+		clocktime = 400;
+		count_seconds = -1;
 		FlyHigh = false;
 		timedownupPipe = -1;
 		time_relase_fly_high = -1;
@@ -342,6 +347,8 @@ public:
 
 	void SetCoin(int coin) { this->coin = coin; }
 
+	void CountDownTimes();
+
 
 	int IsCollidable()
 	{ 
@@ -370,6 +377,8 @@ public:
 	bool GetAttack() { return TailAttack; }
 
 	bool GetFly() { return Fly; }
+
+	int GetTimeGame() { return clocktime; }
 
 	bool GetIsOnPlatform() { return isOnPlatform; }
 
