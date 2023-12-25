@@ -213,6 +213,7 @@ void CTailWhipping::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
 		e->obj->Delete();
 		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
 		scene->AddObject(plusscore100);
+		mario->SetPoint(1);
 	}
 	else return;
 	
@@ -220,6 +221,7 @@ void CTailWhipping::OnCollisionWithGreenPlant(LPCOLLISIONEVENT e) {
 
 void CTailWhipping::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e)
 {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	CglassBrick* break_brick = dynamic_cast<CglassBrick*>(e->obj);
 	//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 	//CFragGlass* frag = new CFragGlass(x+50, y - 80, 0, 0);
@@ -236,6 +238,8 @@ void CTailWhipping::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e)
 
 			break_brick->SetState(GLASS_BRICK_STATE_BREAK);
 
+			
+			mario->SetPoint(20);
 			break_brick->CreateAniFragGlass1();
 			break_brick->CreateAniFragGlass2();
 

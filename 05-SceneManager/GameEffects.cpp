@@ -9,9 +9,12 @@ void CGameEffects::Render() {
 
 	if (type_effect == EFFECT_SCORE_100) aniId = ID_ANI_EFFECT_100_SCORE;
 
+	else if (type_effect == EFFECT_SCORE_200) aniId = ID_ANI_EFFECT_200_SCORE;
+
 	else if (type_effect == EFFECT_UP) aniId = ID_ANI_EFFECT_1UP;
 
 	else if (type_effect == EFFECT_SCORE_1000) aniId = ID_ANI_EFFECT_1000_SCORE;
+
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 

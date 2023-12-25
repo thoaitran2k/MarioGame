@@ -63,10 +63,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if ((!Run) || abs(vx) < 0.0001f || state == MARIO_STATE_IDLE )
+	if ((!Run) || abs(vx) < 0.0007 || state == MARIO_STATE_IDLE || (FlyHigh&&!isOnPlatform))
 	{
 		if (GetTickCount64() - stop_speed > 250) {
-			if (markFly > 0 && GetTickCount64() - time_relase_fly_high > 1500) markFly--;
+			if (markFly > 0 && (!Fly && vy >0 ) && (markFly <= 9 /*&& GetTickCount64() - time_relase_fly_high > 2000*/)) markFly--;
 			stop_speed = GetTickCount64();
 		}
 
@@ -74,7 +74,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 	else {
-		if (GetTickCount64() - start_prepare > 300) {
+		if (GetTickCount64() - start_prepare > 400) {
 			if (GetTickCount64() - start_speed > 150) {
 				if (markFly < 9) markFly++;
 
@@ -91,10 +91,11 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		if (isOnPlatform) {
 			Fly = false;
 			ay = MARIO_GRAVITY;
+			FlyHigh = false;
 			
 		}
 		else {
-			time_relase_fly_high = GetTickCount64();
+			//time_relase_fly_high = GetTickCount64();
 			if (markFly >= 6) {
 				ay = 0;
 				FlyHigh = true;
@@ -180,6 +181,13 @@ void CMario::CreatEffectMario(int effect) {
 		SetPoint(GetPoint()+ 100);
 		break;
 	}
+	case 2:
+	{
+		CGameEffects* plusscore200 = new CGameEffects(x, y - 4, 2);
+		scene->AddObject(plusscore200);
+		SetPoint(GetPoint() + 200);
+		break;
+	}
 	case 5: {
 		CGameEffects* plusscore1000 = new CGameEffects(x, y - 4, 5);
 		scene->AddObject(plusscore1000);
@@ -251,9 +259,12 @@ void CMario::CreateWhippingofTail() {
 
 void CMario::SetRacoonFlying() {
 
-	if (markFly == 7) {
+	if (markFly >= 5) {
 		//if(GetTickCount64() - time_relase_fly_high > 7000)
-		vy = -0.2f;
+		vy = -0.1f;
+		ax = 0.0f;
+		vx = nx*0.03f;
+
 		//ay = 0;
 		time_relase_fly_high = GetTickCount64();
 	}
@@ -277,7 +288,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
-		vy = 0;
+		if (!Fly)
+			vy = 0;
+		else vy = -MARIO_GRAVITY;
 		if (e->ny < 0) isOnPlatform = true;
 	}
 	else 
@@ -382,6 +395,7 @@ void CMario::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 		if (glBrick->GetState() == GLASS_BRICK_STATE_CHANGE_TO_COIN)
 		{
 			coin++;
+			SetPoint(5);
 			e->obj->Delete();
 		}
 		}
@@ -462,6 +476,8 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 				if (gkoopa->GetIsKick()) {
 					//SetState(MARIO_STATE_KICK);
 					gkoopa->SetState(KOOPA_GREEN_STATE_ISKICKED);
+					CreatEffectMario(2);
+					SetPoint(2);
 					//isHold = false;
 				}
 			}
@@ -477,6 +493,10 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 						{
 							SetState(MARIO_STATE_KICK);
 							gkoopa->SetState(KOOPA_GREEN_STATE_ISKICKED);
+							CreatEffectMario(2);
+							SetPoint(2);
+							//CreatEffectMario(2);
+							//(2);
 							//isHold = false;
 						}
 
@@ -548,6 +568,8 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 					//untouchable = 1;
 					gkoopa->SetState(KOOPA_GREEN_STATE_WALKING);
 					gkoopa->SETay(0.9f);
+					CreatEffectMario(1);
+					SetPoint(1);
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 				}
 			}
@@ -586,6 +608,8 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 					gkoopa->SetY(gkoopa->GetY() - 6);
 					//isHold = true;
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
+					CreatEffectMario(1);
+					SetPoint(1);
 					DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 				}
 			}
@@ -699,6 +723,8 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			if (x - pr_goomba->GetX() < 0) pr_goomba->SetVx(-SPEED_GOOMBA_RED_WALKING);
 			else if (x - pr_goomba->GetX() > 0) pr_goomba->SetVx(SPEED_GOOMBA_RED_WALKING);
+			CreatEffectMario(1);
+			SetPoint(1);
 			
 		}
 		else
@@ -706,6 +732,7 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 			pr_goomba->SetState(GOOMBA_RED_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 			CreatEffectMario(1);
+			SetPoint(1);
 		}
 
 
@@ -759,6 +786,8 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 				if (koopared->GetIsKick()) {
 					//SetState(MARIO_STATE_KICK);
 					koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+					CreatEffectMario(1);
+					SetPoint(1);
 					//isHold = false;
 				}
 			}
@@ -774,6 +803,8 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 							{
 								SetState(MARIO_STATE_KICK);
 								koopared->SetState(KOOPA_RED_STATE_ISKICKED);
+								CreatEffectMario(1);
+								SetPoint(1);
 								//isHold = false;
 							}
 						
@@ -859,6 +890,8 @@ void CMario::OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e)
 			{
 				koopared->SetCount_Start(GetTickCount64());
 				koopared->SetState(KOOPA_RED_STATE_ISTURTLESHELL);
+				CreatEffectMario(1);
+				SetPoint(1);
 				//isHold = true;
 				vy = -MARIO_JUMP_SPEED_Y;
 				DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
@@ -943,6 +976,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 
 	e->obj->Delete();
 	coin++;
+	SetPoint(5);
 }
 
 void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
@@ -975,6 +1009,7 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 			questionBrick->SetIsEmpty(true);
 			questionBrick->SetIsUnbox(true);
 			coin++;
+			SetPoint(5);
 
 		}
 		
@@ -1517,6 +1552,7 @@ void CMario::SetState(int state)
 	case RACOON_STATE_FLY:
 		if (level != 3) return;
 		Fly = true;
+		time_relase_fly_high = GetTickCount64();
 		isOnPlatform = false;
 		SetRacoonFlying();
 		
@@ -1533,12 +1569,12 @@ void CMario::SetState(int state)
 		if (level != 3) return;
 		if (isOnPlatform) return;
 		else {
-			if (vy < 0) vy += 0.15 / 2;
+			if (vy > 0) vy -= MARIO_JUMP_SPEED_Y / 2;
 			/*if (vx > 0) x += 2;
 			else if (vx < 0) x -= 2;*/
 
-			timing = GetTickCount64();
-			Fly = false;
+			//timing = GetTickCount64();
+			//Fly = false;
 			//ay = 0.00165;
 			//vy = -0.2f;
 
@@ -1709,9 +1745,26 @@ void CMario::SetPoint(int point)
 		score = score + 100;
 		break;
 	}
+	case 20:
+	{
+		score += 20;
+		break;
+	}
+	case 2: //+200
+	{
+		score += 200;
+		break;
+	}
 	case 10://+1000
 	{
 		score = score + 1000;
+		break;
+	}
+
+
+	case 5: // +50
+	{
+		score = score + 50;
 		break;
 	}
 	}
