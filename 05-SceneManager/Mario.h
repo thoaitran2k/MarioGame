@@ -225,7 +225,8 @@ class CMario : public CGameObject
 	float ay;				// acceleration on y 
 
 
-	int clocktime;   //TIMESGAME
+	int clocktime;  
+	int score;//TIMESGAME
 	bool Run;
 	bool EnterPipe;
 	bool StandOnPipe;
@@ -233,6 +234,7 @@ class CMario : public CGameObject
 	float rangeEnterPipe;
 
 	int level; 
+	
 	int untouchable; 
 	ULONGLONG untouchable_start;
 	ULONGLONG timing;
@@ -309,6 +311,7 @@ public:
 		TailAttack = false;
 		Fly = false;
 		clocktime = 300;
+		score = 0;
 		//count_seconds = GetTickCount64();
 		FlyHigh = false;
 		timedownupPipe = -1;
@@ -364,6 +367,10 @@ public:
 
 	void SetLevel(int l);
 
+	void SetPoint(int b);
+
+
+
 	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
@@ -379,6 +386,8 @@ public:
 	bool GetAttack() { return TailAttack; }
 
 	bool GetFly() { return Fly; }
+
+	int GetPoint() { return score; }
 
 	int GetTimeGame() { return clocktime; }
 
@@ -398,6 +407,8 @@ public:
 
 	//set
 	void SetTimeFlyHigh(ULONGLONG b) { b = time_relase_fly_high; }
+
+	
 
 	void SetHolding(bool b) { Holding = b; }
 

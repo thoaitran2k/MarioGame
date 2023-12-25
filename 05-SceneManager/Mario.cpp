@@ -63,7 +63,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if ((!Run) || abs(vx) < 0.0001f )
+	if ((!Run) || abs(vx) < 0.0001f || state == MARIO_STATE_IDLE )
 	{
 		if (GetTickCount64() - stop_speed > 250) {
 			if (markFly > 0 && GetTickCount64() - time_relase_fly_high > 1500) markFly--;
@@ -166,9 +166,10 @@ void CMario::CreatEffectMario(int effect) {
 	{
 	case 9: // RACOON with GREEN_MUSHROOM
 	{
+		//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 		CGameEffects* up_1 = new CGameEffects(x, y - 4, 9);
 		scene->AddObject(up_1);
-		SetCoin(GetCoin() + 1000);
+		SetPoint(GetPoint() + 1000);
 		break;
 	}
 
@@ -176,11 +177,13 @@ void CMario::CreatEffectMario(int effect) {
 	{
 		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
 		scene->AddObject(plusscore100);
+		SetPoint(GetPoint()+ 100);
 		break;
 	}
 	case 5: {
 		CGameEffects* plusscore1000 = new CGameEffects(x, y - 4, 5);
 		scene->AddObject(plusscore1000);
+		SetPoint(GetPoint() + 1000);
 		break;
 
 	}
@@ -702,6 +705,7 @@ void CMario::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e)
 		{
 			pr_goomba->SetState(GOOMBA_RED_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			CreatEffectMario(1);
 		}
 
 
@@ -903,7 +907,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			goomba->SetState(GOOMBA_STATE_DIE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-			CreatEffectMario(1);
+			//CreatEffectMario(1);
 		}
 
 	}
@@ -1068,6 +1072,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 			{
 				SetLevel(MARIO_LEVEL_BIG);
 				CreatEffectMario(1);
+				SetPoint(1);
 				y = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT);
 			}
 		}
@@ -1082,6 +1087,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 			{
 				//effect = 9;
 				CreatEffectMario(9);
+				SetPoint(10);
 				
 				//SetEffect(9);
 				
@@ -1319,7 +1325,7 @@ int CMario::GetAniIdRacoon() {
 							if (ax < 0)
 								aniId = ID_ANI_RACOON_BRACE_RIGHT;
 							else if (ax == MARIO_ACCEL_RUN_X) {
-								if(markFly == 8)
+								if(markFly >=7)
 								aniId = ID_ANI_RACOON_RUNNING_RIGHT;
 								else aniId = ID_ANI_RACOON_WALKING_RIGHT;
 							}
@@ -1331,7 +1337,7 @@ int CMario::GetAniIdRacoon() {
 							if (ax > 0)
 								aniId = ID_ANI_RACOON_BRACE_LEFT;
 							else if (ax == -MARIO_ACCEL_RUN_X) {
-								if(markFly == 8)
+								if(markFly >= 7)
 								aniId = ID_ANI_RACOON_RUNNING_LEFT;
 								else aniId = ID_ANI_RACOON_WALKING_LEFT;
 							}
@@ -1340,7 +1346,7 @@ int CMario::GetAniIdRacoon() {
 						}
 	}
 	else {
-		
+
 		if (!isOnPlatform)
 		{
 
@@ -1414,7 +1420,7 @@ void CMario::Render()
 
 	//RenderBoundingBox();
 	
-	DebugOutTitle(L"SPEDD: %d", markFly);
+	DebugOutTitle(L"Score: %d", score);
 	//DebugOutTitle(L"Toa do x =: %d",x );
 }
 
@@ -1692,5 +1698,22 @@ void CMario::SetLevel(int l)
 	//	//isOnPlatform = true;
 	//}
 	level = l;
+}
+
+void CMario::SetPoint(int point)
+{
+	switch (point)
+	{
+	case 1:  //+100
+	{
+		score = score + 100;
+		break;
+	}
+	case 10://+1000
+	{
+		score = score + 1000;
+		break;
+	}
+	}
 }
 

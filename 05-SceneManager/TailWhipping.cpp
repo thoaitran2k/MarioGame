@@ -102,6 +102,7 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+
 	else if (dynamic_cast<CglassBrick*>(e->obj))
 	{
 		attackBrick = true;
@@ -269,18 +270,27 @@ void CTailWhipping::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	attack = true;
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	
-	if (goomba->GetState() != GOOMBA_STATE_DIE)
-	{
-		
-		goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
-		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
-		scene->AddObject(plusscore100);
-		//mario->CreatEffectMario(1);
-		
+	//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CGoomba* goomba_1 = dynamic_cast<CGoomba*>(e->obj);
+
+	if (e->nx != 0) {
+		if(goomba_1->GetState() != GOOMBA_STATE_DIE)
+		goomba_1->SetState(GOOMBA_STATE_DIE_UPSIDE);
+		mario->CreatEffectMario(1);
 	}
+	
+	//if (goomba->GetState() != GOOMBA_STATE_DIE)
+	//{
+		
+		
+		//CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+		//scene->AddObject(plusscore100);
+		//mario->CreatEffectMario(1);
+		/*CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+		CGameEffects* up_1 = new CGameEffects(x, y - 4, 9);
+		scene->AddObject(up_1);*/
+		
+	//}
 
 	
 

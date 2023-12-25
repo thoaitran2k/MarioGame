@@ -1,7 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
-#define GOOMBA_GRAVITY 0.002f
+#define GOOMBA_GRAVITY 0.0005f
 #define GOOMBA_WALKING_SPEED 0.05f
 
 
@@ -36,8 +36,10 @@ protected:
 	float ax;				
 	float ay;
 	float range;
+	bool upside;
 	int model;
 	ULONGLONG die_start;
+	ULONGLONG die_upside_start;
 
 
 

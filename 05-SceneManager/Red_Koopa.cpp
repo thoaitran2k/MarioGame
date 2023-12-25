@@ -781,7 +781,7 @@ void CRed_Koopa::SetState(int state)
 		if(typeKoopa == 1 )
 		vx = SPEED_KOOPA_RED_TURTLESHELL_IS_KICKED * LeftOrRightMarrio();
 		else if(typeKoopa == 2)
-			vx = 0.153f * LeftOrRightMarrio();
+			vx = 0.157f * LeftOrRightMarrio();
 		ay = KOOPA_RED_GRAVITY;
 		
 		break;

@@ -74,6 +74,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_5:
 		mario->SetPositionPlayer(800, 380);
 		break;
+	case DIK_6:
+		mario->SetPositionPlayer(150, 380);
+		break;
 	case DIK_A:
 		//if (mario->GetIsHolding()) mario->SetHolding(false);
 		//if(mario->GetIsHolding()) mario->SetHolding(false);
