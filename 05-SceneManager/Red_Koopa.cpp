@@ -801,7 +801,7 @@ void CRed_Koopa::SetState(int state)
 		break;
 
 	case KOOPA_RED_STATE_WALKING_ON_GLASS:
-		vx = -0.011f;
+		vx = -0.009f;
 		isTurtleShell = false;
 		isDead = false;
 		HaveOrNotCheckFall = true;

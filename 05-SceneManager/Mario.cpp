@@ -36,10 +36,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == RACOON_STATE_FLY_DOWN_RELEASE || state == RACOON_STATE_FLY) && !isOnPlatform) {
+	/*if ((state == RACOON_STATE_FLY_DOWN_RELEASE || state == RACOON_STATE_FLY) && !isOnPlatform) {
 		ay = 0.0014f;
 	}
-	else ay = MARIO_GRAVITY;
+	else ay = MARIO_GRAVITY;*/
 
 	/*if (state == MARIO_STATE_RELEASE_JUMP && !isOnPlatform)
 	{
@@ -66,7 +66,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if ((!Run) || abs(vx) < 0.0007 || state == MARIO_STATE_IDLE || (FlyHigh&&!isOnPlatform))
 	{
 		if (GetTickCount64() - stop_speed > 250) {
-			if (markFly > 0 && (!Fly && vy >0 ) && (markFly <= 9 /*&& GetTickCount64() - time_relase_fly_high > 2000*/)) markFly--;
+			if (markFly > 0 && (GetTickCount64() - time_fly_max > 8000) && (markFly <= 9 /*&& GetTickCount64() - time_relase_fly_high > 2000*/)) markFly--;
 			stop_speed = GetTickCount64();
 		}
 
@@ -84,29 +84,67 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	}
 
+	if (time_maintain_fly_low != -1) {
+		if (GetTickCount64() - time_maintain_fly_low > 100) {
+			ay = MARIO_GRAVITY;
+			time_maintain_fly_low = -1;
+		}
+	}
 	//if (FlyHigh) ay = 0;
 	//else ay = MARIO_GRAVITY;
 
 	if (Fly) {
+
+		if (GetTickCount64() - time_fly_max > 7000)
+		{
+			SetState(RACOON_STATE_END_FLY);
+		}
+
+		else if (GetTickCount64() - time_maintain_fly_high > 200)
+		{
+			SetState(RACOON_STATE_RELEASE_FLY_HIGH);
+		}
+
 		if (isOnPlatform) {
 			Fly = false;
+			vy = -0.27f;
 			ay = MARIO_GRAVITY;
-			FlyHigh = false;
-			
 		}
-		else {
-			//time_relase_fly_high = GetTickCount64();
-			if (markFly >= 6) {
-				ay = 0;
-				FlyHigh = true;
-				
-				
-				//vy = -0.24f;
-				//FlyHigh = true;
-				//ay = MARIO_GRAVITY;
-				//ay = 0;
-			}
-		}
+
+
+
+		//if (isOnPlatform) {
+		//	Fly = false;
+		//	ay = MARIO_GRAVITY;
+		//	FlyHigh = false;
+		//	
+		//}
+		//else {
+		//	//time_relase_fly_high = GetTickCount64();
+		//	if (markFly >= 6) {
+		//		ay = 0;
+		//		FlyHigh = true;
+		//		
+		//		
+		//		//vy = -0.24f;
+		//		//FlyHigh = true;
+		//		//ay = MARIO_GRAVITY;
+		//		//ay = 0;
+		//	}
+		//}
+	}
+
+	if (flyLowDown) {
+		ay = 0.0f;
+		vy = -0.025;
+		/*if (nx != 0) {
+			if (nx > 0) vx = 0.13;
+			else vx = -0.13;
+		} */
+		
+	}
+	else if(!Fly) {
+		ay = MARIO_GRAVITY;
 	}
 
 	if (EnterPipe) {
@@ -118,11 +156,19 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 	}
 
+	if (state == RACOON_STATE_START_FLY) {
+		if (GetTickCount64() - time_fly_max > 500) vy = -0.0f;
+		
+	}
+
+	//if (Fly && isOnPlatform) { GetRenderFly = true; }
+
 	FlyHigh = false;
 	HitHeadPipe = false;
 	StandOnPipe = false;
 	EnterPipe = false;
 	isOnPlatform = false;
+	flyLowDown = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -259,17 +305,10 @@ void CMario::CreateWhippingofTail() {
 
 void CMario::SetRacoonFlying() {
 
-	if (markFly >= 5) {
-		//if(GetTickCount64() - time_relase_fly_high > 7000)
-		vy = -0.1f;
-		ax = 0.0f;
-		vx = nx*0.03f;
-
-		//ay = 0;
-		time_relase_fly_high = GetTickCount64();
-	}
-	else vy = -0.09f;
-	Fly = true;
+	
+	//vy = 0.09f;
+	//ay = 0.0f;
+	//Fly = true;
 
 	
 
@@ -1311,10 +1350,10 @@ int CMario::GetAniIdRacoon() {
 
 	int aniId = -1;
 
-	if (!Fly){
+	if (!Fly) {
+
 		if (!isOnPlatform)
 		{
-
 			if (abs(ax) == MARIO_ACCEL_RUN_X)
 			{
 				if (nx >= 0)
@@ -1322,13 +1361,25 @@ int CMario::GetAniIdRacoon() {
 				else
 					aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
 			}
-			else
-			{
-				if (nx >= 0)
-					aniId = ID_ANI_RACOON_JUMP_WALK_RIGHT;
-				else
-					aniId = ID_ANI_RACOON_JUMP_WALK_LEFT;
+			else {
+				if (markFly < 6) {
+					if (nx > 0) aniId = ID_ANI_RACOON_FLY_DOWN_RIGHT;
+					else aniId = ID_ANI_RACOON_FLY_DOWN_LEFT;
+				}
+				else {
+					if (nx > 0) aniId = ID_ANI_RACOON_FLY_RIGHT;
+					else aniId = ID_ANI_RACOON_FLY_LEFT;
+				}
 			}
+			/*else
+			{
+				if (!flyLowDown && vy < 0) {
+					if (nx >= 0)
+						aniId = ID_ANI_RACOON_JUMP_WALK_RIGHT;
+					else
+						aniId = ID_ANI_RACOON_JUMP_WALK_LEFT;
+				}
+			}*/
 		}
 		else
 			if (isSitting)
@@ -1360,8 +1411,8 @@ int CMario::GetAniIdRacoon() {
 							if (ax < 0)
 								aniId = ID_ANI_RACOON_BRACE_RIGHT;
 							else if (ax == MARIO_ACCEL_RUN_X) {
-								if(markFly >=7)
-								aniId = ID_ANI_RACOON_RUNNING_RIGHT;
+								if (markFly >= 7)
+									aniId = ID_ANI_RACOON_RUNNING_RIGHT;
 								else aniId = ID_ANI_RACOON_WALKING_RIGHT;
 							}
 							else if (ax == MARIO_ACCEL_WALK_X)
@@ -1372,8 +1423,8 @@ int CMario::GetAniIdRacoon() {
 							if (ax > 0)
 								aniId = ID_ANI_RACOON_BRACE_LEFT;
 							else if (ax == -MARIO_ACCEL_RUN_X) {
-								if(markFly >= 7)
-								aniId = ID_ANI_RACOON_RUNNING_LEFT;
+								if (markFly >= 7)
+									aniId = ID_ANI_RACOON_RUNNING_LEFT;
 								else aniId = ID_ANI_RACOON_WALKING_LEFT;
 							}
 							else if (ax == -MARIO_ACCEL_WALK_X)
@@ -1385,6 +1436,9 @@ int CMario::GetAniIdRacoon() {
 		if (!isOnPlatform)
 		{
 
+			if (nx > 0) aniId = ID_ANI_RACOON_FLY_RIGHT;
+			else aniId = ID_ANI_RACOON_FLY_LEFT;
+
 
 			if (abs(ax) == MARIO_ACCEL_RUN_X)
 			{
@@ -1393,19 +1447,14 @@ int CMario::GetAniIdRacoon() {
 				else
 					aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
 			}
-			
-			if (Holding) {
-					if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
-					else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
-			}
-			else {
-				
-					if (nx > 0) aniId = ID_ANI_RACOON_FLY_DOWN_RIGHT;
-					else aniId = ID_ANI_RACOON_FLY_DOWN_LEFT;
 
+			if (Holding) {
+				if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
+				else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
 			}
-			
+
 		}
+
 		else {
 			if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
 			else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
@@ -1432,10 +1481,7 @@ void CMario::Render()
 		else
 			aniId = ID_ANI_RACOON_ATTACK_LEFT;
 	}
-	else if (markFly >= 5 && Fly) {
-		if (nx > 0) aniId = ID_ANI_RACOON_FLY_RIGHT;
-		else aniId = ID_ANI_RACOON_FLY_LEFT;
-	}
+	
 	/*else if (state == RACOON_STATE_FLY_DOWN_RELEASE)
 	{
 		if (nx >= 0)
@@ -1473,7 +1519,7 @@ void CMario::SetState(int state)
 
 	//else if (this->state == RACOON_STATE_FLY) return;
 
-
+	//else if (state == RACOON_STATE_START_FLY && GetTickCount64() - time_fly_max > 850) return;
 	
 
 	if (Kicking && GetTickCount64() - timing > 200)
@@ -1492,6 +1538,7 @@ void CMario::SetState(int state)
 			nx = 1;
 		}
 		else {
+			if (markFly >= 6 && !isOnPlatform) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = MARIO_RUNNING_SPEED + markFly*0.002;
 			ax = MARIO_ACCEL_RUN_X;
@@ -1507,6 +1554,7 @@ void CMario::SetState(int state)
 			nx = -1;
 		}
 		else {
+			if (markFly >= 6 && !isOnPlatform) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = -MARIO_RUNNING_SPEED - markFly*0.002;
 			ax = -MARIO_ACCEL_RUN_X;
@@ -1547,38 +1595,62 @@ void CMario::SetState(int state)
 					vy = -0.6;
 			}
 		}
+		else if(level == 3) {
+			if (GetTickCount64() - time_maintain_fly_low > 300) break;
+			if (vy > 0)
+			{
+				ay = 0.0f;
+				vy = 0.02f;
+			}
+		}
 		break;
 
 	case RACOON_STATE_FLY:
-		if (level != 3) return;
-		Fly = true;
-		time_relase_fly_high = GetTickCount64();
-		isOnPlatform = false;
-		SetRacoonFlying();
+		if (level != 3) break;
+		//if (!isOnPlatform)
+			Fly = true;
+		//else Fly = false;
+		ay = 0;
+		time_maintain_fly_high = GetTickCount64();
+		vy = -0.18f;
+		//time_relase_fly_high = GetTickCount64();
+		//isOnPlatform = false;
+		
 		
 		//y += 6;
 		//ay = 0.00001f;
 		//vy = -0.3f;
 		break;
 
+	case RACOON_STATE_END_FLY:
+		ay = MARIO_GRAVITY;
+		Fly = false;
+		break;
+
+	case RACOON_STATE_START_FLY:
+		rangFlyStart = y;
+		vy = -0.23f;
+		//vy = 0;
+		Fly = true;
+		time_fly_max = GetTickCount64();
+		//ay = 0;
+		break;
+
+	case RACOON_STATE_RELEASE_FLY_HIGH:
+		ay = 0.00035f;
+		break;
+
 	case MARIO_STATE_RELEASE_JUMP:
+
+		if (level == 3 && !isOnPlatform) flyLowDown = true;
 		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		
 		break;
 
 	case RACOON_STATE_FLY_DOWN_RELEASE:
 		if (level != 3) return;
-		if (isOnPlatform) return;
-		else {
-			if (vy > 0) vy -= MARIO_JUMP_SPEED_Y / 2;
-			/*if (vx > 0) x += 2;
-			else if (vx < 0) x -= 2;*/
-
-			//timing = GetTickCount64();
-			//Fly = false;
-			//ay = 0.00165;
-			//vy = -0.2f;
-
-		}
+		else flyLowDown = true;
+		
 		//if(!isOnPlatform)
 		//ay = 0.00002f;
 		//ay = 0;

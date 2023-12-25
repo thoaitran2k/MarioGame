@@ -51,6 +51,9 @@
 #define RACOON_STATE_FLY_DOWN_RELEASE	800
 
 #define RACOON_STATE_FLY	810
+#define RACOON_STATE_END_FLY	820
+#define RACOON_STATE_START_FLY	830
+#define RACOON_STATE_RELEASE_FLY_HIGH	840
 
 
 
@@ -212,6 +215,9 @@ class CMario : public CGameObject
 	bool Holding;
 	bool isHold;
 	bool TailAttack;
+	bool flyLowDown;
+	bool GetRenderFly;
+	float rangFlyStart;
 
 	int effect;
 
@@ -245,6 +251,10 @@ class CMario : public CGameObject
 	ULONGLONG start_prepare;
 	ULONGLONG time_relase_fly_high;
 	ULONGLONG count_seconds;
+	ULONGLONG time_maintain_fly_high;
+	ULONGLONG time_maintain_fly_low;
+	ULONGLONG time_fly_max;
+
 
 	CTailWhipping* tail;
 	
@@ -309,6 +319,8 @@ public:
 		isHold = false;
 		HitHeadPipe = false;
 		TailAttack = false;
+		flyLowDown = false;
+		rangFlyStart = 0;
 		Fly = false;
 		clocktime = 300;
 		score = 0;
@@ -329,6 +341,11 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
+		time_fly_max = -1;
+		time_maintain_fly_low = -1;
+		time_maintain_fly_high = -1;
+
+
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -406,9 +423,11 @@ public:
 	bool GetFlyHigh() { return FlyHigh; }
 
 	//set
+	void SetFlyLowDown(bool b) {b = flyLowDown;}
+
 	void SetTimeFlyHigh(ULONGLONG b) { b = time_relase_fly_high; }
 
-	
+	void SetTimeFlyLow(ULONGLONG t) { t = time_maintain_fly_low; }
 
 	void SetHolding(bool b) { Holding = b; }
 
