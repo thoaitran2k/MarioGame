@@ -32,3 +32,5 @@ height	240
 150	textures\hud_source.png
 180	textures\gameover.png
 190	textures\dialogs.png
+200	textures\worldmapObj.png
+210	textures\worldmap.png

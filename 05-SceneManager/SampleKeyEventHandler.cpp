@@ -220,7 +220,7 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		{
 
 
-			if (game->IsKeyDown(DIK_A))
+			if (game->IsKeyDown(DIK_A) && !mario->GetFly())
 
 				mario->SetState(MARIO_STATE_RUNNING_RIGHT);
 			else
@@ -228,7 +228,7 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		}
 		else if (game->IsKeyDown(DIK_LEFT))
 		{
-			if (game->IsKeyDown(DIK_A))
+			if (game->IsKeyDown(DIK_A) && !mario->GetFly())
 				mario->SetState(MARIO_STATE_RUNNING_LEFT);
 			else
 

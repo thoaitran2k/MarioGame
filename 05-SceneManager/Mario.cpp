@@ -65,10 +65,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if ((!Run) || abs(vx) < 0.0007 || state == MARIO_STATE_IDLE || (FlyHigh&&!isOnPlatform))
+	if ((!Run) || abs(vx) < 0.0007 || state == MARIO_STATE_IDLE/* || (FlyHigh&&!isOnPlatform)*/)
 	{
 		if (GetTickCount64() - stop_speed > 250) {
-			if (markFly > 0 && (GetTickCount64() - time_fly_max > 8000) && (markFly <= 9 /*&& GetTickCount64() - time_relase_fly_high > 2000*/)) markFly--;
+			if (markFly > 0 && (GetTickCount64() - time_fly_max > 8000)) markFly--;
 			stop_speed = GetTickCount64();
 		}
 
@@ -158,10 +158,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		
 	}
 
-	if (state == RACOON_STATE_START_FLY) {
-		if (GetTickCount64() - time_fly_max > 500) vy = -0.0f;
-		
-	}
+	//if (state == RACOON_STATE_START_FLY) {
+	//	if (GetTickCount64() - time_fly_max > 500) vy = -0.0f;
+	//	
+	//}
 
 	//if (Fly && isOnPlatform) { GetRenderFly = true; }
 
@@ -1541,7 +1541,7 @@ void CMario::SetState(int state)
 			nx = 1;
 		}
 		else {
-			if (markFly >= 6 && !isOnPlatform) SetState(RACOON_STATE_START_FLY);
+			if (markFly >= 6 && !isOnPlatform && state != MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = MARIO_RUNNING_SPEED + markFly*0.002;
 			ax = MARIO_ACCEL_RUN_X;
@@ -1557,7 +1557,7 @@ void CMario::SetState(int state)
 			nx = -1;
 		}
 		else {
-			if (markFly >= 6 && !isOnPlatform) SetState(RACOON_STATE_START_FLY);
+			if (markFly >= 6 && !isOnPlatform && state!= MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = -MARIO_RUNNING_SPEED - markFly*0.002;
 			ax = -MARIO_ACCEL_RUN_X;
@@ -1632,7 +1632,8 @@ void CMario::SetState(int state)
 
 	case RACOON_STATE_START_FLY:
 		rangFlyStart = y;
-		vy = -0.23f;
+		vy = -0.59f;
+		vx = nx * 0.18f;
 		//vy = 0;
 		Fly = true;
 		time_fly_max = GetTickCount64();

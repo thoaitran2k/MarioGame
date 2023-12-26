@@ -1,6 +1,10 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
+#MAP_1
 999	0	0	2816	432	30
+
+#WORLD_MAP
+99999	0	0	256	184	210
 
 991	1331	431	1964	655	30
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
@@ -8,3 +12,5 @@
 999999	999	100
 
 999991	991	1000
+
+999998	99999	1000
