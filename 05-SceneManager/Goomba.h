@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 
+
 #define GOOMBA_GRAVITY 0.0005f
 #define GOOMBA_WALKING_SPEED 0.05f
 
@@ -38,6 +39,8 @@ protected:
 	float range;
 	bool upside;
 	int model;
+	bool Active;
+
 	ULONGLONG die_start;
 	ULONGLONG die_upside_start;
 
@@ -55,6 +58,7 @@ protected:
 
 public: 	
 
+	void Goomba_Active();
 
 	void SetIsBlocking(int b) { b; }
 	CGoomba(float x, float y, int model);

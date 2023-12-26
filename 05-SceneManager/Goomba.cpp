@@ -15,8 +15,16 @@ CGoomba::CGoomba(float x, float y, int model):CGameObject(x, y)
 	die_upside_start = -1;
 	this->model = model;
 	upside = false;
+	Active = false;
 
 	SetState(GOOMBA_STATE_WALKING);
+}
+
+void CGoomba::Goomba_Active() {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	if (abs(mario->GetX() - x) < 170)
+		Active = true;
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -43,8 +51,12 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 
 void CGoomba::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+	Goomba_Active();
+	if(Active)
+	{
+		x += vx * dt;
+		y += vy * dt;
+	}
 };
 
 void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -70,6 +82,7 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	ay = GOOMBA_GRAVITY;
 
+	if (Active) {
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -77,24 +90,26 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vx = 0;
 		vy = 0.35f;
 	}*/
+	
 
-	if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
-	{
-		isDeleted = true;
-		//return;
-	}
+		if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
+		{
+			isDeleted = true;
+			//return;
+		}
 
-	/*else if ((state == GOOMBA_STATE_THROWN_BY_KOOPA) && GetTickCount64() - die_start > 300)
-	{
-		isDeleted = true;
-		return;
-	}*/
+		/*else if ((state == GOOMBA_STATE_THROWN_BY_KOOPA) && GetTickCount64() - die_start > 300)
+		{
+			isDeleted = true;
+			return;
+		}*/
 
-	 else if(state == GOOMBA_STATE_DIE_UPSIDE && GetTickCount64() - die_upside_start >1200)
-	{
-		
-		isDeleted = true;
-		return;
+		else if (state == GOOMBA_STATE_DIE_UPSIDE && GetTickCount64() - die_upside_start > 1200)
+		{
+
+			isDeleted = true;
+			return;
+		}
 	}
 
 	CGameObject::Update(dt, coObjects);

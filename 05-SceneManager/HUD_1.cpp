@@ -92,15 +92,15 @@ void CHUD_1::Render() {
 	
 	if (mario->GetState() != MARIO_STATE_DIE) {
 		if (up == 0) {
-			AniNumber(2, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + 2 * ADJUST_Y_POWER_POSITION); //MAC DINH 
+			AniNumber(2, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + DISTANCE_NUMBER); //MAC DINH 
 		}
 		else if (up > 0) {
-			AniNumber(2 + up, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + 2 * ADJUST_Y_POWER_POSITION);
+			AniNumber(2 + up, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + DISTANCE_NUMBER);
 		}
 	}
 	else
 	{
-		AniNumber(2 + up -1, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + 2 * ADJUST_Y_POWER_POSITION);
+		AniNumber(2 + up -1, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + DISTANCE_NUMBER);
 	}
 	
 }
