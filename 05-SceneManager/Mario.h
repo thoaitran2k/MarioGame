@@ -222,6 +222,7 @@ class CMario : public CGameObject
 	int effect;
 
 	int markFly;
+	int UP_M;
 
 	bool FlyHigh;
 	bool Fly;
@@ -330,6 +331,7 @@ public:
 		time_relase_fly_high = -1;
 		tail = NULL;
 		rangeEnterPipe = 0;
+		UP_M = 0;
 		EnterPipe = false;
 		StandOnPipe = false;
 		maxVx = 0.0f;
@@ -394,6 +396,8 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	//get
+	int GetUp_M() { return UP_M; }
+
 	bool GetIsHolding() { return Holding; }
 
 	int GetMarkFly() { return markFly; }
@@ -423,6 +427,8 @@ public:
 	bool GetFlyHigh() { return FlyHigh; }
 
 	//set
+	void SetUp_M(int m) { m = UP_M; }
+
 	void SetFlyLowDown(bool b) {b = flyLowDown;}
 
 	void SetTimeFlyHigh(ULONGLONG b) { b = time_relase_fly_high; }

@@ -1162,6 +1162,7 @@ void CMario::OnCollisionWithMushRoom(LPCOLLISIONEVENT e)
 				//effect = 9;
 				CreatEffectMario(9);
 				SetPoint(10);
+				SetPoint(99);
 				
 				//SetEffect(9);
 				
@@ -1839,6 +1840,15 @@ void CMario::SetPoint(int point)
 		score = score + 50;
 		break;
 	}
+
+	case 99:
+	{
+		UP_M += 1;
+		break;
 	}
+
+	}// ket thuc switch;
+
+	
 }
 

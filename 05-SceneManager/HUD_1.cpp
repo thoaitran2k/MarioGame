@@ -86,6 +86,17 @@ void CHUD_1::Render() {
 
 	//M
 	CAnimations::GetInstance()->Get(ID_ANI_M_SYMBOL)->Render(x + POSITION_M_SYMBOL_X, y - ADJUST_Y_POWER_POSITION_UNDER - 1);
+	//UP
+	int up;
+	up = mario->GetUp_M();
+	
+
+	if (up == 0) {
+		AniNumber(2, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + 2 * ADJUST_Y_POWER_POSITION); //MAC DINH 
+	}
+	else if (up > 0) {
+		AniNumber(2 + up, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + 2 * ADJUST_Y_POWER_POSITION);
+	}
 	
 }
 
