@@ -36,6 +36,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	//if (state == MARIO_STATE_DIE) UP_M = 1;
+
 	/*if ((state == RACOON_STATE_FLY_DOWN_RELEASE || state == RACOON_STATE_FLY) && !isOnPlatform) {
 		ay = 0.0014f;
 	}
@@ -1843,7 +1845,9 @@ void CMario::SetPoint(int point)
 
 	case 99:
 	{
-		UP_M += 1;
+		//if (state != MARIO_STATE_DIE)
+			UP_M += 1;
+		//else UP_M -= 1;
 		break;
 	}
 
