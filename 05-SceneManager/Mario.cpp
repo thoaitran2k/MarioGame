@@ -67,7 +67,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		untouchable = 0;
 	}
 
-	if ((!Run) || abs(vx) < 0.0007 || state == MARIO_STATE_IDLE/* || (FlyHigh&&!isOnPlatform)*/)
+	if ((!Run) || abs(vx) < 0.0007 || state == MARIO_STATE_IDLE  /* || (FlyHigh&&!isOnPlatform)*/)
 	{
 		if (GetTickCount64() - stop_speed > 250) {
 			if (markFly > 0 && (GetTickCount64() - time_fly_max > 8000)) markFly--;
@@ -161,9 +161,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetPositionPlayer(3048, 450);
 	}
 
-	if (abs(y - rangeEnterPipe) < 40) {
+	if (abs(y - rangeEnterPipe) < 30) {
 		ay = 0.0001;
-		LoadRenderDownPipe = true;
+		//LoadRenderDownPipe = true;
 	}
 	else rangeEnterPipe = -1;
 
@@ -1556,7 +1556,7 @@ void CMario::Render()
 
 	//RenderBoundingBox();
 	
-	DebugOutTitle(L"Score: %d", score);
+	DebugOutTitle(L"MARKFLy: %d", markFly);
 	//DebugOutTitle(L"Toa do x =: %d",x );
 }
 
@@ -1595,7 +1595,7 @@ void CMario::SetState(int state)
 			nx = 1;
 		}
 		else {
-			if (markFly >= 6 && !isOnPlatform && state != MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
+			if (markFly >= 7 && !isOnPlatform && state != MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = MARIO_RUNNING_SPEED + markFly*0.002;
 			ax = MARIO_ACCEL_RUN_X;
@@ -1611,7 +1611,7 @@ void CMario::SetState(int state)
 			nx = -1;
 		}
 		else {
-			if (markFly >= 6 && !isOnPlatform && state!= MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
+			if (markFly >= 7 && !isOnPlatform && state!= MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = -MARIO_RUNNING_SPEED - markFly*0.002;
 			ax = -MARIO_ACCEL_RUN_X;
@@ -1667,9 +1667,10 @@ void CMario::SetState(int state)
 		//if (!isOnPlatform)
 			Fly = true;
 		//else Fly = false;
+		//Run = false;
 		ay = 0;
 		time_maintain_fly_high = GetTickCount64();
-		vy = -0.18f;
+		vy = -0.14f;
 		//time_relase_fly_high = GetTickCount64();
 		//isOnPlatform = false;
 		
@@ -1686,15 +1687,17 @@ void CMario::SetState(int state)
 
 	case RACOON_STATE_START_FLY:
 		rangFlyStart = y;
-		vy = -0.59f;
+		vy = -0.49f;
 		vx = nx * 0.18f;
 		//vy = 0;
 		Fly = true;
+		//Run = false;
 		time_fly_max = GetTickCount64();
 		//ay = 0;
 		break;
 
 	case RACOON_STATE_RELEASE_FLY_HIGH:
+		//Run = false;
 		ay = 0.00035f;
 		break;
 

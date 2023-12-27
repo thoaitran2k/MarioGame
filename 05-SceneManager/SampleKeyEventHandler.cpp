@@ -44,7 +44,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		//	}
 		//}
 
-		if (mario->GetMarkFly() >= 6) {
+		if (mario->GetMarkFly() >= 7) {
 			mario->SetState(RACOON_STATE_FLY);
 		}
 		else {

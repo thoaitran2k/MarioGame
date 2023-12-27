@@ -521,16 +521,18 @@ void CPlayScene::Update(DWORD dt)
 	if (mario->GetLevel() == 3) {
 		if (mario->GetMarkFly() >= 6 && mario->GetFly())
 		{
-			if(mario->GetY() > 205)
+			if(mario->GetY() > 198)
 			CGame::GetInstance()->SetCamPos(cx, cy);
 
-			else CGame::GetInstance()->SetCamPos(cx, 55);
+			else CGame::GetInstance()->SetCamPos(cx, 45);
 
 
 
 		}
 		else if (mario->GetY()<205 )
-			CGame::GetInstance()->SetCamPos(cx, 55);
+			CGame::GetInstance()->SetCamPos(cx, 45);
+		//else if(mario->GetY()<0)
+			//CGame::GetInstance()->SetCamPos(cx, 0);
 
 		else if(mario->GetY() > 408 && mario->GetX() > 2870)
 			CGame::GetInstance()->SetCamPos(cx, 444);
@@ -544,7 +546,7 @@ void CPlayScene::Update(DWORD dt)
 			CGame::GetInstance()->SetCamPos(cx, 444);
 
 		else if (mario->GetY() < 205)
-			CGame::GetInstance()->SetCamPos(cx, 55);
+			CGame::GetInstance()->SetCamPos(cx, 45);
 
 		else
 		CGame::GetInstance()->SetCamPos(cx, 263);
