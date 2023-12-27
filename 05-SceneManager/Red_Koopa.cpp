@@ -615,10 +615,10 @@ void CRed_Koopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 	
 			
-		if (typeKoopa == 1)
-			CreateNewKoopa();
-		else if (typeKoopa == 2) CreateNewKoopa2();
-			DebugOut(L">>> BBBBBBBBBBB >>> \n");	
+		//if (typeKoopa == 1)
+			///CreateNewKoopa();
+		//else if (typeKoopa == 2) CreateNewKoopa2();
+			//DebugOut(L">>> BBBBBBBBBBB >>> \n");	
 			//CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
 
 			//CRed_Koopa* rs_koopa = new CRed_Koopa(startX, startY);

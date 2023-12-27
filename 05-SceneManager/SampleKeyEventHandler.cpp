@@ -17,6 +17,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		if (!mario->GetIsStandOnPipi())
 			mario->SetState(MARIO_STATE_SIT);
 		else { 
+			if(mario->GetLevel() > 1)
 			mario->SetState(MARIO_STATE_DOWN_PIPE);
 			//mario->SetEnterPipe(true);
 			//mario->SetY(mario->GetY() + 1); 

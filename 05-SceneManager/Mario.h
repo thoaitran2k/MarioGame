@@ -96,6 +96,8 @@
 
 #define ID_ANI_MARIO_DIE 999
 
+#define ID_ANI_BIG_MARIO_DOWN_UP	33334
+
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1102
@@ -177,6 +179,8 @@
 #define ID_ANI_RACOON_FLY_RIGHT 3300
 #define ID_ANI_RACOON_FLY_LEFT 3200
 
+#define ID_ANI_DOWN_UP_PIPE	33333
+
 
 
 #pragma endregion
@@ -218,6 +222,8 @@ class CMario : public CGameObject
 	bool flyLowDown;
 	bool GetRenderFly;
 	float rangFlyStart;
+	float rangeUpPipe;
+	bool LoadRenderDownPipe;
 
 	int effect;
 
@@ -239,6 +245,8 @@ class CMario : public CGameObject
 	bool StandOnPipe;
 	bool HitHeadPipe;
 	float rangeEnterPipe;
+	bool waitDownPipe;
+	bool waitUpPipe;
 
 	int level; 
 	
@@ -255,6 +263,7 @@ class CMario : public CGameObject
 	ULONGLONG time_maintain_fly_high;
 	ULONGLONG time_maintain_fly_low;
 	ULONGLONG time_fly_max;
+	ULONGLONG time_wait_up_pipe;
 
 
 	CTailWhipping* tail;
@@ -275,6 +284,7 @@ class CMario : public CGameObject
 	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);	
 	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
 	
 
 
@@ -321,7 +331,10 @@ public:
 		HitHeadPipe = false;
 		TailAttack = false;
 		flyLowDown = false;
-		rangFlyStart = 0;
+		waitDownPipe = false;
+		waitUpPipe = false;
+		rangFlyStart = -1;
+		
 		Fly = false;
 		clocktime = 300;
 		score = 0;
@@ -331,9 +344,11 @@ public:
 		time_relase_fly_high = -1;
 		tail = NULL;
 		rangeEnterPipe = 0;
+		rangeUpPipe = 0;
 		UP_M = 0;
 		EnterPipe = false;
 		StandOnPipe = false;
+		LoadRenderDownPipe = false;
 		maxVx = 0.0f;
 		ax = 0.0f;
 
@@ -346,6 +361,8 @@ public:
 		time_fly_max = -1;
 		time_maintain_fly_low = -1;
 		time_maintain_fly_high = -1;
+
+		time_wait_up_pipe = -1;
 
 
 		isOnPlatform = false;

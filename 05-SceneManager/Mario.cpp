@@ -24,6 +24,8 @@
 #include "glassBrick.h"
 #include "ButtonP.h"
 #include "GameEffects.h"
+#include "Platform.h"
+#include "Background.h"
 
 
 
@@ -149,28 +151,49 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		ay = MARIO_GRAVITY;
 	}
 
-	if (EnterPipe) {
-		//ay = 0.0015f;
-		if (vy > 0) {
-			if (abs(y-rangeEnterPipe)>0)
-				SetPositionPlayer(3048, 450);
-		}
-		
-	}
+	
 
 	//if (state == RACOON_STATE_START_FLY) {
 	//	if (GetTickCount64() - time_fly_max > 500) vy = -0.0f;
 	//	
 	//}
+	if (waitDownPipe && GetTickCount64() - timedownupPipe >2500) {
+		SetPositionPlayer(3048, 450);
+	}
+
+	if (abs(y - rangeEnterPipe) < 40) {
+		ay = 0.0001;
+		LoadRenderDownPipe = true;
+	}
+	else rangeEnterPipe = -1;
+
+
+	//UP_PIPE
+	if (waitUpPipe && GetTickCount64() - time_wait_up_pipe > 2500) {
+		SetPositionPlayer(2336, 372);
+	}
+
+	if (abs(y - rangeUpPipe) < 30) {
+		//ay = 0;
+		vy = -0.035f;
+
+	}
+	else rangeUpPipe = -1;
+	//else ay = MARIO_GRAVITY;
+
+	//if (StandOnPipe) ay = 0.0f;
+		
 
 	//if (Fly && isOnPlatform) { GetRenderFly = true; }
-
+	LoadRenderDownPipe = false;
 	FlyHigh = false;
 	HitHeadPipe = false;
 	StandOnPipe = false;
 	EnterPipe = false;
 	isOnPlatform = false;
 	flyLowDown = false;
+	waitDownPipe = false;
+	waitUpPipe = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -370,15 +393,34 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithButtonP(e);
 	else if (dynamic_cast<CPipePlantShoot*>(e->obj))
 		OnCollisionWithPipe(e);
-
+	else if (dynamic_cast<CPlatform*>(e->obj))
+		OnCollisionWithPlatform(e);
 
 	
+}
+
+void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e) {
+
+	if (e->ny < 0) {
+		//if (/*state == MARIO_STATE_DOWN_PIPE &&*/ //!EnterPipe /*&& GetTickCount64() - timedownupPipe > 1000*/) {
+			//ay = 0.0015f;
+			//if (vy == 0) {
+				//if (abs(y - rangeEnterPipe) > 0)
+					//SetPositionPlayer(3048, 450);
+			//}
+
+		//}
+		waitDownPipe = true;
+	}
+	else if (e->ny > 0) {
+		waitUpPipe = true;
+	}
 }
 
 void CMario::OnCollisionWithPipe(LPCOLLISIONEVENT e) {
 	CPipePlantShoot* pipe = dynamic_cast<CPipePlantShoot*>(e->obj);
 	if (e->ny != 0) {
-		if (e->ny < 0) {
+		if (e->ny<0) {
 			if (pipe->GetModel() == MODEL_EMPTY_PORTAL_PIPE)
 				StandOnPipe = true;
 				//SetPositionPlayer(2336, 372);
@@ -1357,6 +1399,8 @@ int CMario::GetAniIdRacoon() {
 
 		if (!isOnPlatform)
 		{
+			
+
 			if (abs(ax) == MARIO_ACCEL_RUN_X)
 			{
 				if (nx >= 0)
@@ -1438,6 +1482,7 @@ int CMario::GetAniIdRacoon() {
 
 		if (!isOnPlatform)
 		{
+			
 
 			if (nx > 0) aniId = ID_ANI_RACOON_FLY_RIGHT;
 			else aniId = ID_ANI_RACOON_FLY_LEFT;
@@ -1477,12 +1522,19 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
-	else if(state == MARIO_STATE_ATTACK)
+	else if (state == MARIO_STATE_ATTACK)
 	{
 		if (nx > 0)
 			aniId = ID_ANI_RACOON_ATTACK_RIGHT;
 		else
 			aniId = ID_ANI_RACOON_ATTACK_LEFT;
+	}
+	else if (state == MARIO_STATE_DOWN_PIPE or state == MARIO_STATE_UP_PIPE && level != 1)
+	{
+		if (level == 3)
+			aniId = ID_ANI_DOWN_UP_PIPE;
+		else if (level == 2)
+			aniId = ID_ANI_BIG_MARIO_DOWN_UP;
 	}
 	
 	/*else if (state == RACOON_STATE_FLY_DOWN_RELEASE)
@@ -1516,7 +1568,9 @@ void CMario::SetState(int state)
 
 	else if (this->state == MARIO_STATE_ATTACK && (GetTickCount64() - timing < 250)) return;
 
-	//else if ((this->state == MARIO_STATE_DOWN_PIPE) && (GetTickCount64() - timedownupPipe < 1500)) return;
+	else if ((this->state == MARIO_STATE_DOWN_PIPE) && (GetTickCount64() - timedownupPipe < 1250)) return;
+
+	else if ((this->state == MARIO_STATE_UP_PIPE) && (GetTickCount64() - time_wait_up_pipe < 1250)) return;
 
 	//else if (this->state == RACOON_STATE_FLY_DOWN_RELEASE && (GetTickCount64() - timing < 200)) return;
 
@@ -1739,22 +1793,26 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_DOWN_PIPE:
-		 EnterPipe = true;
-		//timedownupPipe = GetTickCount64();
+		if (level == 1) break;
+		EnterPipe = true;
+		timedownupPipe = GetTickCount64();
 		vx = 0;
 		ay = 0;
 		rangeEnterPipe = y;
-		vy = 0.002f;
-		y = y + 1;
+		vy = 0.00002f;
+		y = y +1;
 		break;
 
 	case MARIO_STATE_UP_PIPE:
-		SetPositionPlayer(2336, 372);
+		if (level == 1) break;
+		//SetPositionPlayer(2336, 372);
 		vx = 0;
 		ay = 0;
-		rangeEnterPipe = y;
-		vy = -0.002f;
-		y = y - 1;
+		//rangeEnterPipe = y;
+		rangeUpPipe = y;
+		time_wait_up_pipe = GetTickCount64();
+		vy = -0.00002f;
+		y = y - 4;
 		break;
 
 	case MARIO_STATE_DIE:
