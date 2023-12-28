@@ -7,10 +7,14 @@ platform.txt
 ObjectWorldMap\Card_Poster_WM.txt
 ObjectWorldMap\Hammer_WM.txt
 hud.txt
-[TILEMAP]
-ObjectWorldMap\TiltleWorldMap.txt
+map.txt
+#[TILEMAP]
+#ObjectWorldMap\TiltleWorldMap.txt
 [OBJECTS]
 
+
+#WORLD_MAP
+99998	128	92
 #GRASS
 1001	16	16
 1001	16	32
@@ -108,4 +112,4 @@ ObjectWorldMap\TiltleWorldMap.txt
 #HAMMER
 43	130	112
 #MARIO
-1000	0	0
+1000001	0	0

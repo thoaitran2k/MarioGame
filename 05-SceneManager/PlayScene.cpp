@@ -27,6 +27,7 @@
 #include "FragGlass.h"
 #include "GameEffects.h"
 #include "HUD_1.h"
+#include "WorldMap.h"
 
 
 
@@ -153,6 +154,8 @@ void CPlayScene::_ParseSection_MAP(string line)
 	//case OBJECT_TYPE_MAP:
 	obj = new CMap(x, y);
 
+	//obj = new CWorldMap(x, y);
+
 	
 
 	//case OBJECT_TYPE_HIDEN_MAP: obj = new CMap(x, y, 2); break;
@@ -164,6 +167,8 @@ void CPlayScene::_ParseSection_MAP(string line)
 	obj->SetPosition(x, y);
 	MapObjects = obj;
 }
+
+
 
 
 /*

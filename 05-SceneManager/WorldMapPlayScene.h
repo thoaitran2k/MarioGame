@@ -2,6 +2,7 @@
 //#include "Map.h"
 //#include "GameObject.h"
 //#include "Scene.h"
+//#include "Mario_WorldMap.h"
 //
 //// similar CPlayScene
 //class CWorldMapPlayScene :public CScene

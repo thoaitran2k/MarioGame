@@ -13,6 +13,7 @@
 //#include "Platform.h"
 //#include "Background.h"
 //#include "WorldMap.h"
+//#include "Mario_WorldMap.h"
 //
 //
 //#include "SampleKeyEventHandler.h"
@@ -37,7 +38,7 @@
 //CWorldMapPlayScene::CWorldMapPlayScene(int id, LPCWSTR filePath) :
 //	CScene(id, filePath)
 //{
-//	player = NULL;
+//	//player = NULL;
 //	key_handler = new CSampleKeyHandler(this);
 //}
 //
@@ -53,21 +54,10 @@
 //	float y = (float)atof(tokens[2].c_str());
 //
 //	CGameObject* obj = NULL;
-//
 //	//switch (object_type)
 //	//{
-//
 //	//case OBJECT_TYPE_MAP:
 //	obj = new CWorldMap(x, y);
-//
-//
-//
-//	//case OBJECT_TYPE_HIDEN_MAP: obj = new CMap(x, y, 2); break;
-//	//}
-//
-//
-//
-//	// General object setup
 //	obj->SetPosition(x, y);
 //	WorldMapObjects = obj;
 //}
@@ -137,20 +127,18 @@
 //	CGameObject* obj = NULL;
 //	switch (object_type)
 //	{
-//	/*case OBJECT_TYPE_MARIO_WORLDMAP:
+//	/*case OBJECT_TYPE_MARIO_WORLD_MAP:
 //		if (player != NULL)
 //		{
 //			DebugOut(L"[ERROR] MARIO object was created before!\n");
 //			return;
 //		}
-//		x = data->GetPositionXWorldMap();
-//		y = data->GetPositionYWorldMap();
-//		obj = new CWorldMapPlayer(x, y);
-//		player = (CWorldMapPlayer*)obj;
+//		obj = new CMario_WorldMap(x, y);
+//		player = (CMario_WorldMap*)obj;
 //
 //		DebugOut(L"[INFO] Player object has been created!\n");
-//		break;
-//	case OBJECT_TYPE_GRASS: obj = new CGrass(x, y); break;
+//		break;*/
+//	/*case OBJECT_TYPE_GRASS: obj = new CGrass(x, y); break;
 //	case OBJECT_TYPE_EFFECT_HELP: obj = new CEffect(x, y, EFFECT_HELP_WORLD_MAP); break;
 //	case OBJECT_TYPE_HAMMER: obj = new CHammer(x, y); break;
 //	case OBJECT_TYPE_OTHER: {
@@ -345,12 +333,12 @@
 //	PurgeDeletedObjects();
 //}
 //
-//void CPlayScene::Render()
+//void CWorldMapPlayScene::Render()
 //{
 //	CGame* game = CGame::GetInstance();
-//	if (MapObjects)
+//	if (WorldMapObjects)
 //	{
-//		MapObjects->Render();
+//		WorldMapObjects->Render();
 //	}
 //
 //
@@ -358,4 +346,47 @@
 //
 //	for (int i = 0; i < objects.size(); i++)
 //		objects[i]->Render();
+//}
+//
+//void CWorldMapPlayScene::Unload() {
+//	for (unsigned int i = 0; i < objects.size(); i++)
+//		delete objects[i];
+//
+//	objects.clear();
+//	//delete current_map;
+//	//current_map = nullptr;
+//	player = NULL;
+//
+//	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
+//}
+//
+//void CWorldMapPlayScene::Clear() {
+//	vector<LPGAMEOBJECT>::iterator it;
+//	for (it = objects.begin(); it != objects.end(); it++)
+//	{
+//		delete (*it);
+//	}
+//	objects.clear();
+//}
+//
+//bool CWorldMapPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+//
+//void CWorldMapPlayScene::PurgeDeletedObjects()
+//{
+//	vector<LPGAMEOBJECT>::iterator it;
+//	for (it = objects.begin(); it != objects.end(); it++)
+//	{
+//		LPGAMEOBJECT o = *it;
+//		if (o->IsDeleted())
+//		{
+//			delete o;
+//			*it = NULL;
+//		}
+//	}
+//
+//	// NOTE: remove_if will swap all deleted items to the end of the vector
+//	// then simply trim the vector, this is much more efficient than deleting individual items
+//	objects.erase(
+//		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
+//		objects.end());
 //}

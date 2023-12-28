@@ -3,7 +3,7 @@
 #include "debug.h"
 #include "Game.h"
 
-#include "Mario.h"
+#include "Mario_WorldMap.h"
 #include "PlayScene.h"
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
