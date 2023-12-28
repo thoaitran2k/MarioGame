@@ -44,13 +44,30 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		//	}
 		//}
 
-		if (mario->GetMarkFly() >= 7) {
-			mario->SetState(RACOON_STATE_FLY);
-		}
+		if (mario->GetContactDoor())
+			//mario->SetEnterMap(true);
+			CGame::GetInstance()->InitiateSwitchScene(5);
 		else {
-			mario->SetState(MARIO_STATE_JUMP);
-			mario->SetTimeFlyHigh(GetTickCount64());
-			//mario->SetState(RACOON_STATE_FLY_DOWN_RELEASE);
+
+
+			if (mario->GetMarkFly () >= 6 && mario->GetLevel() == 3) {
+
+				if(!mario->GetIsOnPlatform())
+				mario->SetState(RACOON_STATE_FLY);
+				else {
+					if(mario->GetState() != RACOON_STATE_FLY)
+					mario->SetState(RACOON_STATE_START_FLY);
+					
+				}
+
+				//mario->SetVy(-0.312f);
+				//else mario->SetVy(0);
+			}
+			else {
+				mario->SetState(MARIO_STATE_JUMP);
+				//mario->SetTimeFlyHigh(GetTickCount64());
+				//mario->SetState(RACOON_STATE_FLY_DOWN_RELEASE);
+			}
 		}
 
 		//if (mario->GetState() == MARIO_STATE_RELEASE_JUMP)
@@ -106,6 +123,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 
 	case DIK_D:
+		
 		
 		DebugOut(L">>> NHAN DDDDDDDDDDDDDDDDDD >>> \n");
 		break;
@@ -222,10 +240,14 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 
 
 			if (game->IsKeyDown(DIK_A) && !mario->GetFly())
-
-				mario->SetState(MARIO_STATE_RUNNING_RIGHT);
-			else
-				mario->SetState(MARIO_STATE_WALKING_RIGHT);
+				//if (!mario->GetFly()) {
+					mario->SetState(MARIO_STATE_RUNNING_RIGHT);
+				//}
+				else mario->SetState(MARIO_STATE_WALKING_RIGHT);
+			/*else {
+					mario->SetState(MARIO_STATE_WALKING_RIGHT);
+	
+			}*/
 		}
 		else if (game->IsKeyDown(DIK_LEFT))
 		{
@@ -257,7 +279,6 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		else
 			mario->SetState(MARIO_STATE_IDLE);
 	}
-
 	else 
 	{
 		if (game->IsKeyDown(DIK_RIGHT))

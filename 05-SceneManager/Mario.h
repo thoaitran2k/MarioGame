@@ -224,6 +224,9 @@ class CMario : public CGameObject
 	float rangFlyStart;
 	float rangeUpPipe;
 	bool LoadRenderDownPipe;
+	bool contact_door;
+
+	bool Enter_map;
 
 	int effect;
 
@@ -333,6 +336,8 @@ public:
 		flyLowDown = false;
 		waitDownPipe = false;
 		waitUpPipe = false;
+		Enter_map = false;
+		contact_door = false;
 		rangFlyStart = -1;
 		
 		Fly = false;
@@ -443,6 +448,8 @@ public:
 
 	bool GetFlyHigh() { return FlyHigh; }
 
+	bool GetContactDoor() { return contact_door; }
+
 	//set
 	void SetUp_M(int m) { m = UP_M; }
 
@@ -471,6 +478,8 @@ public:
 	void SetFlyTF(bool b) { b = Fly; }
 
 	void SetFlyHigh(bool b) { b = FlyHigh; }
+
+	void SetEnterMap(bool b) { b = Enter_map; }
 
 
 };

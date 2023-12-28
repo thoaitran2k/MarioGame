@@ -51,7 +51,7 @@ void CHUD_1::Render() {
 	if (mark > 6) {
 		CAnimations::GetInstance()->Get(ID_ANI_POWER_HUD)->Render(x - ADJUST_X_POWER_POSITION + DISTANCE_EVERY_LEVEL_RUN * 5, y - ADJUST_Y_POWER_POSITION);
 	}
-	if (mark >= 8) {
+	if (mark >= 7) {
 		CAnimations::GetInstance()->Get(ID_ANI_P)->Render(x - ADJUST_X_POWER_POSITION_MAX, y - ADJUST_Y_POWER_POSITION);
 	}
 	

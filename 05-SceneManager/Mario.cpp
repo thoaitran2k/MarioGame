@@ -34,6 +34,13 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	//ay = 0.0007f;
+	//Enter_map = false;
+	//contact_door = false;
+	//if (Enter_map) {
+	//	CGame::GetInstance()->InitiateSwitchScene(5);
+	//}
+
+	//CGame::GetInstance()->InitiateSwitchScene(5);
 
 	vy += ay * dt;
 	vx += ax * dt;
@@ -52,6 +59,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else ay = MARIO_GRAVITY;
 	}
 	*/
+
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 
@@ -98,44 +106,38 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//else ay = MARIO_GRAVITY;
 
 	if (Fly) {
+		//Run = false;
+		if (state == RACOON_STATE_START_FLY)
+			ay = 0;
+
+		if (GetTickCount64() - time_fly_max < 200)
+			ay = -0.0f;
 
 		if (GetTickCount64() - time_fly_max > 7000)
 		{
 			SetState(RACOON_STATE_END_FLY);
 		}
 
-		else if (GetTickCount64() - time_maintain_fly_high > 200)
+		else if (GetTickCount64() - time_maintain_fly_high > 50)
 		{
 			SetState(RACOON_STATE_RELEASE_FLY_HIGH);
 		}
 
 		if (isOnPlatform) {
 			Fly = false;
-			vy = -0.27f;
+			//vy = -0.27f;
 			ay = MARIO_GRAVITY;
 		}
+	}
 
 
 
-		//if (isOnPlatform) {
-		//	Fly = false;
-		//	ay = MARIO_GRAVITY;
-		//	FlyHigh = false;
-		//	
-		//}
-		//else {
-		//	//time_relase_fly_high = GetTickCount64();
-		//	if (markFly >= 6) {
-		//		ay = 0;
-		//		FlyHigh = true;
-		//		
-		//		
-		//		//vy = -0.24f;
-		//		//FlyHigh = true;
-		//		//ay = MARIO_GRAVITY;
-		//		//ay = 0;
-		//	}
-		//}
+	
+	
+
+	if (state == RACOON_STATE_START_FLY) {
+		if (GetTickCount64() - time_fly_max < 2500) Fly = true;
+		else Fly = false;
 	}
 
 	if (flyLowDown) {
@@ -343,7 +345,6 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	
 		x += vx * dt;
-
 		y += vy * dt;
 	
 }
@@ -1172,7 +1173,13 @@ void CMario::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	
+		contact_door = true;
+	
+
+	/*if (Enter_map) {
+		CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	}*/
 }
 
 
@@ -1399,8 +1406,6 @@ int CMario::GetAniIdRacoon() {
 
 		if (!isOnPlatform)
 		{
-			
-
 			if (abs(ax) == MARIO_ACCEL_RUN_X)
 			{
 				if (nx >= 0)
@@ -1479,11 +1484,8 @@ int CMario::GetAniIdRacoon() {
 						}
 	}
 	else {
-
 		if (!isOnPlatform)
 		{
-			
-
 			if (nx > 0) aniId = ID_ANI_RACOON_FLY_RIGHT;
 			else aniId = ID_ANI_RACOON_FLY_LEFT;
 
@@ -1494,19 +1496,34 @@ int CMario::GetAniIdRacoon() {
 					aniId = ID_ANI_RACOON_JUMP_RUN_RIGHT;
 				else
 					aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
+			}	
+		}
+		else {
+			if (nx < 0) {
+				if (markFly >= 6) aniId = ID_ANI_RACOON_RUNNING_LEFT;
+				else aniId = ID_ANI_RACOON_WALKING_LEFT;
 			}
 
+			else {
+				if (markFly >= 6) aniId = ID_ANI_RACOON_RUNNING_RIGHT;
+				else aniId = ID_ANI_RACOON_WALKING_RIGHT;
+			}
+
+		}
+
+		/*else 
+		{
 			if (Holding) {
 				if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
 				else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
+			} else 
+				if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
+				else aniId = ID_ANI_RACOON_IDLE_LEFT;
 			}
 
-		}
-
-		else {
-			if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
-			else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
-		}
+		}*/
 
 	}
 
@@ -1572,6 +1589,8 @@ void CMario::SetState(int state)
 
 	else if ((this->state == MARIO_STATE_UP_PIPE) && (GetTickCount64() - time_wait_up_pipe < 1250)) return;
 
+	//else if ((this->state == RACOON_STATE_START_FLY) && (GetTickCount64() - time_fly_max < 2000)) return;
+
 	//else if (this->state == RACOON_STATE_FLY_DOWN_RELEASE && (GetTickCount64() - timing < 200)) return;
 
 	//else if (this->state == RACOON_STATE_FLY) return;
@@ -1587,7 +1606,7 @@ void CMario::SetState(int state)
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
-		//if (Holding) break;
+		if (Fly) break;
 		if (isSitting) break;
 		if (level != 3) {
 			maxVx = MARIO_RUNNING_SPEED;
@@ -1595,7 +1614,7 @@ void CMario::SetState(int state)
 			nx = 1;
 		}
 		else {
-			if (markFly >= 7 && !isOnPlatform && state != MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
+			//if (markFly >= 7 && !isOnPlatform && state != MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = MARIO_RUNNING_SPEED + markFly*0.002;
 			ax = MARIO_ACCEL_RUN_X;
@@ -1603,7 +1622,7 @@ void CMario::SetState(int state)
 		}
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
-		//if (Holding) break;
+		if (Fly) break;
 		if (isSitting) break;
 		if (level != 3) {
 			maxVx = -MARIO_RUNNING_SPEED;
@@ -1611,7 +1630,7 @@ void CMario::SetState(int state)
 			nx = -1;
 		}
 		else {
-			if (markFly >= 7 && !isOnPlatform && state!= MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
+			//if (markFly >= 7 && !isOnPlatform && state!= MARIO_STATE_ATTACK) SetState(RACOON_STATE_START_FLY);
 			Run = true;
 			maxVx = -MARIO_RUNNING_SPEED - markFly*0.002;
 			ax = -MARIO_ACCEL_RUN_X;
@@ -1647,9 +1666,9 @@ void CMario::SetState(int state)
 			}
 			else {
 				if (abs(this->vx) == MARIO_RUNNING_SPEED)
-					vy = -0.65;
-				else
 					vy = -0.6;
+				else
+					vy = -0.55;
 			}
 		}
 		else if(level == 3) {
@@ -1665,12 +1684,14 @@ void CMario::SetState(int state)
 	case RACOON_STATE_FLY:
 		if (level != 3) break;
 		//if (!isOnPlatform)
-			Fly = true;
+		//if (isOnPlatform) Fly = false;
+		//else 
+		Fly = true;
 		//else Fly = false;
 		//Run = false;
 		ay = 0;
 		time_maintain_fly_high = GetTickCount64();
-		vy = -0.14f;
+		vy = -0.17f;
 		//time_relase_fly_high = GetTickCount64();
 		//isOnPlatform = false;
 		
@@ -1681,19 +1702,24 @@ void CMario::SetState(int state)
 		break;
 
 	case RACOON_STATE_END_FLY:
+		//if (level != 3) break;
 		ay = MARIO_GRAVITY;
 		Fly = false;
 		break;
 
 	case RACOON_STATE_START_FLY:
+		//if (level != 3) break;
 		rangFlyStart = y;
-		vy = -0.49f;
-		vx = nx * 0.18f;
+		if(isOnPlatform) vy = -0.55f;
+		vx = nx * 0.08f;
 		//vy = 0;
+		//if (isOnPlatform)
+			//Fly = false;
+		//else 
 		Fly = true;
 		//Run = false;
 		time_fly_max = GetTickCount64();
-		//ay = 0;
+		ay = -0.0001f;
 		break;
 
 	case RACOON_STATE_RELEASE_FLY_HIGH:

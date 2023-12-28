@@ -524,7 +524,7 @@ void CPlayScene::Update(DWORD dt)
 
 
 	if (mario->GetLevel() == 3) {
-		if (mario->GetMarkFly() >= 6 && mario->GetFly())
+		if (mario->GetMarkFly() >= 6  && !mario->GetIsOnPlatform())
 		{
 			if(mario->GetY() > 198)
 			CGame::GetInstance()->SetCamPos(cx, cy);

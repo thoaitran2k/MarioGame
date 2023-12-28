@@ -527,7 +527,7 @@ void CGame::SwitchScene()
 
 void CGame::InitiateSwitchScene(int scene_id)
 {
-	next_scene = scene_id;
+	next_scene = 5;
 }
 
 
