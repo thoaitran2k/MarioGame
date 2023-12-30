@@ -154,6 +154,7 @@
     <ClCompile Include="BrickQuestion.cpp" />
     <ClCompile Include="bullet_plant.cpp" />
     <ClCompile Include="ButtonP.cpp" />
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="CheckKoopaFall.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="BrickQuestion.h" />
     <ClInclude Include="bullet_plant.h" />
     <ClInclude Include="ButtonP.h" />
+    <ClInclude Include="Card.h" />
     <ClInclude Include="CheckKoopaFall.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />

@@ -19,6 +19,7 @@ leaf.txt
 green_plant.txt
 GameEffect.txt
 hud.txt
+card.txt
 [MAP]
 #MAP
 99	1408	216
@@ -620,6 +621,9 @@ hud.txt
 4	3108	487
 
 9999999	1185	470
+
+#CARD
+12345	2696	344
 
 
 
