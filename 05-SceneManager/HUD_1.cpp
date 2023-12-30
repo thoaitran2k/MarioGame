@@ -102,6 +102,15 @@ void CHUD_1::Render() {
 	{
 		AniNumber(2 + up -1, x + POSITION_WORLD_X - 2, y - ADJUST_Y_POWER_POSITION + DISTANCE_NUMBER);
 	}
+
+
+	//CARD
+	int card;
+	card = mario->GetIDCard();
+	//END MAP 1
+	if (card == 1) AniCard(1, x + X_CARD_POSITION, y + Y_CARD_POSITION);
+	else if(card == 2) AniCard(2, x + X_CARD_POSITION, y + Y_CARD_POSITION);
+	else if (card == 3) AniCard(3, x + X_CARD_POSITION, y + Y_CARD_POSITION);
 	
 }
 
@@ -148,6 +157,10 @@ void CHUD_1::AniNumber(int n, float Xnumber, float Ynumber) {
 //}
 
 void CHUD_1::AniCard(int n, float Xcard, float Ycard) {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	if (n == HUD_CARD_MUSHROOM) CAnimations::GetInstance()->Get(ID_ANI_HUD_CARD_MUSHROOM)->Render(Xcard, Ycard);
+	else if (n == HUD_CARD_FLOWER) CAnimations::GetInstance()->Get(ID_ANI_HUD_CARD_FLOWER)->Render(Xcard, Ycard);
+	else if (n == HUD_CARD_STAR) CAnimations::GetInstance()->Get(ID_ANI_HUD_CARD_STAR)->Render(Xcard, Ycard);
 
 }
 

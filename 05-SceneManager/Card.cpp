@@ -5,7 +5,7 @@ void CCard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	//vy += ay * dt;
 
 	if (!isActive) {
-		if (GetTickCount64() - time_Render > TIME_RENDER_CARD)
+		if (GetTickCount64() - time_Render > 300)
 		{
 			if (id_mode == 1) id_mode = 2;
 			else if (id_mode == 2) id_mode = 3;
@@ -16,7 +16,7 @@ void CCard::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	}
 
 	if (isActive) {
-		if (GetTickCount64() - time_disappear > 1000)
+		if (GetTickCount64() - time_disappear > 1500)
 			isDeleted = true;
 	}
 	CGameObject::Update(dt, coObjects);
@@ -47,7 +47,7 @@ void CCard::SetState(int state) {
 	switch (state)
 	{
 	case STATE_CARD_IS_COLLECTED:
-		isActive = false;
+		isActive = true;
 		vy = -SPEED_CARD_FLY;
 		time_disappear = GetTickCount64();
 		break;

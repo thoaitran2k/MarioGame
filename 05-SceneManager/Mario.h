@@ -240,6 +240,7 @@ class CMario : public CGameObject
 
 	int markFly;
 	int UP_M;
+	int id_card;
 
 	bool FlyHigh;
 	bool Fly;
@@ -297,6 +298,7 @@ class CMario : public CGameObject
 	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);	
 	void OnCollisionWithPipe(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
+	void OnCollisionWithCard(LPCOLLISIONEVENT e);
 	
 
 
@@ -382,6 +384,7 @@ public:
 
 		isOnPlatform = false;
 		coin = 0;
+		id_card = -1;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -462,6 +465,8 @@ public:
 
 	bool GetContactDoor() { return contact_door; }
 
+	int GetIDCard() { return id_card;}
+
 	//set
 	void SetUp_M(int m) { m = UP_M; }
 
@@ -492,6 +497,8 @@ public:
 	void SetFlyHigh(bool b) { b = FlyHigh; }
 
 	void SetEnterMap(bool b) { b = Enter_map; }
+
+	void SetIdCard(int card) { card = id_card; }
 
 
 };

@@ -26,6 +26,7 @@
 #include "GameEffects.h"
 #include "Platform.h"
 #include "Background.h"
+#include "Card.h"
 
 
 
@@ -400,8 +401,31 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPipe(e);
 	else if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
+	else if (dynamic_cast<CCard*>(e->obj))
+		OnCollisionWithCard(e);
 
 	
+}
+
+void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e) {
+	CCard* card = dynamic_cast<CCard*>(e->obj);
+
+	bool collect;
+	//int id_card = this->id_card;
+
+	collect = card->GetCollect();
+
+	if (e->ny > 0) {
+		if (!collect) {
+			card->SetState(STATE_CARD_IS_COLLECTED);
+
+			if (card->GetCard() == 1) id_card = 1;
+			else if (card->GetCard() == 2) id_card = 2;
+			else if (card->GetCard() == 3) id_card = 3;
+
+			vx = 0.23f;
+		}
+	}
 }
 
 void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e) {
