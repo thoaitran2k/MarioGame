@@ -22,6 +22,10 @@
 #include "Red_Koopa.h"
 
 #include "Para_Goomba.h"
+#include "BrickQuestion.h"
+#include"MushRoom.h"
+#include "leaf.h"
+#include "Coin.h"
 
 CTailWhipping::CTailWhipping(float x, float y):CGameObject(x,y){
 	//this->vx = vx;
@@ -121,6 +125,72 @@ void CTailWhipping::OnCollisionWith(LPCOLLISIONEVENT e) {
 	else if (dynamic_cast<CPara_Goomba*>(e->obj))
 		OnCollisionWithPara_Goomba(e);
 
+	else if (dynamic_cast<CBrickQuestion*>(e->obj))
+		OnCollisionWithBrickQuestion(e);
+}
+
+void CTailWhipping::OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e) {
+	CBrickQuestion* questionBrick = dynamic_cast<CBrickQuestion*>(e->obj);
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	BOOLEAN isUnBox, isEmpty;
+	isUnBox = questionBrick->GetIsUnbox();
+	isEmpty = questionBrick->GetIsEmpty();
+
+	float xTemp, yTemp, minY;
+	xTemp = questionBrick->GetX();
+	yTemp = questionBrick->GetY();
+	minY = questionBrick->GetMinY();
+
+	if (isUnBox) return;
+
+	if (questionBrick->GetModel() == QUESTION_BRICK_COIN)
+	{
+
+		mario->SetCoin(mario->GetCoin() + 1);
+		CCoin* coin = new CCoin(xTemp, yTemp);
+		coin->SetState(COIN_SUMMON_STATE);
+		scene->AddObject(coin);
+		questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+		//questionBrick->SetState(BRICK_Q_STATE_UP);
+		questionBrick->SetIsEmpty(true);
+		questionBrick->SetIsUnbox(true);
+		coin++;
+		mario->SetPoint(5);
+
+	}
+
+	else if (questionBrick->GetModel() == QUESTION_BRICK_NOT_COIN) {
+
+		if (mario->GetLevel() == MARIO_LEVEL_SMALL)
+		{
+			CMushRoom* mushroom = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), 1);
+			scene->AddObject(mushroom);
+			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+			//questionBrick->SetState(BRICK_Q_STATE_UP);
+			questionBrick->SetIsEmpty(true);
+			questionBrick->SetIsUnbox(true);
+		}
+		else if (mario->GetLevel() == MARIO_LEVEL_BIG) {
+			CLeaf* leaf = new CLeaf(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+			scene->AddObject(leaf);
+			leaf->SetState(LEAF_SUMMON_STATE);
+			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+			//questionBrick->SetState(BRICK_Q_STATE_UP);
+			questionBrick->SetIsEmpty(true);
+			questionBrick->SetIsUnbox(true);
+
+		}
+		else if (mario->GetLevel() == MARIO_LEVEL_RACOON)
+		{
+			CMushRoom* mushroomgreen = new CMushRoom(xTemp, yTemp - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), MODE_GREEN);
+			scene->AddObject(mushroomgreen);
+			questionBrick->SetState(BRICK_Q_STATE_EMPTY);
+			//questionBrick->SetState(BRICK_Q_STATE_UP);
+			questionBrick->SetIsEmpty(true);
+			questionBrick->SetIsUnbox(true);
+		}
+	}
 }
 
 void CTailWhipping::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e) {
@@ -135,6 +205,7 @@ void CTailWhipping::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e) {
 		pr_goomba->SetState(GOOMBA_RED_STATE_BE_WHIPED);
 		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
 		scene->AddObject(plusscore100);
+		mario->SetPoint(1);
 		//mario->CreatEffectMario(1);
 	}
 	
@@ -281,6 +352,7 @@ void CTailWhipping::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 		if(goomba_1->GetState() != GOOMBA_STATE_DIE)
 		goomba_1->SetState(GOOMBA_STATE_DIE_UPSIDE);
 		mario->CreatEffectMario(1);
+		mario->SetPoint(1);
 	}
 	
 	//if (goomba->GetState() != GOOMBA_STATE_DIE)

@@ -78,7 +78,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if ((!Run) || abs(vx) < 0.0007 || state == MARIO_STATE_IDLE  /* || (FlyHigh&&!isOnPlatform)*/)
 	{
 		if (GetTickCount64() - stop_speed > 250) {
-			if (markFly > 0 && (GetTickCount64() - time_fly_max > 8000)) markFly--;
+			if (markFly > 0 && GetTickCount64() - time_fly_start >3000 && !Fly && GetTickCount64() - time_fly_max >7000) markFly--;
 			stop_speed = GetTickCount64();
 		}
 
@@ -106,6 +106,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	//else ay = MARIO_GRAVITY;
 
 	if (Fly) {
+
+		
 		//Run = false;
 		if (state == RACOON_STATE_START_FLY)
 			ay = 0;
@@ -124,11 +126,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 
 		if (isOnPlatform) {
+			time_fly_start = GetTickCount64();
 			Fly = false;
 			//vy = -0.27f;
 			ay = MARIO_GRAVITY;
 		}
 	}
+	
 
 
 
@@ -142,7 +146,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (flyLowDown) {
 		ay = 0.0f;
-		vy = -0.025;
+		vy = -0.0f;
 		/*if (nx != 0) {
 			if (nx > 0) vx = 0.13;
 			else vx = -0.13;
@@ -560,8 +564,8 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 				if (gkoopa->GetIsKick()) {
 					//SetState(MARIO_STATE_KICK);
 					gkoopa->SetState(KOOPA_GREEN_STATE_ISKICKED);
-					CreatEffectMario(2);
-					SetPoint(2);
+					CreatEffectMario(1);
+					SetPoint(1);
 					//isHold = false;
 				}
 			}
@@ -577,8 +581,8 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 						{
 							SetState(MARIO_STATE_KICK);
 							gkoopa->SetState(KOOPA_GREEN_STATE_ISKICKED);
-							CreatEffectMario(2);
-							SetPoint(2);
+							CreatEffectMario(1);
+							SetPoint(1);
 							//CreatEffectMario(2);
 							//(2);
 							//isHold = false;
@@ -692,8 +696,8 @@ void CMario::OnCollisionWithKoopa_Green(LPCOLLISIONEVENT e)
 					gkoopa->SetY(gkoopa->GetY() - 6);
 					//isHold = true;
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
-					CreatEffectMario(1);
-					SetPoint(1);
+					CreatEffectMario(2);
+					SetPoint(2);
 					DebugOut(L">>> KOOPA -> TURTLESHELL by MARIO -> KOOPA IN STATE WALKING >>> \n");
 				}
 			}
@@ -1449,8 +1453,15 @@ int CMario::GetAniIdRacoon() {
 				}
 				else
 					if (Holding) {
-						if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
-						else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
+						if (vx != 0) {
+							if (nx > 0) aniId = ID_ANI_RACOON_HOLD_GO_RIGHT;
+							else aniId = ID_ANI_RACOON_HOLD_GO_LEFT;
+						}
+						else
+						{
+							if (nx > 0) aniId = ID_ANI_RACOON_HOLD_IDLE_RIGHT;
+							else aniId = ID_ANI_RACOON_HOLD_IDLE_LEFT;
+						}
 					}
 					else
 						if (vx == 0)
@@ -1496,7 +1507,13 @@ int CMario::GetAniIdRacoon() {
 					aniId = ID_ANI_RACOON_JUMP_RUN_RIGHT;
 				else
 					aniId = ID_ANI_RACOON_JUMP_RUN_LEFT;
-			}	
+			}
+
+			if (Holding)
+			{
+				if (nx > 0) aniId = ID_ANI_RACOON_FLY_HOLD_RIGHT;
+				else aniId = ID_ANI_RACOON_FLY_HOLD_LEFT;
+			}
 		}
 		else {
 			if (nx < 0) {
@@ -1769,7 +1786,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_HOLDING_RIGHT:
 		if (isSitting) break;
-		Run = false;
+		//Run = false;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
 		nx = 1;
@@ -1778,7 +1795,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_HOLDING_LEFT:
 		if (isSitting) break;
-		Run = false;
+		//Run = false;
 		maxVx = -MARIO_WALKING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;

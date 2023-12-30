@@ -181,6 +181,14 @@
 
 #define ID_ANI_DOWN_UP_PIPE	33333
 
+#define ID_ANI_RACOON_HOLD_GO_RIGHT	33334
+#define ID_ANI_RACOON_HOLD_GO_LEFT	33335
+
+#define ID_ANI_RACOON_FLY_HOLD_RIGHT 33336
+#define ID_ANI_RACOON_FLY_HOLD_LEFT 33337
+
+
+
 
 
 #pragma endregion
@@ -267,6 +275,7 @@ class CMario : public CGameObject
 	ULONGLONG time_maintain_fly_low;
 	ULONGLONG time_fly_max;
 	ULONGLONG time_wait_up_pipe;
+	ULONGLONG time_fly_start;
 
 
 	CTailWhipping* tail;
@@ -368,6 +377,7 @@ public:
 		time_maintain_fly_high = -1;
 
 		time_wait_up_pipe = -1;
+		time_fly_start = -1;
 
 
 		isOnPlatform = false;
@@ -418,6 +428,8 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	//get
+	ULONGLONG GetTimeFlyMax() { return time_fly_max; }
+
 	int GetUp_M() { return UP_M; }
 
 	bool GetIsHolding() { return Holding; }

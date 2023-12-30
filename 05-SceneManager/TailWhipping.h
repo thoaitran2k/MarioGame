@@ -34,6 +34,7 @@ protected:
 	void OnCollisionWithGreen_Koopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithRed_Koopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrickQuestion(LPCOLLISIONEVENT e);
 
 
 
