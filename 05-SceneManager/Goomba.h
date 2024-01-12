@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 
-#define GOOMBA_GRAVITY 0.0005f
+#define GOOMBA_GRAVITY 0.0008f
 #define GOOMBA_WALKING_SPEED 0.05f
 
 
@@ -40,9 +40,11 @@ protected:
 	bool upside;
 	int model;
 	bool Active;
+	bool beWhip;
 
 	ULONGLONG die_start;
 	ULONGLONG die_upside_start;
+	ULONGLONG die_thrown;
 
 
 
@@ -62,6 +64,9 @@ public:
 
 	void SetIsBlocking(int b) { b; }
 	CGoomba(float x, float y, int model);
+
+	bool GetWhiped() { return beWhip; }
+	void SetWhip(bool b) { b = beWhip; }
 
 	void SetModel(int model) { this->model = model; }
 	int GetModel() { return model; }

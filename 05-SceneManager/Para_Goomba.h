@@ -27,6 +27,7 @@
 #define GOOMBA_RED_STATE_WALKING 400
 #define GOOMBA_RED_STATE_FALL 500
 #define GOOMBA_RED_STATE_BE_WHIPED 600
+#define PARA_STATE_BE_WHIPED 700
 
 //times
 #define TIME_WALKING 2000
@@ -38,6 +39,7 @@
 #define ID_ANI_GOOMBA_RED_FLY_JUMP 5006
 #define ID_ANI_GOOMBA_RED 5003
 #define ID_ANI_GOOMBA_RED_DIE 5004
+#define ID_ANI_GOOMBA_RED_DIE_UPSIDE 50007
 
 
 
@@ -57,6 +59,7 @@ protected:
 
 	ULONGLONG count_start;
 	ULONGLONG die_start_red_goomba;
+	ULONGLONG die_start_red_goomba_upside;
 	ULONGLONG time_appear;
 	ULONGLONG time_whip;
 
@@ -64,6 +67,7 @@ protected:
 	bool isOnPlatForm;
 	bool isFly;
 	bool isActive;
+	bool beWhip;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -111,6 +115,7 @@ public:
 
 	CPara_Goomba(float x, float y);
 	bool IsFly() { return isFly; }
+	void SetIsFly(bool b) { b = isFly; }
 	virtual void SetState(int state);
 };
 

@@ -13,9 +13,11 @@ CGoomba::CGoomba(float x, float y, int model):CGameObject(x, y)
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
 	die_upside_start = -1;
+	die_thrown = -1;
 	this->model = model;
-	upside = false;
+	//upside = false;
 	Active = false;
+	//beWhip = false;
 
 	SetState(GOOMBA_STATE_WALKING);
 }
@@ -36,10 +38,20 @@ void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &botto
 		right = left + GOOMBA_BBOX_WIDTH;
 		bottom = top + GOOMBA_BBOX_HEIGHT_DIE;
 	}
-	else if (state == GOOMBA_STATE_THROWN_BY_KOOPA) return;
-
-	else if (state == GOOMBA_STATE_DIE_UPSIDE) return;
-
+	else if (state == GOOMBA_STATE_THROWN_BY_KOOPA)
+	{
+		left = 0;
+		top = 0;
+		right = 0;
+		bottom = 0;
+	}
+	else if (state == GOOMBA_STATE_DIE_UPSIDE)
+	{
+		left = 0;
+		top = 0;
+		right = 0;
+		bottom = 0;
+	}
 	else
 	{ 
 		left = x - GOOMBA_BBOX_WIDTH/2;
@@ -80,9 +92,11 @@ void CGoomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	ay = GOOMBA_GRAVITY;
+	
 
 	if (Active) {
+		//ay = GOOMBA_GRAVITY;
+
 	vy += ay * dt;
 	vx += ax * dt;
 
@@ -95,18 +109,17 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
 		{
 			isDeleted = true;
-			//return;
+			return;
 		}
-
-		/*else if ((state == GOOMBA_STATE_THROWN_BY_KOOPA) && GetTickCount64() - die_start > 300)
-		{
+		
+		if ((state == GOOMBA_STATE_DIE_UPSIDE) && (GetTickCount64() - die_upside_start > 3400)){
+		//ay = GOOMBA_GRAVITY;
 			isDeleted = true;
 			return;
-		}*/
+		}
 
-		else if (state == GOOMBA_STATE_DIE_UPSIDE && GetTickCount64() - die_upside_start > 1200)
+		if ((state == GOOMBA_STATE_THROWN_BY_KOOPA && model == GOOMBA_BASIC) && (GetTickCount64() - die_thrown > 1200))
 		{
-
 			isDeleted = true;
 			return;
 		}
@@ -134,11 +147,11 @@ void CGoomba::Render()
 	}
 	else if (state == GOOMBA_STATE_THROWN_BY_KOOPA)
 	{
-		aniId = ID_ANI_GOOMBA_DIE;
+		aniId = ID_ANI_GOOMBA_WALKING;
 	}
 	else if (state == GOOMBA_STATE_DIE_UPSIDE)
 	{
-		if (vy<0) aniId = ID_ANI_GOOMBA_DIE_UPSIDE;
+		if (vy>0) aniId = ID_ANI_GOOMBA_DIE_UPSIDE;
 		else aniId = ID_ANI_GOOMBA_UPSIDE;
 	}
 
@@ -148,24 +161,26 @@ void CGoomba::Render()
 
 void CGoomba::SetState(int state)
 {
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	CGameObject::SetState(state);
 	switch (state)
 	{
 		case GOOMBA_STATE_DIE:
 			die_start = GetTickCount64();
-			y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE)/2;
+			y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
 			vx = 0;
 			vy = 0;
-			ay = 0; 
+			ay = 0;
 			break;
 
-		//case GOOMBA_STATE_THROWN_BY_KOOPA:
-		//	die_start = GetTickCount64();
-		//	//y -= 5;
-		//	//vx = -0.004f;
-		//	//vy = -0.0015f;
-		//	//ay = 0.01f;
-		//	break;
+		case GOOMBA_STATE_THROWN_BY_KOOPA:
+			die_thrown = GetTickCount64();
+			//y -= 5;
+			//vx = -0.004f;
+			vy = -0.27f;
+			vx = 0;
+			//ay = 0.01f;
+			break;
 
 		case GOOMBA_STATE_WALKING:
 			vx = -GOOMBA_WALKING_SPEED;
@@ -177,9 +192,13 @@ void CGoomba::SetState(int state)
 			break;*/
 
 		case GOOMBA_STATE_DIE_UPSIDE:
-			vx = 0.07f;
+			die_upside_start = GetTickCount64();
+			/*vx = 0.07f;
 			vy = -0.148f;
-			ay = 0.0009f;
+			ay = 0.0009f;*/
+			//ay = 0.5f;
+			vx = mario->GetNx() * 0.04f;
+			vy = -0.27f;
 			break;
 	}
 }

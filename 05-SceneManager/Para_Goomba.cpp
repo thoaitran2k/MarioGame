@@ -17,7 +17,9 @@ CPara_Goomba::CPara_Goomba(float x, float y) :CGameObject(x, y)
 		this->ax = 0;
 		this->ay = PARA_GOOMBA_GRAVITY;
 		die_start_red_goomba = -1;
+		die_start_red_goomba_upside = -1;
 		time_whip = -1;
+		
 		isFly = true;
 		vx = -PARA_GOOMBA_WALKING_SPEED;
 		SetState(PARA_GOOMBA_STATE_WALKING);
@@ -70,7 +72,13 @@ void CPara_Goomba::GetBoundingBox(float& left, float& top, float& right, float& 
 			top = 0;
 			right = 0;
 			bottom = 0;
-		 }
+		}
+		else if (state == PARA_STATE_BE_WHIPED) {
+			left = 0;
+			top = 0;
+			right = 0;
+			bottom = 0;
+		}
 	
 	else if(state != GOOMBA_RED_STATE_BE_WHIPED){
 		left = x - PARA_GOOMBA_BBOX_WIDTH / 2;
@@ -122,6 +130,9 @@ void CPara_Goomba::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
+
+
 	Para_Goomba_Active();
 
 	if (isActive)
@@ -130,11 +141,8 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vx += ax * dt;
 
 
-	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	
-	/*if (abs(mario->GetX() - x) < 100)
-		Para_Goomba_Appear();*/
-
 		if (state == PARA_GOOMBA_STATE_WALKING && GetTickCount64() - count_start > PARA_GOOMBA_WALKING_TIME)
 		{
 			SetState(PARA_GOOMBA_STATE_FLY);
@@ -144,18 +152,32 @@ void CPara_Goomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			SetState(PARA_GOOMBA_STATE_WALKING);
 		}
 
+		
+
 
 		if ((state == GOOMBA_RED_STATE_DIE) && (GetTickCount64() - die_start_red_goomba > GOOMBA_RED_DIE_TIMEOUT))
 		{
-			isDeleted = true;
-			return;
+				isDeleted = true;
+				return;
 		}
-
-		else if ((state == GOOMBA_RED_STATE_BE_WHIPED) && (GetTickCount64() - die_start_red_goomba > 500))
+		else if (state == GOOMBA_RED_STATE_BE_WHIPED && (GetTickCount64() - die_start_red_goomba_upside > 1500))
+		{
+				isDeleted = true;
+				return;
+				//ay = PARA_GOOMBA_GRAVITY;
+		}
+		else if (state == PARA_STATE_BE_WHIPED && (GetTickCount64() - die_start_red_goomba_upside > 1500))
 		{
 			isDeleted = true;
 			return;
+			//ay = PARA_GOOMBA_GRAVITY;
 		}
+		
+		
+		
+
+		
+		
 	   
 	}
 	//if (!isFly)
@@ -185,15 +207,28 @@ void CPara_Goomba::Render()
 	if (!isFly)
 	{
 		aniId = ID_ANI_GOOMBA_RED;
-		if (state == GOOMBA_RED_STATE_DIE or state == GOOMBA_RED_STATE_BE_WHIPED) aniId = ID_ANI_GOOMBA_RED_DIE;
+		if (state == GOOMBA_RED_STATE_BE_WHIPED or state == PARA_STATE_BE_WHIPED)
+		{
+			if (vy < 0)
+				aniId = ID_ANI_GOOMBA_RED;
+			else aniId = ID_ANI_GOOMBA_RED_DIE_UPSIDE;
+		}
+		else if (state == GOOMBA_RED_STATE_DIE)
+			aniId = ID_ANI_GOOMBA_RED_DIE;
+
+
+
 	}
 	else if (isOnPlatForm)
 	{
-		if(state == GOOMBA_RED_STATE_BE_WHIPED) aniId = ID_ANI_GOOMBA_RED_DIE;
+		if(state == GOOMBA_RED_STATE_BE_WHIPED) aniId = ID_ANI_GOOMBA_RED_DIE_UPSIDE;
 		 else aniId = ID_ANI_GOOMBA_RED_FLY_WALKING;
 	}
+	else if (state == GOOMBA_RED_STATE_DIE) {
+		aniId = ID_ANI_GOOMBA_RED_DIE;
+	}
 	else {
-		if (state == GOOMBA_RED_STATE_BE_WHIPED) aniId = ID_ANI_GOOMBA_RED_DIE;
+		if (state == GOOMBA_RED_STATE_BE_WHIPED) aniId = ID_ANI_GOOMBA_RED_DIE_UPSIDE;
 		else aniId = ID_ANI_GOOMBA_RED_FLY_JUMP;
 
 	}
@@ -243,11 +278,20 @@ void CPara_Goomba::SetState(int state)
 		break;
 
 	case GOOMBA_RED_STATE_BE_WHIPED:
-		die_start_red_goomba = GetTickCount64();
-		vx = mario->GetNx()* 0.07f;
+		die_start_red_goomba_upside = GetTickCount64();
+		vx = mario->GetNx()* 0.04f;
 		//y += 10;
-		vy = -0.248f;
-		ay = 0.0009f;
+		vy = -0.25f;
+		isFly = false;
+		//ay = 0.0009f;
 		break;
+
+	case PARA_STATE_BE_WHIPED:
+		die_start_red_goomba_upside = GetTickCount64();
+		vx = mario->GetNx() * 0.04f;
+		isFly = false;
+		vy = -0.25f;
+		break;
+
 	}
 }
