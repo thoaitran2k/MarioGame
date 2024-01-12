@@ -68,6 +68,8 @@ public:
 	bool GetWhiped() { return beWhip; }
 	void SetWhip(bool b) { b = beWhip; }
 
+	bool GetActive() { return Active; }
+
 	void SetModel(int model) { this->model = model; }
 	int GetModel() { return model; }
 	virtual void SetState(int state);

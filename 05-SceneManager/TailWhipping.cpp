@@ -212,6 +212,9 @@ void CTailWhipping::OnCollisionWithPara_Goomba(LPCOLLISIONEVENT e) {
 	}
 	else {
 		pr_goomba->SetState(PARA_STATE_BE_WHIPED);
+		CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+		scene->AddObject(plusscore100);
+		mario->SetPoint(1);
 	}
 		//mario->CreatEffectMario(1);
 	//}
@@ -363,8 +366,8 @@ void CTailWhipping::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 	if (goomba_1->GetState() != GOOMBA_STATE_DIE){
 		goomba_1->SetState(GOOMBA_STATE_DIE_UPSIDE);
 		
-		//mario->CreatEffectMario(1);
-		//mario->SetPoint(1);
+		mario->CreatEffectMario(1);
+		mario->SetPoint(1);
 	}
 
 }

@@ -274,13 +274,16 @@ void CRed_Koopa::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e) {
 	
 
 	if (wasKicked) {
-		if (para_goomba->GetState() != GOOMBA_RED_STATE_DIE && para_goomba->GetState() != GOOMBA_RED_STATE_BE_WHIPED) {
-			para_goomba->SetState(GOOMBA_RED_STATE_BE_WHIPED);
-			CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
-			scene->AddObject(plusscore100);
-			mario->SetPoint(1);
-			//mario->CreatEffectMario(1);
+		if (para_goomba->GetActive()) {
+			if (para_goomba->GetState() != GOOMBA_RED_STATE_DIE && para_goomba->GetState() != GOOMBA_RED_STATE_BE_WHIPED) {
+				para_goomba->SetState(GOOMBA_RED_STATE_BE_WHIPED);
+				CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+				scene->AddObject(plusscore100);
+				mario->SetPoint(1);
+				//mario->CreatEffectMario(1);
+			}
 		}
+		else return;
 	}
 }
 
@@ -354,16 +357,22 @@ void CRed_Koopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e) {
 		if (goomba->GetState() == GOOMBA_STATE_DIE_UPSIDE) return;
 			
 		else
-		if (goomba->GetState() != GOOMBA_STATE_DIE_UPSIDE)
 		{
-			goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
-			CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
-			scene->AddObject(plusscore100);
+			if (goomba->GetActive()) {
+				if (goomba->GetState() != GOOMBA_STATE_DIE_UPSIDE)
+				{
 
-			//goomba->SetVy(-0.02f);
-			//goomba->SetVx(-0.01f);
-			//goomba->SetY(y + 2);
-			//x += KOOPA_RED_BBOX_WIDTH / 2;
+					goomba->SetState(GOOMBA_STATE_DIE_UPSIDE);
+					CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+					scene->AddObject(plusscore100);
+
+					//goomba->SetVy(-0.02f);
+					//goomba->SetVx(-0.01f);
+					//goomba->SetY(y + 2);
+					//x += KOOPA_RED_BBOX_WIDTH / 2;
+				}
+			}
+			else return;
 		}
 	}
 	

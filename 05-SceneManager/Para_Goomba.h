@@ -116,6 +116,7 @@ public:
 	CPara_Goomba(float x, float y);
 	bool IsFly() { return isFly; }
 	void SetIsFly(bool b) { b = isFly; }
+	bool GetActive() { return isActive; }
 	virtual void SetState(int state);
 };
 
