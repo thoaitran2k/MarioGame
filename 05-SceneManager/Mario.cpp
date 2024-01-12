@@ -423,7 +423,7 @@ void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e) {
 			else if (card->GetCard() == 2) id_card = 2;
 			else if (card->GetCard() == 3) id_card = 3;
 
-			vx = 0.23f;
+			//vx = 0.23f;
 		}
 	}
 }

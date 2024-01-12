@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "PlayScene.h"
 
+
 //Model
 #define KOOPA_RED_NORMAL 1
 #define KOOPA_RED_ON_THE_BRICK 2
@@ -155,6 +156,7 @@ protected:
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithOntheBox(LPCOLLISIONEVENT e);
 	void OnCollisionWithGlassBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithParaGoomba(LPCOLLISIONEVENT e);
 
 	void Koopa_onGlassBrick_Active() {
 		CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();

@@ -87,6 +87,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
+	case DIK_4:
+		mario->SetPositionPlayer(100, 320);//Pos Start Map 1
+		break;
 	case DIK_7:
 		mario->SetPositionPlayer(3048, 540); // XUONG MAP AN
 		break;

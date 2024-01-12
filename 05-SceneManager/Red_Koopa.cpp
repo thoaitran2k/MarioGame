@@ -13,6 +13,7 @@
 #include "Box.h"
 #include "glassBrick.h"
 #include "GameEffects.h"
+#include"Para_Goomba.h"
 
 
 
@@ -250,6 +251,37 @@ void CRed_Koopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithOntheBox(e);
 	else if (dynamic_cast<CglassBrick*>(e->obj))
 		OnCollisionWithGlassBrick(e);
+	else if (dynamic_cast<CPara_Goomba*>(e->obj))
+		OnCollisionWithParaGoomba(e);
+}
+
+void CRed_Koopa::OnCollisionWithParaGoomba(LPCOLLISIONEVENT e) {
+	CPara_Goomba* para_goomba = dynamic_cast<CPara_Goomba*>(e->obj);
+
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
+
+	if (x > para_goomba->GetX())
+	{
+		vx = -vx;
+		x = x - PARA_GOOMBA_BBOX_HEIGHT / 2 - 2;
+	}
+	else {
+		vx = -vx;
+		x = x + PARA_GOOMBA_BBOX_HEIGHT / 2 + 2;
+	}
+	
+
+	if (wasKicked) {
+		if (para_goomba->GetState() != GOOMBA_RED_STATE_DIE && para_goomba->GetState() != GOOMBA_RED_STATE_BE_WHIPED) {
+			para_goomba->SetState(GOOMBA_RED_STATE_BE_WHIPED);
+			CGameEffects* plusscore100 = new CGameEffects(x, y - 4, 1);
+			scene->AddObject(plusscore100);
+			mario->SetPoint(1);
+			//mario->CreatEffectMario(1);
+		}
+	}
 }
 
 void CRed_Koopa::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
