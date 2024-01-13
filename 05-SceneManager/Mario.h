@@ -12,6 +12,8 @@
 #include "PlayScene.h"
 #include "Game.h"
 
+#define POSITION_END_MAP_1	2810
+
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.2f
 
@@ -54,6 +56,8 @@
 #define RACOON_STATE_END_FLY	820
 #define RACOON_STATE_START_FLY	830
 #define RACOON_STATE_RELEASE_FLY_HIGH	840
+
+#define MARIO_STATE_UNCONTROL	888
 
 
 
@@ -241,6 +245,7 @@ class CMario : public CGameObject
 	int markFly;
 	int UP_M;
 	int id_card;
+	bool goEndMap;
 
 	bool FlyHigh;
 	bool Fly;
@@ -277,6 +282,7 @@ class CMario : public CGameObject
 	ULONGLONG time_fly_max;
 	ULONGLONG time_wait_up_pipe;
 	ULONGLONG time_fly_start;
+	ULONGLONG time_uncontrol;
 
 
 	CTailWhipping* tail;
@@ -349,6 +355,7 @@ public:
 		waitUpPipe = false;
 		Enter_map = false;
 		contact_door = false;
+		goEndMap = false;
 		rangFlyStart = -1;
 		
 		Fly = false;
@@ -380,6 +387,7 @@ public:
 
 		time_wait_up_pipe = -1;
 		time_fly_start = -1;
+		time_uncontrol = -1;
 
 
 		isOnPlatform = false;
@@ -467,7 +475,13 @@ public:
 
 	int GetIDCard() { return id_card;}
 
+	bool GetGoEndMap() { return goEndMap; }
+
+	ULONGLONG GetTimeUnControl() { return time_uncontrol; }
+
 	//set
+	void SetUnControl(bool b) { b = goEndMap; }
+
 	void SetUp_M(int m) { m = UP_M; }
 
 	void SetFlyLowDown(bool b) {b = flyLowDown;}

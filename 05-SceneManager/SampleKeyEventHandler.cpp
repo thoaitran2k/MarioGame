@@ -10,9 +10,11 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
+	
 
 	switch (KeyCode)
 	{
+	if (mario->GetGoEndMap()) break;
 	case DIK_DOWN:
 		if (!mario->GetIsStandOnPipi())
 			mario->SetState(MARIO_STATE_SIT);
@@ -97,7 +99,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetPositionPlayer(2273, 90); // XUONG MAP AN
 		break;
 	case DIK_9:
-		mario->SetPositionPlayer(1884, 540);// XUONG MAP AN
+		mario->SetPositionPlayer(1420, 130);// XUONG MAP AN
 		break;
 	case DIK_5:
 		mario->SetPositionPlayer(800, 380);
@@ -128,6 +130,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 
 	case DIK_D:
 		
+		//if (mario->GetGoEndMap()) mario->SetUnControl(false);
 		
 		DebugOut(L">>> NHAN DDDDDDDDDDDDDDDDDD >>> \n");
 		break;
@@ -146,6 +149,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
+	if (mario->GetGoEndMap()) break;
 	case DIK_S:
 
 		//if (mario->GetLevel() != 3) {
@@ -213,6 +217,8 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+
+	if (mario->GetGoEndMap()) return;
 
 	if (game->IsKeyDown(DIK_UP))
 	{

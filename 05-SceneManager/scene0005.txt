@@ -31,9 +31,9 @@ card.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 #MARIO
-#0	2600	330
+0	2600	330
 #0	800	320
-0	150	320
+#0	150	320
 #0	1923	300
 #0	1234	300
 #0	480	320
@@ -163,7 +163,8 @@ card.txt
 
 #MARIO_UNBOX
 2000	1480	376
-2000	1448	135
+#2000	1448	135
+20002	1448	135
 
 
 #BrickQuestionEmpty

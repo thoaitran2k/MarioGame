@@ -67,6 +67,7 @@ class CHUD_1:public CGameObject
 	float y;
 	vector<int> timesgame;
 	ULONGLONG count_start;
+	ULONGLONG time_render_card;
 	int count_down_time = 0;
 
 public:
@@ -75,6 +76,7 @@ public:
 		this->x = 0.0f;
 		this->y = 0.0f;
 		count_start = -1;
+		time_render_card = -1;
 	}
 
 	void AniNumber(int n, float Xnumber, float Ynumber);

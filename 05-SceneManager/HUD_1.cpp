@@ -108,9 +108,14 @@ void CHUD_1::Render() {
 	int card;
 	card = mario->GetIDCard();
 	//END MAP 1
-	if (card == 1) AniCard(1, x + X_CARD_POSITION, y + Y_CARD_POSITION);
-	else if(card == 2) AniCard(2, x + X_CARD_POSITION, y + Y_CARD_POSITION);
-	else if (card == 3) AniCard(3, x + X_CARD_POSITION, y + Y_CARD_POSITION);
+
+	if (GetTickCount64() - mario->GetTimeUnControl() > 3500) {
+		if (card == 1) AniCard(1, x + X_CARD_POSITION, y + Y_CARD_POSITION);
+		else if (card == 2) AniCard(2, x + X_CARD_POSITION, y + Y_CARD_POSITION);
+		else if (card == 3) AniCard(3, x + X_CARD_POSITION, y + Y_CARD_POSITION);
+	}
+
+
 	
 }
 

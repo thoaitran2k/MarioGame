@@ -177,6 +177,9 @@ void CglassBrick::SetState(int state)
 	
 	switch (state)
 	{
+	case GLASS_BRICK_CONTAIN_ITEM:
+		ay = 0;
+		break;
 	case GLASS_BRICK_STATE_NORMAL:
 		ay = 0;
 		notCoin = 1;
@@ -189,7 +192,7 @@ void CglassBrick::SetState(int state)
 		ay = 0;
 		notCoin = 0;
 		//mode = GLASS_BRICK_MODEL_NORMAL;
-		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) { notCoin = 1; return; }
+		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON && mode == GLASS_BRICK_ITEM) { notCoin = 1; return; }
 		//isDeleted = true;
 		timming = GetTickCount64();
 		break;
@@ -201,7 +204,7 @@ void CglassBrick::SetState(int state)
 
 		//vy = -0.35f;
 		//ay = 0.00075f;
-		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON) { notCoin = 1; return; }
+		if (mode == GLASS_BRICK_MODEL_CONTAIN_BUTTON && mode == GLASS_BRICK_ITEM) { notCoin = 1; return; }
 
 		timming = GetTickCount64();
 		break;

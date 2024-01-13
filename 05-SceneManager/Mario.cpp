@@ -68,6 +68,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if(state != MARIO_STATE_DIE) CountDownTimes();
 	//CountDownTimeGame();
 
+	if (goEndMap && isOnPlatform)
+	{
+		if (x < POSITION_END_MAP_1)
+			SetState(MARIO_STATE_WALKING_RIGHT);
+		else { 
+			SetState(MARIO_STATE_IDLE);
+			if (GetTickCount64() - time_uncontrol > 4000) {
+				SetPositionPlayer(30, 320);
+				goEndMap = false;
+				level = 1;
+			}
+
+		}
+
+		/*if (x > 2800)
+			goEndMap = false;*/
+	}
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
@@ -412,6 +429,8 @@ void CMario::OnCollisionWithCard(LPCOLLISIONEVENT e) {
 
 	bool collect;
 	//int id_card = this->id_card;
+
+	SetState(MARIO_STATE_UNCONTROL);
 
 	collect = card->GetCollect();
 
@@ -1888,6 +1907,14 @@ void CMario::SetState(int state)
 	case MARIO_STATE_DIE:
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
+		ax = 0;
+		break;
+
+	case MARIO_STATE_UNCONTROL:
+		time_uncontrol = GetTickCount64();
+		goEndMap = true;
+		vx = 0;
+		vy = 0;
 		ax = 0;
 		break;
 	}
