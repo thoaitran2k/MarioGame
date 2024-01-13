@@ -502,14 +502,39 @@ void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e) {
 void CMario::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 	CglassBrick* glBrick = dynamic_cast<CglassBrick*>(e->obj);
 	CPlayScene* scene = (CPlayScene*)CGame::GetInstance()->GetCurrentScene();
-	if (!glBrick->GetEmpty() && !glBrick->GetUnBox() && glBrick->GetModel() == GLASS_BRICK_MODEL_CONTAIN_BUTTON && glBrick->GetState() != GLASS_BRICK_STATE_ISTOUCHED) {
+	if (!glBrick->GetEmpty() && !glBrick->GetUnBox() && glBrick->GetState() != GLASS_BRICK_STATE_ISTOUCHED) {
+		
 		if (e->ny > 0) {
+			if (glBrick->GetModel() == GLASS_BRICK_MODEL_CONTAIN_BUTTON) {
 
 
-			glBrick->SetCollision(true);
-			glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
-			CButtonP* P = new CButtonP(glBrick->GetX(), glBrick->GetY() - 16);
-			scene->AddObject(P);
+				glBrick->SetCollision(true);
+				glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
+				CButtonP* P = new CButtonP(glBrick->GetX(), glBrick->GetY() - 16);
+				scene->AddObject(P);
+			}
+			else if (glBrick->GetModel() == GLASS_BRICK_ITEM)
+			{
+				if (level == MARIO_LEVEL_SMALL)
+				{
+					CMushRoom* mushroom = new CMushRoom(glBrick->GetX(), glBrick->GetY() - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), 1);
+					scene->AddObject(mushroom);
+					glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
+				}
+				else if (level == MARIO_LEVEL_BIG) {
+					CLeaf* leaf = new CLeaf(glBrick->GetX(), glBrick->GetY() - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN));
+					scene->AddObject(leaf);
+					leaf->SetState(LEAF_SUMMON_STATE);
+					glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
+
+				}
+				else if (level == MARIO_LEVEL_RACOON)
+				{
+					CMushRoom* mushroomgreen = new CMushRoom(glBrick->GetX(), glBrick->GetY() - (BRICK_Q_BBOX_HEIGHT - ADJUST_UP_DOWN), MODE_GREEN);
+					scene->AddObject(mushroomgreen);
+					glBrick->SetState(GLASS_BRICK_STATE_ISTOUCHED);
+				}
+			}
 
 
 
@@ -521,7 +546,7 @@ void CMario::OnCollisionWithGlassBrick(LPCOLLISIONEVENT e) {
 
 		}
 	}
-		else 
+	else 
 	{
 		if (glBrick->GetState() == GLASS_BRICK_STATE_CHANGE_TO_COIN)
 		{
